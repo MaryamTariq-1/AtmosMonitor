@@ -1,20 +1,18 @@
 const express = require("express")
 const cors =  require("cors")
 const mongoose = require("mongoose")
-
+const UserModel = require ("./models/Users")
 const app = express()
 app.use(cors())
 app.use(express.json());
-mongoose.connect('mongodb://localhost:27017/gee')
+mongoose.connect(
+    "mongodb+srv://maryam:xduSdwEhTiASwiyv@atmosmonitor.vvtdw.mongodb.net/AtmosMonitor?retryWrites=true&w=majority&appName=AtmosMonitor"
+)
 
-const UserSchema = mongoose.Schema({
-    name: String,
-    age: Number
-})
-const UserModel = mongoose.model("users", UserSchema)
+
 
 app.get("/getUsers", (req, res) => {
-    UserModel.find({}).then(function(users) {
+    userModel.find({}).then(function(users) {
         res.json(users)
     }).catch(function(err) {
         console.log(err)
