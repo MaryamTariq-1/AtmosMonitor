@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { Suspense, lazy } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+// Lazy load pages
+const LandingPage = lazy(() => import("./pages/LandingPage/LandingPage"));
+const SignIn = lazy(() => import("./pages/SignIn/SignIn"));
+const SignUp = lazy(() => import("./pages/SignUp/SignUp"));
+const About = lazy(() => import("./pages/About/about"));
+const Contact = lazy(() => import("./pages/Contact/contact"));
+const FeaturesPage = lazy(() => import("./pages/Features/features"));
+const ServicesPage = lazy(() => import("./pages/Services/services")); // Add ServicesPage
+const Dashboard = lazy(() => import("./pages/Dashboard/dashboard"));
+const Reports = lazy(() => import('./pages/Reports/reports'));
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-          
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/services" element={<ServicesPage />} /> {/* Add ServicesPage Route */}
+          <Route path="/dashboard" element={<Dashboard />} /> {/* Add ServicesPage Route */}
+          <Route path="/reports" element={<Reports />} /> 
+                  
+        </Routes>
+      </Suspense>
+    </Router>
   );
 }
 
