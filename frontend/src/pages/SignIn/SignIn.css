@@ -6,7 +6,6 @@
   align-items: center;
   justify-content: center; /* Center vertically */
   height: 100vh;
-  background: url('background.jfif');
   background-position: center;
 }
 

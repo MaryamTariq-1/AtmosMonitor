@@ -1,112 +1,201 @@
-/* Navbar Styles */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1d865e;
-    color: white;
-    padding: 1rem 2rem;
+/* Dashboard container */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 14%;
+  background-color: #000000;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  position: fixed; /* Keep sidebar fixed on the left */
+  height: 100%;
+}
+
+.sidebar-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.sidebar-links {
+  list-style: none;
+}
+
+.sidebar-links li {
+  margin: 10px 0;
+}
+
+.sidebar-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  padding: 5px 0;
+  display: block;
+}
+
+.sidebar-links a:hover {
+  background-color: #155d3b;
+  border-radius: 5px;
+}
+
+
+
+/* Notifications Section */
+.notifications {
+  width: 25%; /* Set the width of the notification section */
+  background-color: #ffffff;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Adjust the height */
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+/* Notification grid */
+.notification-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* 1 column by default */
+  gap: 1rem;
+}
+
+.notification-card {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+  .notification-grid {
+    grid-template-columns: 1fr; /* 1 column for medium screens */
   }
-  
-  .navbar-logo {
-    font-size: 1.5rem;
-    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .notification-grid {
+    grid-template-columns: 1fr; /* 1 column for smaller screens */
   }
-  
-  .navbar-links a {
-    margin: 0 1rem;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
+
+  .notifications {
+    width: 100%; /* Full width for smaller screens */
+    height: auto;
   }
-  
-  .navbar-links a:hover {
-    text-decoration: underline;
+}
+
+
+
+/* Main content area */
+.main-content {
+  margin-left: 250px; /* Adjust content layout to the right */
+  padding: 2rem;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* Sections styling */
+.stats,
+.custom-alerts,
+.health-impact {
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Border shadow */
+}
+
+/* Section title styling */
+.stats h2,
+.custom-alerts h2,
+.health-impact h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Info card styling */
+.info-card {
+  background-color: #ffffff;
+  padding: 1rem;
+  margin: 10px;
+  border-radius: 10px; /* Increased border-radius for more rounded edges */
+  text-align: center;
+  text-decoration: #f9f9f9;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-cards-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns by default */
+  gap: 1rem;
+  justify-items: center; /* Center the items */
+  margin-top: 2rem;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+  .info-cards-container {
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for medium screens */
   }
-  
-  .navbar-buttons button {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 0.5rem 1rem;
-    margin-left: 1rem;
-    cursor: pointer;
-    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .info-cards-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns for smaller screens */
   }
-  
-  .navbar-buttons button:hover {
-    background-color: #003d82;
+}
+
+@media (max-width: 480px) {
+  .info-cards-container {
+    grid-template-columns: 1fr; /* 1 column for very small screens */
   }
-  
-  /* Dashboard Content Styles */
-  .dashboard-content {
-    padding: 2rem;
-    font-family: Arial, sans-serif;
+}
+
+/* Button styling */
+.alert-buttons button {
+  margin: 10px;
+  padding: 10px;
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.alert-buttons button:hover {
+  background-color: #000000;
+}
+
+/* Forecast grid styling */
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.forecast-grid div {
+  background-color: #f9f9f9;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Media query for responsiveness */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
   }
-  
-  .dashboard-title {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    text-align: center;
-    color: #333;
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative; /* Sidebar will scroll with content */
   }
-  
-  .dashboard-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    justify-content: center;
+
+  .main-content {
+    margin-left: 0;
   }
-  
-  .data-card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 200px;
-    text-align: center;
-    padding: 1rem;
-    transition: transform 0.3s ease;
-  }
-  
-  .data-card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .data-card h3 {
-    font-size: 1.2rem;
-    color: #555;
-  }
-  
-  .data-card p {
-    font-size: 1rem;
-    color: #333;
-  }
-  
-  /* Graph/Map Section */
-  .dashboard-visuals {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-top: 2rem;
-    justify-content: center;
-  }
-  
-  .chart, .map {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 500px;
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  .chart-placeholder, .map-placeholder {
-    background: #f9f9f9;
-    height: 200px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #aaa;
-  }
-  
+}

@@ -15,25 +15,40 @@ const About = () => {
       <nav className="navbar">
         <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
-          <a href="#home" onClick={() => navigate('/')}>Home</a>
-          <a href="#features" onClick={() => navigate('/features')}>Features</a>
-          <a href="#services" onClick={() => navigate('/services')}>Services</a>
-          <a href="#reports" onClick={() => navigate('/reports')}>Reports</a>
-          <a href="#about" onClick={() => navigate('/about')}>About</a>
-          <a href="#contact" onClick={() => navigate('/contact')}>Contact</a>
-          <a href="#dashboard" onClick={() => navigate('/dashboard')}>Dashboard</a>
+          <a href="#home" onClick={() => navigate("/")}>
+            Home
+          </a>
+          <a href="#services" onClick={() => navigate("/services")}>
+            Services
+          </a>
+          <a href="#about" onClick={() => navigate("/about")}>
+            About
+          </a>
+          <a href="#dashboard" onClick={() => navigate("/dashboard")}>
+            Dashboard
+          </a>
         </div>
         <div className="navbar-buttons">
-          <button className="signin-btn" onClick={() => navigate('/signin')}>Sign In</button>
-          <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
+          <button className="signin-btn" onClick={() => navigate("/signin")}>
+            Sign In
+          </button>
+          <button className="signup-btn" onClick={() => navigate("/signup")}>
+            Sign Up
+          </button>
         </div>
       </nav>
 
       {/* About Section */}
       <section className="about-section">
         <h1>About Us</h1>
-        <p>We are a passionate team focused on providing real-time air quality monitoring and solutions for a healthier future.</p>
-        <p>Resize the browser window to see that this page is responsive by the way.</p>
+        <p>
+          We are a passionate team focused on providing real-time air quality
+          monitoring and solutions for a healthier future.
+        </p>
+        <p>
+          Resize the browser window to see that this page is responsive by the
+          way.
+        </p>
       </section>
 
       <h2 style={{ textAlign: "center" }}>Our Team</h2>
@@ -45,9 +60,17 @@ const About = () => {
             <div className="container">
               <h2>Jane Doe</h2>
               <p className="title">CEO & Founder</p>
-              <p>Passionate about sustainability and innovation in environmental technologies.</p>
+              <p>
+                Passionate about sustainability and innovation in environmental
+                technologies.
+              </p>
               <p>jane@example.com</p>
-              <p><button className="button" onClick={() => navigate('/contact')}>Contact</button></p> {/* Example onClick for navigate */}
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>{" "}
+              {/* Example onClick for navigate */}
             </div>
           </div>
         </div>
@@ -60,7 +83,11 @@ const About = () => {
               <p className="title">Art Director</p>
               <p>Leading the design and user experience of our products.</p>
               <p>mike@example.com</p>
-              <p><button className="button" onClick={() => navigate('/contact')}>Contact</button></p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
             </div>
           </div>
         </div>
@@ -71,9 +98,16 @@ const About = () => {
             <div className="container">
               <h2>John Doe</h2>
               <p className="title">Product Designer</p>
-              <p>Designing user-friendly solutions to meet the needs of our users.</p>
+              <p>
+                Designing user-friendly solutions to meet the needs of our
+                users.
+              </p>
               <p>john@example.com</p>
-              <p><button className="button" onClick={() => navigate('/contact')}>Contact</button></p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
             </div>
           </div>
         </div>
