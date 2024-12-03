@@ -17,17 +17,18 @@ const Services = () => {
       <nav className="navbar">
         <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
-          <a onClick={() => navigate('/')}>Home</a>
-          <a onClick={() => navigate('/features')}>Features</a>
-          <a onClick={() => navigate('/services')}>Services</a>
-          <a onClick={() => navigate('/reports')}>Reports</a>
-          <a onClick={() => navigate('/about')}>About</a>
-          <a onClick={() => navigate('/contact')}>Contact</a>
-          <a onClick={() => navigate('/dashboard')}>Dashboard</a>
+          <a onClick={() => navigate("/")}>Home</a>
+          <a onClick={() => navigate("/services")}>Services</a>
+          <a onClick={() => navigate("/about")}>About</a>
+          <a onClick={() => navigate("/dashboard")}>Dashboard</a>
         </div>
         <div className="navbar-buttons">
-          <button className="signin-btn" onClick={() => navigate('/signin')}>Sign In</button>
-          <button className="signup-btn" onClick={() => navigate('/signup')}>Sign Up</button>
+          <button className="signin-btn" onClick={() => navigate("/signin")}>
+            Sign In
+          </button>
+          <button className="signup-btn" onClick={() => navigate("/signup")}>
+            Sign Up
+          </button>
         </div>
       </nav>
 
@@ -36,42 +37,84 @@ const Services = () => {
         <p className="features-subtitle">
           See what we provide with AtmosMonitor.
         </p>
-        
+
         <div className="feature-cards">
           <div className="feature-card">
-            <img src={aqmImage} alt="Real-time Air Quality Monitoring" className="feature-image" />
+            <img
+              src={aqmImage}
+              alt="Real-time Air Quality Monitoring"
+              className="feature-image"
+            />
             <h3>Real-time Air Quality Monitoring</h3>
-            <p>Monitor air quality in real-time to stay updated on pollution levels in your area.</p>
+            <p>
+              Monitor air quality in real-time to stay updated on pollution
+              levels in your area.
+            </p>
           </div>
 
           <div className="feature-card">
-            <img src={riskForecastImage} alt="Health Risk Forecasting" className="feature-image" />
+            <img
+              src={riskForecastImage}
+              alt="Health Risk Forecasting"
+              className="feature-image"
+            />
             <h3>Health Risk Forecasting</h3>
-            <p>Get predictions on potential health risks based on air quality levels.</p>
+            <p>
+              Get predictions on potential health risks based on air quality
+              levels.
+            </p>
           </div>
 
           <div className="feature-card">
-            <img src={alertImage} alt="Custom Alerts" className="feature-image" />
+            <img
+              src={alertImage}
+              alt="Custom Alerts"
+              className="feature-image"
+            />
             <h3>Custom Alerts</h3>
-            <p>Set up personalized alerts for air quality thresholds to keep yourself informed.</p>
+            <p>
+              Set up personalized alerts for air quality thresholds to keep
+              yourself informed.
+            </p>
           </div>
 
           <div className="feature-card">
-            <img src={predictionImage} alt="Traffic and Pollution Prediction" className="feature-image" />
+            <img
+              src={predictionImage}
+              alt="Traffic and Pollution Prediction"
+              className="feature-image"
+            />
             <h3>Traffic and Pollution Prediction</h3>
-            <p>Predict how traffic will affect air quality in your area and plan accordingly.</p>
+            <p>
+              Predict how traffic will affect air quality in your area and plan
+              accordingly.
+            </p>
           </div>
 
           <div className="feature-card">
-            <img src={smartwatchesImage} alt="Smart Device Integration" className="feature-image" />
+            <img
+              src={smartwatchesImage}
+              alt="Smart Device Integration"
+              className="feature-image"
+            />
             <h3>Smart Device Integration</h3>
-            <p>Integrate with smartwatches and smart home devices to monitor air quality and receive notifications.</p>
+            <p>
+              Integrate with smartwatches and smart home devices to monitor air
+              quality and receive notifications.
+            </p>
           </div>
 
           <div className="feature-card">
-            <img src={dataVisualImage} alt="Data Visualization" className="feature-image" />
+            <img
+              src={dataVisualImage}
+              alt="Data Visualization"
+              className="feature-image"
+            />
             <h3>Data Visualization</h3>
-            <p>Visualize air quality data through interactive charts and maps for better decision-making.</p>
+            <p>
+              Visualize air quality data through interactive charts and maps for
+              better decision-making.
+            </p>
           </div>
         </div>
       </div>

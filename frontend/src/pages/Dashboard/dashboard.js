@@ -1,68 +1,124 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './dashboard.css';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { faDesktop } from "@fortawesome/free-solid-svg-icons";
+import { faMap } from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
+import { faHeartPulse } from "@fortawesome/free-solid-svg-icons";
 
-const Dashboard = () => {
+import "./dashboard.css";
+
+function Dashboard() {
   const navigate = useNavigate();
+  
 
   return (
     <div className="dashboard">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-logo">AtmosMonitor</div>
-        <div className="navbar-links">
-          <a onClick={() => navigate('/')}>Home</a>
-          <a onClick={() => navigate('/features')}>Features</a>
-          <a onClick={() => navigate('/services')}>Services</a>
-          <a onClick={() => navigate('/reports')}>Reports</a>
-          <a onClick={() => navigate('/about')}>About</a>
-          <a onClick={() => navigate('/contact')}>Contact</a>
-        </div>
-        <div className="navbar-buttons">
-          <button onClick={() => navigate('/signin')}>Sign In</button>
-          <button onClick={() => navigate('/signup')}>Sign Up</button>
-        </div>
-      </nav>
+      {/* Sidebar */}
+      <aside className="sidebar">
+        <div className="sidebar-logo"> Dashboard</div>
+        <ul className="sidebar-links">
+          <li>
+            <a href="#home" onClick={() => navigate("/")}>
+              <FontAwesomeIcon icon={faHouse} /> Home
+            </a>
+          </li>
+          <li>
+            <a href="#stats">
+              <FontAwesomeIcon icon={faDesktop} /> Monitoring Environment
+            </a>
+          </li>
+
+
+          <li>
+            <a href="#alerts">
+              <FontAwesomeIcon icon={faMap} /> Map
+            </a>
+          </li>
+          <li>
+            <a href="#alerts">
+              <FontAwesomeIcon icon={faBell} /> Visual Data
+            </a>
+          </li>
+          <li>
+            <a href="#alerts">
+              <FontAwesomeIcon icon={faBell} /> Alerts
+            </a>
+          </li>
+          <li>
+            <a href="#alerts">
+              <FontAwesomeIcon icon={faBell} /> Alerts
+            </a>
+          </li>
+          <li>
+            <a href="#alerts">
+              <FontAwesomeIcon icon={faBell} /> Alerts
+            </a>
+          </li>
+          <li>
+            <a href="#health-impact">
+              <FontAwesomeIcon icon={faHeartPulse} /> Health Impact
+            </a>
+          </li>
+          <li>
+            <a href="#health-impact"></a>
+          </li>
+        </ul>
+      </aside>
 
       {/* Main Content */}
-      <div className="dashboard-content">
-        <h1 className="dashboard-title">Dashboard</h1>
-        <div className="dashboard-grid">
-          {/* Real-Time Data Cards */}
-          <div className="data-card">
-            <h3>Air Quality Index (AQI)</h3>
-            <p>Moderate (89)</p>
+      <main className="main-content">
+        <section className="stats" id="stats">
+          <h2>Monitoring Environment</h2>
+          <div className="info-cards-container">
+            <div className="info-card">78 Pollution</div>
+            <div className="info-card">12 Health</div>
+            <div className="info-card">13 Traffic Rush</div>
+            <div className="info-card">1 Vehicle</div>
           </div>
-          <div className="data-card">
-            <h3>Temperature</h3>
-            <p>22°C</p>
-          </div>
-          <div className="data-card">
-            <h3>Humidity</h3>
-            <p>65%</p>
-          </div>
-          <div className="data-card">
-            <h3>Health Alert</h3>
-            <p>Risk for asthma patients</p>
-          </div>
-        </div>
+        </section>
 
-        {/* Graph/Map Section */}
-        <div className="dashboard-visuals">
-          <div className="chart">
-            <h3>Historical AQI</h3>
-            {/* Placeholder for Chart */}
-            <div className="chart-placeholder">[Insert Chart Here]</div>
+        <section className="custom-alerts" id="alerts">
+          <h2>Custom Alerts</h2>
+          <div className="alert-buttons">
+            <button>Alerts</button>
+            <button>Notifications</button>
+            <button>Updates</button>
           </div>
-          <div className="map">
-            <h3>Air Quality Map</h3>
-            {/* Placeholder for Map */}
-            <div className="map-placeholder">[Insert Map Here]</div>
+        </section>
+
+        <section className="health-impact" id="health-impact">
+          <h2>Health Impact Forecasting</h2>
+          <div className="forecast-grid">
+            <div>Air Quality</div>
+            <div>Climate Data</div>
+            <div>Traffic Rush Hours</div>
+            <div>Smart Homes</div>
+          </div>
+        </section>
+      </main>
+
+      {/* Notifications Section */}
+      <section className="notifications">
+        <h3>Recent Notifications</h3>
+        <div className="notification-grid">
+          <div className="notification-card">
+            New Health Alert in your area!
+          </div>
+          <div className="notification-card">
+            Traffic levels are high this morning.
+          </div>
+          <div className="notification-card">
+            New air quality forecast is available.
+          </div>
+          <div className="notification-card">
+            Reminder: Update your custom alerts.
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
-};
+}
 
 export default Dashboard;

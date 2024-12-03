@@ -15,7 +15,6 @@ const SignIn = () => {
         <div className="navbar-links">
             <button className="nav-link" onClick={() => navigate('/')}>Home</button>
             <button className="nav-link" onClick={() => navigate('/about')}>About</button>
-            <button className="nav-link" onClick={() => navigate('/contact')}>Contact</button>
           </div>
         <div className="navbar-buttons">
           <button className="signin-btn" onClick={() => navigate('/signin')}>Sign In</button>
