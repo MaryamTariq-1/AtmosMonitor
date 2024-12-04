@@ -8,9 +8,7 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
-  box-sizing: inherit;
-}
+
 
 /* About section styling */
 .about-section {

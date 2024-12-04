@@ -224,6 +224,12 @@
 
 
 /* Contact Page Styles */
+
+#contact-section {
+  scroll-margin-top: 100px; /* Adjust based on your navbar height */
+}
+
+
 .contact-page {
 
     padding: 2rem;

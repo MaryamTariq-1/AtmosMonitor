@@ -40,7 +40,13 @@ const LandingPage = () => {
       <nav className="navbar">
         <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
-          <a href="#home" onClick={() => navigate("/")}>
+          <a
+            href="#home"
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+          >
             Home
           </a>
           <a href="#services" onClick={() => navigate("/services")}>
@@ -50,14 +56,19 @@ const LandingPage = () => {
           <a href="#about" onClick={() => navigate("/about")}>
             About
           </a>
-          <a
-            href="#contact-section"
-            onClick={() => navigate("/")}
-          >
-            Contact
-          </a>
           <a href="#dashboard" onClick={() => navigate("/dashboard")}>
             Dashboard
+          </a>
+          <a
+            href="#contact-section"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("contact-section")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            Contact
           </a>
         </div>
         <div className="navbar-buttons">
@@ -148,7 +159,7 @@ const LandingPage = () => {
         </div>
       </section>
       {/* Contact Section */}
-      <section className="contact-section">
+      <section id="contact-section" className="contact-section">
         <div className="contact-form-container">
           <h1>Contact Us</h1>
           <p>

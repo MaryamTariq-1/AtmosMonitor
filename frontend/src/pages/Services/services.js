@@ -17,8 +17,12 @@ const Services = () => {
       <nav className="navbar">
         <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
-          <a onClick={() => navigate("/")}>Home</a>
-          <a onClick={() => navigate("/services")}>Services</a>
+          <a href="#" onClick={() => navigate("/")}>
+            Home
+          </a>
+          <a href="#" onClick={() => navigate("/services")}>
+            Services
+          </a>
           <a onClick={() => navigate("/about")}>About</a>
           <a onClick={() => navigate("/dashboard")}>Dashboard</a>
         </div>
