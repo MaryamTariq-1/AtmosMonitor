@@ -16,13 +16,8 @@ import {
   faTachometerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./dashboard.css";
-
 import ReactApexChart from "react-apexcharts";
 import GaugeChart from "react-gauge-chart";
-
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"; // Importing React Leaflet components // Importing Leaflet styles
-
-
 import {
   PieChart,
   Pie,
@@ -37,16 +32,12 @@ import {
   Cell,
 } from "recharts";
 
-
 const pieData = [
   { name: "Pollution", value: 30 },
   { name: "Health", value: 25 },
   { name: "Traffic", value: 40 },
   { name: "Other", value: 5 },
 ];
-
-const COLORS = ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50"];
-
 
  const barData = [
    { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
@@ -203,7 +194,7 @@ function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#health-impact"></a>
+            <a href="#logout">Logout</a>
           </li>
         </ul>
       </aside>
