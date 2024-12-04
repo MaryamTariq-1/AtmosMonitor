@@ -7,7 +7,7 @@ const LandingPage = lazy(() => import("./pages/LandingPage/LandingPage"));
 const SignIn = lazy(() => import("./pages/SignIn/SignIn"));
 const SignUp = lazy(() => import("./pages/SignUp/SignUp"));
 const About = lazy(() => import("./pages/About/about"));
-const Contact = lazy(() => import("./pages/Contact/contact"));
+const Contact = lazy(() => import("./pages/LandingPage/LandingPage"));
 const ServicesPage = lazy(() => import("./pages/Services/services")); // Add ServicesPage
 const Dashboard = lazy(() => import("./pages/Dashboard/dashboard"));
 const Reports = lazy(() => import('./pages/Reports/reports'));
