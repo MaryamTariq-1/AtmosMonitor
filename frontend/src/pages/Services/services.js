@@ -17,14 +17,18 @@ const Services = () => {
       <nav className="navbar">
         <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
-          <a href="#" onClick={() => navigate("/")}>
+          <a href="#home" onClick={() => navigate("/")}>
             Home
           </a>
-          <a href="#" onClick={() => navigate("/services")}>
+          <a href="#services" onClick={() => navigate("/services")}>
             Services
           </a>
-          <a onClick={() => navigate("/about")}>About</a>
-          <a onClick={() => navigate("/dashboard")}>Dashboard</a>
+          <a href="#about" onClick={() => navigate("/about")}>
+            About
+          </a>
+          <a href="#dashboard" onClick={() => navigate("/dashboard")}>
+            Dashboard
+          </a>
         </div>
         <div className="navbar-buttons">
           <button className="signin-btn" onClick={() => navigate("/signin")}>

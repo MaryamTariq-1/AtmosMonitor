@@ -239,10 +239,10 @@ const LandingPage = () => {
           <div className="footer-social">
             <h3>Follow Us</h3>
             <div className="social-icons">
-              <a href="#" aria-label="LinkedIn">
+              <a href="#linkedIN" aria-label="LinkedIn">
                 LinkedIn
               </a>
-              <a href="#" aria-label="Twitter">
+              <a href="#Twitter" aria-label="Twitter">
                 Twitter
               </a>
             </div>
