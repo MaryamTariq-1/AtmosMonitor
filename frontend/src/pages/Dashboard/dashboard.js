@@ -1,7 +1,7 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react"; // Correct import for useEffect
+import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import Plot from "react-plotly.js"; // Correct import statement
 import {
   faHouse,
   faDesktop,
@@ -15,7 +15,6 @@ import {
   faTachometerAlt,
 } from "@fortawesome/free-solid-svg-icons";
 import "./dashboard.css";
-import ReactApexChart from "react-apexcharts";
 import GaugeChart from "react-gauge-chart";
 import {
   PieChart,
@@ -31,6 +30,10 @@ import {
   Cell,
 } from "recharts";
 
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet.heat"; // Import leaflet.heat plugin
+
 const pieData = [
   { name: "Pollution", value: 30 },
   { name: "Health", value: 25 },
@@ -38,98 +41,139 @@ const pieData = [
   { name: "Other", value: 5 },
 ];
 
- const barData = [
-   { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
-   { name: "Feb", uv: 3000, pv: 1398, amt: 2210 },
-   { name: "Mar", uv: 2000, pv: 9800, amt: 2290 },
-   { name: "Apr", uv: 2780, pv: 3908, amt: 2000 },
-   { name: "May", uv: 1890, pv: 4800, amt: 2181 },
- ];
+const barData = [
+  { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
+  { name: "Feb", uv: 3000, pv: 1398, amt: 2210 },
+  { name: "Mar", uv: 2000, pv: 9800, amt: 2290 },
+  { name: "Apr", uv: 2780, pv: 3908, amt: 2000 },
+  { name: "May", uv: 1890, pv: 4800, amt: 2181 },
+];
 
 class HeatMap extends React.Component {
-  constructor(props) {
-    super(props);
+  componentDidMount() {
+    // Initialize the map centered on Faisalabad
+    this.map = L.map("heatmap").setView([30.7628, 72.9297], 10);
 
-    // Generate random data for the heatmap
-    const generateData = (count, range) => {
-      const series = [];
-      for (let i = 0; i < count; i++) {
-        series.push({
-          x: `W${i + 1}`,
-          y:
-            Math.floor(Math.random() * (range.max - range.min + 1)) + range.min,
+    // Add OpenStreetMap tile layer
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+    }).addTo(this.map);
+
+    // Fetch AQI data from the JSON file
+    fetch("/aqidata.json") // Replace with the actual path to your JSON file
+      .then((response) => response.json())
+      .then((data) => {
+        // Validate and process the JSON structure
+        if (!data || !Array.isArray(data.features)) {
+          throw new Error("Invalid data structure");
+        }
+
+        // Prepare the data for the heatmap
+        const aqiData = [];
+        data.features.forEach((feature) => {
+          const { AQI, lat, long } = feature.attributes; // Extract AQI and coordinates
+
+          // Determine intensity based on AQI value for heatmap
+          const getIntensity = (aqi) => {
+            if (aqi <= 224.890014) return 0.6; // Moderate AQI (yellow zone)
+            if (aqi <= 226.57779) return 0.8; // Very Unhealthy AQI (red zone)
+            return 1.0; // Hazardous AQI (maroon zone)
+          };
+
+          // Push the [lat, long, intensity] format to the aqiData array
+          aqiData.push([lat, long, getIntensity(AQI)]);
         });
-      }
-      return series;
-    };
 
-    this.state = {
-      series: [
-        {
-          name: "Metric1",
-          data: generateData(18, { min: 0, max: 90 }),
-        },
-        {
-          name: "Metric2",
-          data: generateData(18, { min: 0, max: 90 }),
-        },
-        {
-          name: "Metric3",
-          data: generateData(18, { min: 0, max: 90 }),
-        },
-        {
-          name: "Metric4",
-          data: generateData(18, { min: 0, max: 90 }),
-        },
-        {
-          name: "Metric5",
-          data: generateData(18, { min: 0, max: 90 }),
-        },
-      ],
-      options: {
-        chart: {
-          height: 350,
-          type: "heatmap",
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        colors: ["#008FFB"],
-        title: {
-          text: "HeatMap Chart",
-        },
-        xaxis: {
-          title: {
-            text: "Weeks",
+        // Add heatmap layer
+        const heat = L.heatLayer(aqiData, {
+          radius: 25, // Radius of each heatmap point
+          blur: 15, // Blur effect intensity
+          maxZoom: 13, // Maximum zoom level
+          gradient: {
+            0.4: "blue", // Low intensity
+            0.6: "lime", // Moderate intensity
+            0.7: "yellow", // Higher intensity
+            0.8: "orange", // Very high intensity
+            1.0: "red", // Maximum intensity
           },
-        },
-        yaxis: {
-          title: {
-            text: "Metrics",
-          },
-        },
-        legend: {
-          position: "top",
-        },
-      },
-    };
+        }).addTo(this.map);
+      })
+      .catch((error) => {
+        console.error("Error loading AQI data:", error);
+      });
+  }
+
+  componentWillUnmount() {
+    if (this.map) {
+      this.map.remove();
+    }
   }
 
   render() {
-    return (
-      <ReactApexChart
-        options={this.state.options}
-        series={this.state.series}
-        type="heatmap"
-        height={350}
-      />
-    );
+    return <div id="heatmap" style={{ width: "100%", height: "400px" }}></div>;
   }
 }
 
 function Dashboard() {
   const navigate = useNavigate();
-  
+
+  const [jsonData, setJsonData] = useState(null); // To store your JSON data
+  const [locations, setLocations] = useState([]); // To store locations
+  const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
+
+  useEffect(() => {
+    // Fetch the data from JSON
+    fetch("csvjson.json") // Replace with actual file path or API
+      .then((response) => response.json())
+      .then((data) => {
+        setJsonData(data);
+        // Extract unique locations
+        const uniqueLocations = [
+          ...new Set(data.map((record) => record.Location)),
+        ];
+        setLocations(uniqueLocations);
+        setSelectedLocation(uniqueLocations[0]); // Set default location
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  }, []);
+
+  useEffect(() => {
+    // Re-render charts when location changes
+    if (selectedLocation) {
+      updateCharts(selectedLocation);
+    }
+  }, [selectedLocation, jsonData]);
+
+  const updateCharts = (selectedLocation) => {
+    const filteredData = jsonData.filter(
+      (record) => record.Location === selectedLocation
+    );
+    const timeRange = filteredData.map((record) => record.Date);
+    const pm25Data = filteredData.map((record) => record["PM2.5"]);
+    const pm10Data = filteredData.map((record) => record["PM10"]);
+    const co2Data = filteredData.map((record) => record.CO2);
+    const tempData = filteredData.map((record) => record.Temperature);
+    const humidData = filteredData.map((record) => record.Humidity);
+
+    // Update chart data state
+    setChartsData({
+      timeRange,
+      pm25Data,
+      pm10Data,
+      co2Data,
+      tempData,
+      humidData,
+    });
+  };
+
+  const [chartsData, setChartsData] = useState({
+    timeRange: [],
+    pm25Data: [],
+    pm10Data: [],
+    co2Data: [],
+    tempData: [],
+    humidData: [],
+  });
 
   return (
     <div className="dashboard">
@@ -239,6 +283,90 @@ function Dashboard() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
+          </section>
+
+          {/* Plotly PM2.5 and PM10 Chart */}
+          <section id="pm25-pm10-chart" className="chart-card">
+            <h3>PM2.5 and PM10 Levels</h3>
+            <Plot
+              data={[
+                {
+                  x: chartsData.timeRange,
+                  y: chartsData.pm25Data,
+                  name: "PM2.5",
+                  type: "scatter",
+                  line: { color: "#1f77b4" },
+                },
+                {
+                  x: chartsData.timeRange,
+                  y: chartsData.pm10Data,
+                  name: "PM10",
+                  type: "scatter",
+                  line: { color: "#ff7f0e" },
+                },
+              ]}
+              layout={{
+                title: `PM2.5 and PM10 Levels`,
+                xaxis: { title: "Date" },
+                yaxis: { title: "Concentration (μg/m³)" },
+                margin: { t: 50, l: 50, r: 50, b: 50 },
+              }}
+            />
+          </section>
+
+          {/* Plotly CO2 Levels Chart */}
+          <section id="co2-chart" className="chart-card">
+            <h3>CO2 Levels</h3>
+            <Plot
+              data={[
+                {
+                  x: chartsData.timeRange,
+                  y: chartsData.co2Data,
+                  type: "scatter",
+                  line: { color: "#2ca02c" },
+                },
+              ]}
+              layout={{
+                title: `CO2 Levels`,
+                xaxis: { title: "Date" },
+                yaxis: { title: "CO2 Concentration (ppm)" },
+                margin: { t: 50, l: 50, r: 50, b: 50 },
+              }}
+            />
+          </section>
+
+          {/* Plotly Temperature & Humidity Chart */}
+          <section id="temperature-humidity-chart" className="chart-card">
+            <h3>Temperature & Humidity</h3>
+            <Plot
+              data={[
+                {
+                  x: chartsData.timeRange,
+                  y: chartsData.tempData,
+                  type: "scatter",
+                  name: "Temperature",
+                  line: { color: "#d62728" },
+                },
+                {
+                  x: chartsData.timeRange,
+                  y: chartsData.humidData,
+                  type: "scatter",
+                  name: "Humidity",
+                  line: { color: "#9467bd" },
+                },
+              ]}
+              layout={{
+                title: "Temperature & Humidity",
+                xaxis: { title: "Date" },
+                yaxis: { title: "Temperature (°C)" },
+                yaxis2: {
+                  title: "Humidity (%)",
+                  overlaying: "y",
+                  side: "right",
+                },
+                margin: { t: 50, l: 50, r: 50, b: 50 },
+              }}
+            />
           </section>
 
           {/* Bar Chart */}
@@ -357,7 +485,6 @@ function Dashboard() {
         </div>
       </section>
     </div>
-
   );
 }
 
