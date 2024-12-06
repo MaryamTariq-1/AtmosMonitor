@@ -225,6 +225,23 @@
 
 /* Contact Page Styles */
 
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.status-message {
+  color: green;
+  font-size: 1em;
+  margin-top: 10px;
+}
+
+.status-message.success {
+  color: green;
+}
+
+
 #contact-section {
   scroll-margin-top: 100px; /* Adjust based on your navbar height */
 }
