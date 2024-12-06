@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Correct import for useEffect
+import React, { useState, useEffect, useCallback } from "react"; // Correct import for useEffect
 import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Plot from "react-plotly.js"; // Correct import statement
@@ -137,6 +137,14 @@ function Dashboard() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
+    const handleLocationChange = (event) => {
+      const newLocation = event.target.value;
+      setSelectedLocation(newLocation);
+
+      // Reload the page with the selected location in the query parameters
+      window.location.search = `?location=${newLocation}`;
+    };
+  
   useEffect(() => {
     // Re-render charts when location changes
     if (selectedLocation) {
@@ -245,11 +253,11 @@ function Dashboard() {
       {/* Main Content */}
       <main className="main-content">
         <div className="dropdown-container">
-          <label htmlFor="locationDropdown">Select Location:</label>
+          <label htmlFor="locationDropdown">Select Location: </label>
           <select
             id="locationDropdown"
-            value={selectedLocation}
-            onChange={(e) => setSelectedLocation(e.target.value)}
+            value={selectedLocation || ""}
+            onChange={handleLocationChange}
           >
             {locations.map((location) => (
               <option key={location} value={location}>
