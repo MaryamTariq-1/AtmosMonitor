@@ -244,6 +244,21 @@ function Dashboard() {
 
       {/* Main Content */}
       <main className="main-content">
+        <div className="dropdown-container">
+          <label htmlFor="locationDropdown">Select Location:</label>
+          <select
+            id="locationDropdown"
+            value={selectedLocation}
+            onChange={(e) => setSelectedLocation(e.target.value)}
+          >
+            {locations.map((location) => (
+              <option key={location} value={location}>
+                {location}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <section className="stats" id="stats">
           <h2>Monitoring Environment</h2>
           <div className="info-cards-container">
