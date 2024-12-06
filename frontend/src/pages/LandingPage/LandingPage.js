@@ -5,35 +5,79 @@ import './LandingPage.css';
 
 const LandingPage = () => {
   const navigate = useNavigate();
-
-  // State to handle form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
-
-  // State for handling form submission status
+  const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("");
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
     });
+    // Clear error when user starts typing in the field
+    setErrors({
+      ...errors,
+      [name]: "",
+    });
+
+        if (name === "name" && !/^[a-zA-Z\s]*$/.test(value)) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            name: "Name can only contain letters and spaces.",
+          }));
+
+        }
   };
 
-  // Handle form submission
+  const validateForm = () => {
+    const newErrors = {};
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Name validation: required, letters/spaces only, min 3 characters
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required.";
+    } else if (!/^[a-zA-Z\s]*$/.test(formData.name.trim())) {
+      newErrors.name = "Name can only contain letters and spaces.";
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = "Name must be at least 3 characters long.";
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required.";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters long.";
+    }
+
+    setErrors(newErrors);
+
+    // Return true if no errors exist
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Assuming form submission logic here, such as calling an API endpoint
-    setStatus("Your message has been sent successfully!");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    if (validateForm()) {
+      // Simulate sending data
+      setStatus("Your message has been sent successfully!");
+      setFormData({ name: "", email: "", message: "" }); // Reset form
+    } else {
+      setStatus(""); // Clear any previous status message if validation fails
+    }
   };
-
   return (
     <div className="landing-page">
       {/* Navbar */}
@@ -167,7 +211,7 @@ const LandingPage = () => {
             touch with us.
           </p>
 
-          {status && <p className="status-message">{status}</p>}
+          {status && <p className="status-message success">{status}</p>}
 
           <form onSubmit={handleSubmit} className="contact-form">
             <label htmlFor="name">Name:</label>
@@ -177,8 +221,8 @@ const LandingPage = () => {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              required
             />
+            {errors.name && <p className="error-message">{errors.name}</p>}
 
             <label htmlFor="email">Email:</label>
             <input
@@ -187,8 +231,8 @@ const LandingPage = () => {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              required
             />
+            {errors.email && <p className="error-message">{errors.email}</p>}
 
             <label htmlFor="message">Message:</label>
             <textarea
@@ -196,8 +240,11 @@ const LandingPage = () => {
               name="message"
               value={formData.message}
               onChange={handleInputChange}
-              required
             />
+            {errors.message && (
+              <p className="error-message">{errors.message}</p>
+            )}
+
             <button type="submit">Send Message</button>
           </form>
         </div>
