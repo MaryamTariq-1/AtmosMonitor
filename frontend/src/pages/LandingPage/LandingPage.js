@@ -2,7 +2,12 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
-
+import aqmImage from "./aqm.jfif";
+import riskForecastImage from "./RiskForecast.jfif";
+import alertImage from "./Alert.jfif";
+import predictionImage from "./predicton.jfif";
+import smartwatchesImage from "./smartwatches.jfif";
+import dataVisualImage from "./datavisual.jfif";
 const LandingPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -93,15 +98,27 @@ const LandingPage = () => {
           >
             Home
           </a>
-          <a href="#services" onClick={() => navigate("/services")}>
+          <a
+            href="#features"
+            onClick={(e) => {
+              e.preventDefault(); // Prevent default anchor behavior
+              document
+                .getElementById("features") // Target the "about-section" element
+                .scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the section
+            }}
+          >
             Services
           </a>
-
-          <a href="#about" onClick={() => navigate("/about")}>
+          <a
+            href="#about"
+            onClick={(e) => {
+              e.preventDefault(); // Prevent default anchor behavior
+              document
+                .getElementById("about-section") // Target the "about-section" element
+                .scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the section
+            }}
+          >
             About
-          </a>
-          <a href="#dashboard" onClick={() => navigate("/dashboard")}>
-            Dashboard
           </a>
           <a
             href="#contact-section"
@@ -113,6 +130,9 @@ const LandingPage = () => {
             }}
           >
             Contact
+          </a>
+          <a href="#dashboard" onClick={() => navigate("/dashboard")}>
+            Dashboard
           </a>
         </div>
         <div className="navbar-buttons">
@@ -136,38 +156,68 @@ const LandingPage = () => {
       </section>
       {/* Features Section */}
       <section className="features" id="features">
-        <h2>Main Features</h2>
+        <h2>Our Services</h2>
+        <p className="features-subtitle">
+          See what we provide with AtmosMonitor.
+        </p>
         <div className="feature-cards">
           <div className="feature-card">
-            <h3>Real-Time Monitoring</h3>
-            <p>
-              Stay updated with up-to-the-minute data on air quality and weather
-              conditions.
-            </p>
+            <img
+              src={aqmImage}
+              alt="Real-time Air Quality Monitoring"
+              className="feature-image"
+            />
+            <h3>View Dashboard</h3>
+            <p>Plan your commute with insights on traffic and air quality.</p>
           </div>
           <div className="feature-card">
-            <h3>Data Visualization</h3>
+            <img
+              src={predictionImage}
+              alt="Traffic and Pollution Prediction"
+              className="feature-image"
+            />
+            <h3>Monitoring Environment</h3>
+            <p>Stay updated with data on air quality and weather conditions.</p>
+          </div>
+          <div className="feature-card">
+            <img
+              src={dataVisualImage}
+              alt="Data Visualization"
+              className="feature-image"
+            />
+            <h3>Visualize Data</h3>
             <p>
               Interactive charts and graphs provide clear and concise views of
               your environment.
             </p>
           </div>
           <div className="feature-card">
-            <h3>Health Impact Forecasting</h3>
+            <img
+              src={riskForecastImage}
+              alt="Health Risk Forecasting"
+              className="feature-image"
+            />
+            <h3>Provide Recommendations</h3>
             <p>
               Predict potential health risks based on environmental data trends.
             </p>
           </div>
           <div className="feature-card">
-            <h3>Custom Alert System</h3>
+            <img
+              src={alertImage}
+              alt="Custom Alerts"
+              className="feature-image"
+            />
+            <h3>Managing Alerts</h3>
             <p>Set and receive alerts for specific environmental thresholds.</p>
           </div>
           <div className="feature-card">
-            <h3>Traffic & Pollution Prediction</h3>
-            <p>Plan your commute with insights on traffic and air quality.</p>
-          </div>
-          <div className="feature-card">
-            <h3>Smart Home Integration</h3>
+            <img
+              src={smartwatchesImage}
+              alt="Smart Device Integration"
+              className="feature-image"
+            />
+            <h3>Integrating Smart Devices</h3>
             <p>
               Optimize your home’s environment with seamless device
               connectivity.
@@ -177,7 +227,7 @@ const LandingPage = () => {
       </section>
       {/* Subscription Section */}
       <section className="subscription-section">
-        <h2>Choose Your Plan</h2>
+        <h2>Choose Your Subscription Plan</h2>
         <div className="subscription-cards">
           <div className="subscription-card">
             <h3>7-Day Free Trial</h3>
@@ -202,6 +252,75 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      {/* About Section */}
+      <section className="about-section" id="about-section">
+        <h1>About Us</h1>
+        <p>
+          We are a passionate team focused on providing real-time air quality
+          monitoring and solutions for a healthier future.
+        </p>
+        <p>
+          Resize the browser window to see that this page is responsive by the
+          way.
+        </p>
+
+        <h2 style={{ textAlign: "center" }}>Our Team</h2>
+
+        <div className="team-cards">
+          <div className="team-card">
+            <img src="" alt="Jane" style={{ width: "100%" }} />
+            <div className="team-card-container">
+              <h2>Jane Doe</h2>
+              <p className="title">CEO & Founder</p>
+              <p>
+                Passionate about sustainability and innovation in environmental
+                technologies.
+              </p>
+              <p>jane@example.com</p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div className="team-card">
+            <img src="" alt="Mike" style={{ width: "100%" }} />
+            <div className="team-card-container">
+              <h2>Mike Ross</h2>
+              <p className="title">Art Director</p>
+              <p>Leading the design and user experience of our products.</p>
+              <p>mike@example.com</p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
+            </div>
+          </div>
+
+          <div className="team-card">
+            <img src="" alt="John" style={{ width: "100%" }} />
+            <div className="team-card-container">
+              <h2>John Doe</h2>
+              <p className="title">Product Designer</p>
+              <p>
+                Designing user-friendly solutions to meet the needs of our
+                users.
+              </p>
+              <p>john@example.com</p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact-section" className="contact-section">
         <div className="contact-form-container">
