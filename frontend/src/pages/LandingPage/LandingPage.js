@@ -190,16 +190,6 @@ const LandingPage = () => {
               required
             />
 
-            <label htmlFor="subject">Subject:</label>
-            <input
-              type="text"
-              id="subject"
-              name="subject"
-              value={formData.subject}
-              onChange={handleInputChange}
-              required
-            />
-
             <label htmlFor="message">Message:</label>
             <textarea
               id="message"
