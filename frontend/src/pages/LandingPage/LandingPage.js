@@ -87,7 +87,9 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="navbar-logo">AtmosMonitor</div>
+        <div className="navbar-logo">
+          AtmosMonitor
+        </div>
         <div className="navbar-links">
           <a
             href="#home"
