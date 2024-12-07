@@ -29,11 +29,9 @@ const SignUp = () => {
           </div>
           <div className="navbar-links">
             <button className="nav-link" onClick={() => navigate("/")}>
-              Home
+            Explore More Before SignUp
             </button>
-            <button className="nav-link" onClick={() => navigate("/about")}>
-              About
-            </button>
+            
           </div>
           <div className="navbar-buttons">
             <button className="signin-btn" onClick={() => navigate("/signin")}>
