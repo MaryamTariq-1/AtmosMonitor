@@ -1,32 +1,22 @@
-const express = require("express")
-const cors =  require("cors")
-const mongoose = require("mongoose")
-const UserModel = require ("./models/Users")
-const app = express()
-app.use(cors())
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
+const authRoutes = require("./library/auth");
+const app = express();
+
+app.use(cors());
 app.use(express.json());
-mongoose.connect("mongodb://127.0.0.1:27017/AtmosMonitor")
 
-
-app.post('/user', (req, res) => {
-    UserModel.create(req.body).then(user => res.json(user))
-    .catch(err=>res.json(err))
-})
-
-
-app.get("/getUsers", (req, res) => {
-  userModel
-    .find({})
-    .then(function (users) {
-      res.json(users);
-    })
-    .catch(function (err) {
-      console.log(err);
-    });
+// MongoDB Connection
+mongoose.connect("mongodb://127.0.0.1:27017/AtmosMonitor", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
+// Routes
+app.use("/api/auth", authRoutes);
+
+// Server start
 app.listen(3001, () => {
-  console.log("serve is running");
+  console.log("Server is running on port 3001");
 });
-
-
