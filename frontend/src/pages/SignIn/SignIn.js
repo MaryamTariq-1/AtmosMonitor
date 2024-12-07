@@ -1,4 +1,4 @@
-// SignUp.js
+// SignUp.js   works
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
