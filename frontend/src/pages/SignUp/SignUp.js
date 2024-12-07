@@ -1,21 +1,26 @@
 // SignUp.js for signup
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios'
+import axios from 'axios';
 import './SignUp.css';
 
 const SignUp = () => {
-    const navigate = useNavigate();  
-    
-    const [name, setName] = useState();
-    const [email, setEmail] = useState();
-    const [Password, setPassword] = useState();
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post('http://localhost:3000/user', { name, email, Password })
-            .then(result => console.log(result))
-        .catch(err => console.log(err))
+  const navigate = useNavigate();  
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:3001/signup", { name, email, password });
+      alert(response.data.message);  // Show success message from backend
+      navigate("/signin");  // Redirect to SignIn page after successful signup
+    } catch (error) {
+      alert(error.response.data.error);  // Show error message from backend
     }
+  };
 
   return (
     <div className="signup-page">
@@ -26,9 +31,8 @@ const SignUp = () => {
           </div>
           <div className="navbar-links">
             <button className="nav-link" onClick={() => navigate("/")}>
-            Explore More Before SignUp
+              Explore More Before SignUp
             </button>
-            
           </div>
           <div className="navbar-buttons">
             <button className="signin-btn" onClick={() => navigate("/signin")}>
