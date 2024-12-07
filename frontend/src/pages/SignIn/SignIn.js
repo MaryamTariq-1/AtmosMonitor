@@ -1,8 +1,8 @@
 // SignUp.js   works
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
-
-
+//authentication perform
+// i like coding
 import './SignIn.css';
 
 const SignIn = () => {
@@ -20,9 +20,6 @@ const SignIn = () => {
             </button>
           </div>
           <div className="navbar-buttons">
-            <button className="signin-btn" onClick={() => navigate("/signin")}>
-              Sign In
-            </button>
             <button className="signup-btn" onClick={() => navigate("/signup")}>
               Sign Up
             </button>

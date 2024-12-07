@@ -37,9 +37,6 @@ const SignUp = () => {
             <button className="signin-btn" onClick={() => navigate("/signin")}>
               Sign In
             </button>
-            <button className="signup-btn" onClick={() => navigate("/signup")}>
-              Sign Up
-            </button>
           </div>
         </nav>
       </header>
