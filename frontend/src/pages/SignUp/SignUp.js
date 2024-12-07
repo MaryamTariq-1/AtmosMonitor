@@ -1,4 +1,4 @@
-// SignUp.js
+// SignUp.js for signup
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import axios from 'axios'
