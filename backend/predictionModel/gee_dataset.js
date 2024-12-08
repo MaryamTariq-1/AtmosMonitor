@@ -60,4 +60,17 @@ var ozone = ee.ImageCollection('COPERNICUS/S5P/NRTI/L3_O3') // Sentinel-5P O₃ 
   .select('O3_column_number_density') // Select O₃ data
   .mean(); // Take the mean for the year
 
-  
+  // Step 3: Clip the O₃ data to the Faisalabad region
+var clippedOzone = ozone.clip(FaisalabadRegion);
+
+// Add O₃ data layer to the map
+Map.addLayer(clippedOzone, {min: 0, max: 1, palette: [ 'green', 'red']}, 'Ozone Concentration');
+
+// Step 4: Sample the O₃ data to get coordinates and concentration values
+var samplePoints = clippedOzone.sample({
+  region: FaisalabadRegion,
+  scale: 1000, // Resolution (1 km for Sentinel-5P)
+  projection: 'EPSG:4326', // Use WGS84 coordinate system (Lat/Long)
+  geometries: true // Include geometry (coordinates) in the output
+});
+
