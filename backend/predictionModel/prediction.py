@@ -81,9 +81,6 @@ params = {
 num_rounds = 100
 bst = xgb.train(params, dtrain, num_rounds)
 
-# Save the trained model to a file
-bst.save_model("xgboost_model.json")
-print("Model saved successfully as xgboost_model.json")
 
 # Predict on the test set
 y_pred = bst.predict(dtest)
