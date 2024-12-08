@@ -7,5 +7,7 @@ app = Flask(__name__)
 
 # Load the pre-trained model
 model = xgb.Booster()
-model.load_model("xgboost_model.pkl")  # Replace with the correct path to your saved model
+model.load_model("xgboost_model.json")
+
+
 
