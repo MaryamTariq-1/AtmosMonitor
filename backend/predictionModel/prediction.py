@@ -1,6 +1,7 @@
 import json
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.metrics import r2_score
 
 # Load the JSON data
 with open('aqidata.json', 'r') as file:
@@ -95,9 +96,6 @@ print(f'Root Mean Squared Error: {rmse:.2f}')
 # Optionally, display the first few predictions
 print("Sample predictions:")
 print(y_pred[:10])
-
-
-from sklearn.metrics import r2_score
 
 # Calculate R² score
 r2 = r2_score(y_test, y_pred)
