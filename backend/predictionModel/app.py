@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes by default
-CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:8000"}})
+CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5000"}}) # Setting explicit path
 
 # Load the pre-trained model
 model = xgb.Booster()
