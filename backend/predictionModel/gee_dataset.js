@@ -37,3 +37,19 @@ Export.table.toDrive({
   description: 'Tree_Cover_Faisalabad_CSV',
   fileFormat: 'CSV'
 });
+
+
+
+// Adding Ozone layer data
+
+// Step 1: Define the Region of Interest (Faisalabad) and set up the map 
+var Faisalabad = ee.Geometry.Point([73.133, 31.491]); // Define the central point
+var FaisalabadRegion = Faisalabad.buffer(200000); // 1 km buffer around Faisalabad point
+
+// Center the map over Faisalabad region
+Map.centerObject(FaisalabadRegion, 7); // Zoom level 7
+
+// Add a layer to highlight Faisalabad region with a buffer
+Map.addLayer(FaisalabadRegion, {color: 'red'}, 'Faisalabad Region');
+
+
