@@ -97,3 +97,8 @@ print("Sample predictions:")
 print(y_pred[:10])
 
 
+from sklearn.metrics import r2_score
+
+# Calculate R² score
+r2 = r2_score(y_test, y_pred)
+print(f'R² Score: {r2:.2f}')
