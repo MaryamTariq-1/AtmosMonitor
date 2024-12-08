@@ -5,7 +5,6 @@ import Plot from "react-plotly.js"; // Correct import statement
 import {
   faHouse,
   faDesktop,
-  faMap,
   faBell,
   faChartColumn,
   faMapLocationDot,
@@ -34,20 +33,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.heat"; // Import leaflet.heat plugin
 
-const pieData = [
-  { name: "Pollution", value: 30 },
-  { name: "Health", value: 25 },
-  { name: "Traffic", value: 40 },
-  { name: "Other", value: 5 },
-];
-
-const barData = [
-  { name: "Jan", uv: 4000, pv: 2400, amt: 2400 },
-  { name: "Feb", uv: 3000, pv: 1398, amt: 2210 },
-  { name: "Mar", uv: 2000, pv: 9800, amt: 2290 },
-  { name: "Apr", uv: 2780, pv: 3908, amt: 2000 },
-  { name: "May", uv: 1890, pv: 4800, amt: 2181 },
-];
 
 class HeatMap extends React.Component {
   componentDidMount() {
@@ -84,19 +69,6 @@ class HeatMap extends React.Component {
           aqiData.push([lat, long, getIntensity(AQI)]);
         });
 
-        // Add heatmap layer
-        const heat = L.heatLayer(aqiData, {
-          radius: 25, // Radius of each heatmap point
-          blur: 15, // Blur effect intensity
-          maxZoom: 13, // Maximum zoom level
-          gradient: {
-            0.4: "blue", // Low intensity
-            0.6: "lime", // Moderate intensity
-            0.7: "yellow", // Higher intensity
-            0.8: "orange", // Very high intensity
-            1.0: "red", // Maximum intensity
-          },
-        }).addTo(this.map);
       })
       .catch((error) => {
         console.error("Error loading AQI data:", error);
@@ -153,7 +125,6 @@ useEffect(() => {
     updateCharts(selectedLocation);
   }
 }, [selectedLocation, jsonData]);
-
 
   const updateCharts = (selectedLocation) => {
     const filteredData = jsonData.filter(
