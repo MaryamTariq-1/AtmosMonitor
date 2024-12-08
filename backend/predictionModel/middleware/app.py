@@ -14,6 +14,10 @@ def preprocess_input(longitude, latitude):
     data = pd.DataFrame({'longitude': [longitude], 'latitude': [latitude]})
     return xgb.DMatrix(data)
 
+@app.route('/')
+def index():
+    return render_template('predictionModel.html')
+
 
 
 
