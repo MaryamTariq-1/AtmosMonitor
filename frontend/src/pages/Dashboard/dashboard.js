@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Correct import for useEffect
+import React, { useState, useEffect, useRef } from "react"; // Correct import for useEffect
 import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Plot from "react-plotly.js"; // Correct import statement
@@ -31,8 +31,8 @@ import {
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "leaflet.heat"; // Import leaflet.heat plugin
-
+import "leaflet.heat"; 
+import Plotly from "plotly.js";
 
 class HeatMap extends React.Component {
   componentDidMount() {
@@ -85,6 +85,9 @@ class HeatMap extends React.Component {
     return <div id="heatmap" style={{ width: "100%", height: "400px" }}></div>;
   }
 }
+
+
+
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -208,7 +211,51 @@ if (!jsonData || locations.length === 0) {
     pm10Data[lastDayIndex],
     co2Data[lastDayIndex]
   );
-  const gaugePercent = latestAQI / 500; // Assuming AQI scale is 0-500
+
+  
+
+  
+const PlotlyGaugeChart = ({ id, latestAQI, selectedLocation }) => {
+  const chartRef = useRef(null);
+
+  useEffect(() => {
+    const gaugeData = [
+      {
+        domain: { x: [0, 1], y: [0, 1] },
+        value: latestAQI,
+        title: { text: "Latest AQI" },
+        type: "indicator",
+        mode: "gauge+number",
+        gauge: {
+          axis: { range: [null, 500] },
+          steps: [
+            { range: [0, 50], color: "green" },
+            { range: [51, 100], color: "yellow" },
+            { range: [101, 150], color: "orange" },
+            { range: [151, 200], color: "red" },
+            { range: [201, 500], color: "purple" },
+          ],
+        },
+      },
+    ];
+
+    const gaugeLayout = {
+      title: `Air Quality Index - ${selectedLocation}`,
+    };
+
+    // Render the Plotly chart
+    Plotly.newPlot(chartRef.current, gaugeData, gaugeLayout);
+
+    return () => {
+      // Cleanup the Plotly chart
+      Plotly.purge(chartRef.current);
+    };
+  }, [latestAQI, selectedLocation]);
+
+  return <div id={id} ref={chartRef} />;
+};
+
+
 
   return (
     <div className="dashboard">
@@ -454,14 +501,10 @@ if (!jsonData || locations.length === 0) {
           <section id="gauge-chart" className="chart-card">
             <h3>Air Quality Index (Latest)</h3>
             <div className="chart-container">
-              <GaugeChart
+              <PlotlyGaugeChart
                 id="gauge-chart"
-                nrOfLevels={20}
-                colors={["#4CAF50", "#FFCE56", "#FF5733", "#C70039"]}
-                arcWidth={0.3}
-                percent={gaugePercent}
-                textColor="#000"
-                needleColor="#000"
+                latestAQI={latestAQI}
+                selectedLocation={selectedLocation}
               />
             </div>
           </section>
