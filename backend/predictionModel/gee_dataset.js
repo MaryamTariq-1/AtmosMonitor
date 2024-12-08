@@ -53,3 +53,11 @@ Map.centerObject(FaisalabadRegion, 7); // Zoom level 7
 Map.addLayer(FaisalabadRegion, {color: 'red'}, 'Faisalabad Region');
 
 
+// Step 2: Use Sentinel-5P data for Ozone (O₃) analysis
+var ozone = ee.ImageCollection('COPERNICUS/S5P/NRTI/L3_O3') // Sentinel-5P O₃ dataset
+  .filterBounds(FaisalabadRegion)
+  .filterDate('2023-01-01', '2023-12-31') // Filter by date (adjust as needed)
+  .select('O3_column_number_density') // Select O₃ data
+  .mean(); // Take the mean for the year
+
+  
