@@ -74,3 +74,12 @@ var samplePoints = clippedOzone.sample({
   geometries: true // Include geometry (coordinates) in the output
 });
 
+// Preview the first few samples to verify
+print(samplePoints.limit(10));
+
+// Step 5: Export the sampled points as a CSV file to Google Drive
+Export.table.toDrive({
+  collection: samplePoints,
+  description: 'Ozone_Concentration_Faisalabad_CSV',
+  fileFormat: 'CSV'
+});
