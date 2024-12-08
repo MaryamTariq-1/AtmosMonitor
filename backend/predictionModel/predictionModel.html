@@ -29,7 +29,7 @@
             const longitude = document.getElementById('longitude').value;
             const latitude = document.getElementById('latitude').value;
 
-            <!-- if (longitude && latitude) {
+            if (longitude && latitude) {
                 fetch(`http://127.0.0.1:5000/predict?longitude=${longitude}&latitude=${latitude}`, {
                     method: 'GET',
                     mode: 'cors'  // Include CORS headers
@@ -48,25 +48,7 @@
                 });
             } else {
                 alert('Please enter both longitude and latitude.');
-            } -->
-
-            fetch('http://127.0.0.1:8000/predict?longitude=34&latitude=74', {
-                method: 'GET',
-                mode: 'cors',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.predicted_aqi) {
-                    document.getElementById('aqiValue').textContent = data.predicted_aqi.toFixed(2);
-                } else {
-                    document.getElementById('aqiValue').textContent = 'Error fetching data';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('There was an error fetching the AQI prediction. Please try again later.');
-            });
-            
+            }
         });
     </script>
 </body>
