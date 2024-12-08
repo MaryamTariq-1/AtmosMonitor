@@ -1,24 +1,24 @@
-// SignUp.js for signup
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
+import { signup } from '../../api';  // Import signup function from api.js
 import './SignUp.css';
 
 const SignUp = () => {
-  const navigate = useNavigate();  
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // For error handling
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/signup", { name, email, password });
-      alert(response.data.message);  // Show success message from backend
+      const data = await signup(name, email, password);
+      alert(data.message); // Show success message from backend
       navigate("/signin");  // Redirect to SignIn page after successful signup
     } catch (error) {
-      alert(error.response.data.error);  // Show error message from backend
+      setError(error); // Display error if sign-up fails
     }
   };
 
@@ -64,6 +64,7 @@ const SignUp = () => {
           />
           <button type="submit">Sign Up</button>
         </form>
+        {error && <p style={{ color: "red" }}>{error}</p>}  {/* Show error message if any */}
         <p>
           Already have an account?{" "}
           <a href="/signin" className="signin-link">
