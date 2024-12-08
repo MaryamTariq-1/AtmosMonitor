@@ -9,6 +9,11 @@ app = Flask(__name__)
 model = xgb.Booster()
 model.load_model("xgboost_model.json")
 
+# Function to preprocess input data into DMatrix format
+def preprocess_input(longitude, latitude):
+    data = pd.DataFrame({'longitude': [longitude], 'latitude': [latitude]})
+    return xgb.DMatrix(data)
+
 
 
 
