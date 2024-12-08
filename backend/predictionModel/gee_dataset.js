@@ -8,3 +8,10 @@ Map.centerObject(FaisalabadRegion, 10); // Zoom level 10
 // Add a layer to highlight Faisalabad region with a buffer
 Map.addLayer(FaisalabadRegion, {color: 'red'}, 'Faisalabad Region');
 
+// Step 2: Use Sentinel-2 Surface Reflectance data for vegetation analysis
+var sentinel = ee.ImageCollection('COPERNICUS/S2_SR')
+  .filterBounds(FaisalabadRegion)
+  .filterDate('2023-01-01', '2023-12-31') // Filter by date (adjust as needed)
+  .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10)) // Filter for low cloud cover
+  .median(); // Take the median pixel value for the year
+
