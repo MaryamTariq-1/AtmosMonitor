@@ -28,3 +28,12 @@ var clippedTreeCover = treeCover.clip(FaisalabadRegion);
 Map.addLayer(clippedTreeCover, {palette: ['00FF00']}, 'Tree Cover');
 
 
+// Preview the first few samples to verify
+print(samplePoints.limit(10));
+
+// Step 5: Export the sampled points as a CSV file to Google Drive
+Export.table.toDrive({
+  collection: samplePoints,
+  description: 'Tree_Cover_Faisalabad_CSV',
+  fileFormat: 'CSV'
+});
