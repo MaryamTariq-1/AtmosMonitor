@@ -81,13 +81,16 @@ params = {
 num_rounds = 100
 bst = xgb.train(params, dtrain, num_rounds)
 
+# Save the trained model to a file
+bst.save_model("xgboost_model.json")
+print("Model saved successfully as xgboost_model.json")
 
 # Predict on the test set
 y_pred = bst.predict(dtest)
 
 # Calculate RMSE
-rmse = mean_squared_error(y_test, y_pred, squared=False)
-print(f'Root Mean Squared Error: {rmse:.2f}')
+#rmse = mean_squared_error(y_test, y_pred, squared=False)
+#print(f'Root Mean Squared Error: {rmse:.2f}')
 
 # Optionally, display the first few predictions
 print("Sample predictions:")
