@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"; // Correct import for useEffect
+import React, { useState, useEffect } from "react"; // Correct import for useEffect
 import { useNavigate } from "react-router-dom"; // Correct import for useNavigate
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Plot from "react-plotly.js"; // Correct import statement
@@ -137,20 +137,23 @@ function Dashboard() {
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-    const handleLocationChange = (event) => {
-      const newLocation = event.target.value;
-      setSelectedLocation(newLocation);
+ const handleLocationChange = (event) => {
+   const newLocation = event.target.value;
+   setSelectedLocation(newLocation);
 
-      // Reload the page with the selected location in the query parameters
-      window.location.search = `?location=${newLocation}`;
-    };
-  
-  useEffect(() => {
-    // Re-render charts when location changes
-    if (selectedLocation) {
-      updateCharts(selectedLocation);
-    }
-  }, [selectedLocation, jsonData]);
+   // Update the query parameters without reloading the page
+   const queryParams = new URLSearchParams(window.location.search);
+   queryParams.set("location", newLocation);
+
+   const newUrl = `${window.location.pathname}?${queryParams.toString()}`;
+   window.history.pushState({ path: newUrl }, "", newUrl);
+ };
+useEffect(() => {
+  if (jsonData && selectedLocation) {
+    updateCharts(selectedLocation);
+  }
+}, [selectedLocation, jsonData]);
+
 
   const updateCharts = (selectedLocation) => {
     const filteredData = jsonData.filter(
@@ -183,6 +186,59 @@ function Dashboard() {
     humidData: [],
   });
 
+  // Filter data for the selected location
+const filteredData = jsonData
+  ? jsonData.filter((record) => record.Location === selectedLocation)
+  : [];
+
+
+if (!jsonData || locations.length === 0) {
+  return <div>Loading data...</div>;
+}
+
+  // Data preparation
+  const timeRange = filteredData.map((record) => record.Date);
+  const pm25Data = filteredData.map((record) => record["PM2.5"]);
+  const pm10Data = filteredData.map((record) => record["PM10"]);
+  const co2Data = filteredData.map((record) => record.CO2);
+
+  const avgPM25 = parseFloat(
+    (pm25Data.reduce((a, b) => a + b, 0) / pm25Data.length).toFixed(2)
+  );
+  const avgPM10 = parseFloat(
+    (pm10Data.reduce((a, b) => a + b, 0) / pm10Data.length).toFixed(2)
+  );
+  const avgCO2 = parseFloat(
+    (co2Data.reduce((a, b) => a + b, 0) / co2Data.length).toFixed(2)
+  );
+
+  const pieData = [
+    { name: "PM2.5", value: avgPM25 },
+    { name: "PM10", value: avgPM10 },
+    { name: "CO2", value: avgCO2 },
+  ];
+
+  const lastDayIndex = timeRange.length - 1;
+  const barData = [
+    { name: "PM2.5", value: pm25Data[lastDayIndex] },
+    { name: "PM10", value: pm10Data[lastDayIndex] },
+    { name: "CO2", value: co2Data[lastDayIndex] },
+  ];
+
+  const stackedBarData = timeRange.map((time, index) => ({
+    name: time,
+    PM25: pm25Data[index],
+    PM10: pm10Data[index],
+    CO2: co2Data[index],
+  }));
+
+  const latestAQI = Math.max(
+    pm25Data[lastDayIndex],
+    pm10Data[lastDayIndex],
+    co2Data[lastDayIndex]
+  );
+  const gaugePercent = latestAQI / 500; // Assuming AQI scale is 0-500
+
   return (
     <div className="dashboard">
       {/* Sidebar */}
@@ -214,13 +270,9 @@ function Dashboard() {
               <FontAwesomeIcon icon={faChartColumn} /> Bar Chart
             </a>
           </li>
+
           <li>
-            <a href="#heat-map">
-              <FontAwesomeIcon icon={faMapLocationDot} /> Heat Map
-            </a>
-          </li>
-          <li>
-            <a href="#stacked-bar">
+            <a href="#stacked-bar-chart">
               <FontAwesomeIcon icon={faChartBar} /> Stacked Bar
             </a>
           </li>
@@ -230,12 +282,12 @@ function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#alerts">
-              <FontAwesomeIcon icon={faMap} /> Map
+            <a href="#heat-map">
+              <FontAwesomeIcon icon={faMapLocationDot} /> Heat Map
             </a>
           </li>
           <li>
-            <a href="#health-impact">
+            <a href="#alerts">
               <FontAwesomeIcon icon={faBell} /> ALerts
             </a>
           </li>
@@ -282,22 +334,21 @@ function Dashboard() {
 
           {/* Pie Chart */}
           <section id="pie-chart" className="chart-card">
-            <h3>Pie Chart</h3>
+            <h3>Average Pollutant Distribution</h3>
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={400}>
                 <PieChart>
                   <Pie
                     data={pieData}
                     dataKey="value"
                     nameKey="name"
                     outerRadius={150}
+                    fill="#8884d8"
                   >
                     {pieData.map((entry, index) => (
                       <Cell
                         key={index}
-                        fill={
-                          ["#FF6384", "#36A2EB", "#FFCE56", "#4CAF50"][index]
-                        }
+                        fill={["#FF6384", "#36A2EB", "#FFCE56"][index]}
                       />
                     ))}
                   </Pie>
@@ -394,19 +445,53 @@ function Dashboard() {
 
           {/* Bar Chart */}
           <section id="bar-chart" className="chart-card">
-            <h3>Bar Chart</h3>
+            <h3>Pollutant Levels on the Last Day</h3>
             <div className="chart-container">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={barData}>
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis dataKey="name" />
                   <YAxis />
                   <Tooltip />
                   <Legend />
-                  <Bar dataKey="uv" fill="#8884d8" />
-                  <Bar dataKey="pv" fill="#82ca9d" />
+                  <Bar dataKey="value" fill="#82ca9d" />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          </section>
+
+          {/* Stacked Bar Chart */}
+          <section id="stacked-bar-chart" className="chart-card">
+            <h3>Pollutants Over Time</h3>
+            <div className="chart-container">
+              <ResponsiveContainer width="100%" height={400}>
+                <BarChart data={stackedBarData} stackOffset="sign">
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="PM25" stackId="a" fill="#8884d8" />
+                  <Bar dataKey="PM10" stackId="a" fill="#FFCE56" />
+                  <Bar dataKey="CO2" stackId="a" fill="#82ca9d" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </section>
+
+          {/* Gauge Chart */}
+          <section id="gauge-chart" className="chart-card">
+            <h3>Air Quality Index (Latest)</h3>
+            <div className="chart-container">
+              <GaugeChart
+                id="gauge-chart"
+                nrOfLevels={20}
+                colors={["#4CAF50", "#FFCE56", "#FF5733", "#C70039"]}
+                arcWidth={0.3}
+                percent={gaugePercent}
+                textColor="#000"
+                needleColor="#000"
+              />
             </div>
           </section>
 
@@ -417,56 +502,6 @@ function Dashboard() {
               <HeatMap />
             </div>
           </section>
-
-          {/* Stacked Bar Chart */}
-          <section id="stacked-bar" className="chart-card">
-            <h3>Stacked Bar Chart</h3>
-            <div className="chart-container">
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={barData} stackOffset="sign">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="uv" stackId="a" fill="#8884d8" />
-                  <Bar dataKey="pv" stackId="a" fill="#82ca9d" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </section>
-
-          {/* Gauge Chart */}
-          <section id="gauge-chart" className="chart-card">
-            <h3>Gauge Chart</h3>
-            <div className="chart-container">
-              <GaugeChart
-                id="gauge-chart"
-                nrOfLevels={20} // Number of color levels
-                colors={["#FFCE56", "#4CAF50"]} // Color range
-                arcWidth={0.3} // Width of the arc
-                percent={0.25} // Percentage to display (0.25 = 25%)
-                textColor="#000" // Label color
-                needleColor="#000" // Needle color
-              />
-            </div>
-          </section>
-        </section>
-
-        <section className="map-section">
-          <h2>City Map</h2>
-          <div className="map-container">
-            <iframe
-              title="City Map"
-              src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13603.970581227723!2d73.1350!3d31.4504!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39226838e6d50a4f%3A0x434a01c71c0910ff!2sFaisalabad%2C%20Punjab!5e0!3m2!1sen!2s!4v1690032457308!5m2!1sen!2s"
-              width="100%"
-              height="400"
-              style={{ border: 0, borderRadius: "10px" }}
-              allowFullScreen=""
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
         </section>
 
         <section className="custom-alerts" id="alerts">
