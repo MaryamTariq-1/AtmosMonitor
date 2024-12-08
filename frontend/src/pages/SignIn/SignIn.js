@@ -1,7 +1,6 @@
-// SignIn.js for sign-in
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import axios from 'axios';
+import { login } from './api';  // Import login function from api.js
 import './SignIn.css';
 
 const SignIn = () => {
@@ -9,16 +8,17 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // For error handling
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3001/signin", { email, password });
-      alert(response.data.message);  // Show success message from backend
-      localStorage.setItem("token", response.data.token); // Save JWT token in localStorage
+      const data = await login(email, password);
+      alert(data.message); // Show success message from backend
+      localStorage.setItem("token", data.token); // Save JWT token in localStorage
       navigate("/");  // Redirect to the homepage or dashboard
     } catch (error) {
-      alert(error.response.data.error);  // Show error message from backend
+      setError(error); // Display error if login fails
     }
   };
 
@@ -58,6 +58,7 @@ const SignIn = () => {
           />
           <button type="submit">Log In</button>
         </form>
+        {error && <p style={{ color: "red" }}>{error}</p>}  {/* Show error message if any */}
         <p>
           Don't have an account?{" "}
           <a href="/signup" className="signup-link">

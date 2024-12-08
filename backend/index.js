@@ -6,8 +6,15 @@ const mongoose = require("mongoose");
 const authRoutes = require("./library/auth");
 const app = express();
 
+const corsOptions = {
+  origin: "http://localhost:3000", // React frontend URL
+  methods: "GET,POST",
+  allowedHeaders: "Content-Type,Authorization",
+};
+
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Load environment variables
@@ -30,3 +37,7 @@ app.use("/api/auth", authRoutes);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+ // Add this after your middleware
+
