@@ -93,7 +93,7 @@ rmse = mean_squared_error(y_test, y_pred, squared=False)
 print(f'Root Mean Squared Error: {rmse:.2f}')
 
 # Optionally, display the first few predictions
-print("Sample predictions:")
+#print("Sample predictions:")
 print(y_pred[:10])
 
 
