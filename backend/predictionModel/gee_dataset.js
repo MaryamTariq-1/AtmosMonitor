@@ -15,3 +15,9 @@ var sentinel = ee.ImageCollection('COPERNICUS/S2_SR')
   .filter(ee.Filter.lt('CLOUDY_PIXEL_PERCENTAGE', 10)) // Filter for low cloud cover
   .median(); // Take the median pixel value for the year
 
+// Step 3: Calculate NDVI (NDVI = (NIR - Red) / (NIR + Red))
+var ndvi = sentinel.normalizedDifference(['B8', 'B4']).rename('NDVI'); // Sentinel bands for NIR and Red
+
+// Threshold NDVI values to detect trees (NDVI > 0.3 typically represents vegetation)
+var treeCover = ndvi.gt(0.3).selfMask(); // Only show areas with NDVI > 0.3
+
