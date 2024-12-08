@@ -5,6 +5,7 @@ import pandas as pd
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Allow CORS for all routes by default
 
 # Load the pre-trained model
 model = xgb.Booster()
