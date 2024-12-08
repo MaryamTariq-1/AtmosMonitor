@@ -21,3 +21,10 @@ var ndvi = sentinel.normalizedDifference(['B8', 'B4']).rename('NDVI'); // Sentin
 // Threshold NDVI values to detect trees (NDVI > 0.3 typically represents vegetation)
 var treeCover = ndvi.gt(0.3).selfMask(); // Only show areas with NDVI > 0.3
 
+// Clip tree cover to the Faisalabad region
+var clippedTreeCover = treeCover.clip(FaisalabadRegion);
+
+// Add tree cover layer to the map
+Map.addLayer(clippedTreeCover, {palette: ['00FF00']}, 'Tree Cover');
+
+
