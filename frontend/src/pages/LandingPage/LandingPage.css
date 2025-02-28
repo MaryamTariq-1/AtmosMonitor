@@ -5,53 +5,86 @@
   color: #000000;
   background-color: #ffffff;
 }
-
-/* Hero Section */
 /* Hero Section */
 .hero {
-  background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.theguardian.com%2Fcities%2F2019%2Ffeb%2F05%2Fsuper-tall-super-skinny-super-expensive-the-pencil-towers-of-new-yorks-super-rich&psig=AOvVaw3hIHmRszlw5k83c3dEUF95&ust=1733321868433000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCPjXs6jli4oDFQAAAAAdAAAAABAE'); 
-  background-size: cover;
-  background-position: center;
-  color: #070505; /* Text color set to white */
+  position: relative;
+  color: #070505; /* Adjusted text color for readability */
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; /* Align content to the bottom */
-  padding: 10rem; /* Adjusted padding for size enlargement */
-  height: 50vh; /* Full viewport height */
+  justify-content: center; /* Center content vertically */
+  align-items: center; /* Center content horizontally */
+  padding: 8rem 2rem; /* Adjusted padding for responsive design */
+  height: 100vh; /* Full viewport height */
+  overflow: hidden;
 }
 
+/* Video Background */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the video covers the whole background */
+  z-index: -1; /* Make sure the video stays behind the content */
+}
+
+/* Content Wrapper */
 .hero-content {
-  max-width: 900px; /* Increased max width for larger content */
+
+  max-width: 900px; /* Limit content width */
   margin: 0 auto;
+  z-index: 1; /* Ensure content stays above the video */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6); /* Add text shadow for readability */
 }
 
 .hero-content h1 {
-  font-size: 3.5em; /* Increased font size */
+  font-size: 3.5rem; /* Font size for large screens */
+  font-weight: bold; /* Add emphasis to the title */
   margin-bottom: 15px;
-  color: #000000; /* White text */
+  color: #ffffff; /* Updated text color to white for better contrast */
 }
 
 .hero-content p {
-  font-size: 1.5em; /* Increased font size */
+  font-size: 1.5rem; /* Adjust font size for description */
   margin-bottom: 30px;
-  color: #000000; /* White text */
+  color: #f5f5f5; /* Light text for description */
 }
 
+/* Call-to-Action Button */
 .hero-button {
-  background: #0073e6;
-  color: #fff;
-  padding: 10px 20px;
+  background: #0073e6; /* Primary button color */
+  color: #ffffff; /* White text */
+  padding: 12px 25px; /* Adjusted padding for a better click area */
   border: none;
-  font-size: 16px;
-  border-radius: 4px;
+  font-size: 1.25rem; /* Slightly larger font size */
+  font-weight: bold; /* Bold text for emphasis */
+  border-radius: 6px; /* Rounded corners */
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
 }
 
 .hero-button:hover {
-  background-color: #005bb5;
+  background-color: #005bb5; /* Darker blue on hover */
+  transform: scale(1.05); /* Slight zoom effect */
 }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 2.5rem; /* Smaller font size on tablets */
+  }
+
+  .hero-content p {
+    font-size: 1.2rem; /* Smaller description font */
+  }
+
+  .hero-button {
+    font-size: 1rem; /* Smaller button text */
+    padding: 10px 20px; /* Adjust padding for smaller screens */
+  }
+}
 
 
 /* Features Section */
