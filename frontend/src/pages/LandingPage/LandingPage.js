@@ -148,12 +148,22 @@ const LandingPage = () => {
       </nav>
       {/* Hero Section */}
       <section className="hero">
+        {/* Hero Content */}
         <div className="hero-content">
+          {/* Video Background */}
+
           <h1>Welcome to AtmosMonitor</h1>
           <p>Your Gateway to Real-Time Environmental Insights</p>
           <button onClick={() => navigate("/signup")} className="hero-button">
             Explore More
           </button>
+          <video autoPlay loop muted playsInline className="background-video">
+            <source
+              src="/cinematic-world-earth-loop-animation-2023-11-27-05-25-15-utc.mp4"
+              type="video/mp4"
+            />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </section>
       {/* Features Section */}
