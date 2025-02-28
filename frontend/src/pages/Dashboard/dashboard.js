@@ -67,6 +67,19 @@ class HeatMap extends React.Component {
           // Push the [lat, long, intensity] format to the aqiData array
           aqiData.push([lat, long, getIntensity(AQI)]);
         });
+        // Add heatmap layer
+        L.heatLayer(aqiData, {
+          radius: 25, // Radius of each heatmap point
+          blur: 15, // Blur effect intensity
+          maxZoom: 13, // Maximum zoom level
+          gradient: {
+            0.4: "blue", // Low intensity
+            0.6: "lime", // Moderate intensity
+            0.7: "yellow", // Higher intensity
+            0.8: "orange", // Very high intensity
+            1.0: "red", // Maximum intensity
+          },
+        }).addTo(this.map);
       })
       .catch((error) => {
         console.error("Error loading AQI data:", error);
@@ -87,6 +100,9 @@ class HeatMap extends React.Component {
 function Dashboard() {
   const navigate = useNavigate();
 
+    const [longitude, setLongitude] = useState("");
+    const [latitude, setLatitude] = useState("");
+    const [predictedAqi, setPredictedAqi] = useState("N/A");
   const [jsonData, setJsonData] = useState(null); // To store your JSON data
   const [locations, setLocations] = useState([]); // To store locations
   const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
@@ -205,7 +221,46 @@ function Dashboard() {
     pm10Data[lastDayIndex],
     co2Data[lastDayIndex]
   );
-  const gaugePercent = latestAQI / 500; // Assuming AQI scale is 0-500
+  const maxAQI = 500; // Maximum AQI value
+  const gaugeValue = latestAQI / maxAQI; // Scale AQI value to range 0-1
+
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!longitude || !latitude) {
+      alert("Please enter both longitude and latitude.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:5000/predict?longitude=${longitude}&latitude=${latitude}`,
+        {
+          method: "GET",
+          mode: "cors", // Include CORS headers
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.predicted_aqi) {
+          setPredictedAqi(data.predicted_aqi.toFixed(2));
+        } else {
+          setPredictedAqi("Error fetching data");
+        }
+      } else {
+        setPredictedAqi("Error fetching data");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(
+        "There was an error fetching the AQI prediction. Please try again later."
+      );
+    }
+  };
+
 
   return (
     <div className="dashboard">
@@ -255,6 +310,11 @@ function Dashboard() {
             </a>
           </li>
           <li>
+            <a href="#recommendation">
+              <FontAwesomeIcon icon={faDesktop} /> Recommendations System
+            </a>
+          </li>
+          <li>
             <a href="#alerts">
               <FontAwesomeIcon icon={faBell} /> ALerts
             </a>
@@ -263,9 +323,6 @@ function Dashboard() {
             <a href="#health-impact">
               <FontAwesomeIcon icon={faHeartPulse} /> Health Impact
             </a>
-          </li>
-          <li>
-            <a href="#logout">Logout</a>
           </li>
         </ul>
       </aside>
@@ -456,10 +513,19 @@ function Dashboard() {
                 nrOfLevels={20}
                 colors={["#4CAF50", "#FFCE56", "#FF5733", "#C70039"]}
                 arcWidth={0.3}
-                percent={gaugePercent}
+                percent={gaugeValue}
                 textColor="#000"
                 needleColor="#000"
               />
+              <div
+                style={{
+                  textAlign: "center",
+                  marginTop: "10px",
+                  fontSize: "1.2rem",
+                }}
+              >
+                AQI: {latestAQI}
+              </div>
             </div>
           </section>
 
@@ -470,6 +536,44 @@ function Dashboard() {
               <HeatMap />
             </div>
           </section>
+        </section>
+
+        <section className="Recommendations-system" id="Recommendation">
+          <h2>Recommendations System </h2>
+          <div className="Prediction" id="Prediction">
+            <h1>Air Quality Index (AQI) Prediction</h1>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="longitude">Longitude:</label>
+              <input
+                type="number"
+                step="any"
+                id="longitude"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                placeholder="Enter Longitude"
+                required
+              />
+
+              <label htmlFor="latitude">Latitude:</label>
+              <input
+                type="number"
+                step="any"
+                id="latitude"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                placeholder="Enter Latitude"
+                required
+              />
+
+              <button type="submit">Get AQI</button>
+            </form>
+
+            <div id="result">
+              <h3>
+                Predicted AQI: <span>{predictedAqi}</span>
+              </h3>
+            </div>
+          </div>
         </section>
 
         <section className="custom-alerts" id="alerts">
