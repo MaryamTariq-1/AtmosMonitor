@@ -100,12 +100,126 @@ class HeatMap extends React.Component {
 function Dashboard() {
   const navigate = useNavigate();
 
-    const [longitude, setLongitude] = useState("");
-    const [latitude, setLatitude] = useState("");
-    const [predictedAqi, setPredictedAqi] = useState("N/A");
+  const [longitude, setLongitude] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [predictedAqi, setPredictedAqi] = useState("N/A");
   const [jsonData, setJsonData] = useState(null); // To store your JSON data
   const [locations, setLocations] = useState([]); // To store locations
   const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
+  const [healthAdvice, setHealthAdvice] = useState(""); // Store health advice based on AQI
+
+  const [alerts, setAlerts] = useState([]); // Store alerts
+  const [alertName, setAlertName] = useState(""); // Alert name input
+  const [alertFrequency, setAlertFrequency] = useState("Daily"); // Frequency of alert
+  const [alertTime, setAlertTime] = useState(""); // Custom time for alert
+
+  // Handle adding an alert
+  // Handle adding an alert
+  const handleAddAlert = (e) => {
+    e.preventDefault();
+
+    // Make sure the alert name and time are valid
+    if (!alertName || !alertTime) return; // Don't add if name or time is empty
+
+    // Check if the alert already exists (based on name, for simplicity)
+    const alertExists = alerts.some(
+      (alert) => alert.name === alertName && alert.time === alertTime
+    );
+
+    if (alertExists) {
+      console.log("This alert already exists!");
+      return; // Prevent adding a duplicate alert
+    }
+
+    // Create a new alert
+    const newAlert = {
+      id: Date.now(), // Unique ID for each alert
+      name: alertName,
+      frequency: alertFrequency,
+      time: alertTime, // Store the custom time
+    };
+
+    // Add the new alert to the list
+    setAlerts((prevAlerts) => [...prevAlerts, newAlert]);
+
+    // Clear input fields after adding
+    setAlertName(""); // Clear name input
+    setAlertFrequency("Daily"); // Reset frequency selection
+    setAlertTime(""); // Reset time picker
+  };
+
+  // Handle removing an alert
+  const handleRemoveAlert = (alertId) => {
+    setAlerts((prevAlerts) =>
+      prevAlerts.filter((alert) => alert.id !== alertId)
+    );
+  };
+
+  // Set up periodic notifications (just for demonstration purposes)
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const currentTime = new Date().toISOString();
+      alerts.forEach((alert) => {
+        // Check if current time matches the alert time
+        if (alert.time === currentTime) {
+          console.log(`Alert triggered: ${alert.name}`);
+          // You can replace this log with an actual notification logic
+        }
+      });
+    }, 1000); // Check every second for simplicity
+    return () => clearInterval(intervalId); // Clean up interval on unmount
+  }, [alerts]);
+
+  const [pollutionData, setPollutionData] = useState(null); // Store pollution data
+  const [pollutionAlert, setPollutionAlert] = useState(""); // Pollution level alert message
+  const [alertThresholds, setAlertThresholds] = useState({
+    pm25: 100, // Threshold for PM2.5
+    pm10: 150, // Threshold for PM10
+    co2: 500, // Threshold for CO2
+  });
+  useEffect(() => {
+    const fetchPollutionData = () => {
+      // Simulated pollution data (in real use, fetch data from an API)
+      const simulatedData = {
+        pm25: Math.random() * 200, // Simulated PM2.5 value
+        pm10: Math.random() * 200, // Simulated PM10 value
+        co2: Math.random() * 1000, // Simulated CO2 value
+      };
+      setPollutionData(simulatedData);
+      checkPollutionLevels(simulatedData); // Check pollution levels after fetching
+    };
+    fetchPollutionData();
+    const intervalId = setInterval(fetchPollutionData, 60000); // Fetch data every minute
+    return () => clearInterval(intervalId); // Clean up on unmount
+  }, []);
+
+  // Check pollution levels and trigger alerts
+  const checkPollutionLevels = (data) => {
+    let alertMessage = "";
+
+    if (data.pm25 > alertThresholds.pm25) {
+      alertMessage += `PM2.5 levels are high: ${data.pm25.toFixed(2)} µg/m³. `;
+    }
+
+    if (data.pm10 > alertThresholds.pm10) {
+      alertMessage += `PM10 levels are high: ${data.pm10.toFixed(2)} µg/m³. `;
+    }
+
+    if (data.co2 > alertThresholds.co2) {
+      alertMessage += `CO2 levels are high: ${data.co2.toFixed(2)} ppm. `;
+    }
+
+    if (alertMessage) {
+      setPollutionAlert(alertMessage);
+      // Optionally, add the alert to the alert list
+      setAlerts((prevAlerts) => [
+        ...prevAlerts,
+        { id: Date.now(), message: alertMessage },
+      ]);
+    } else {
+      setPollutionAlert("Pollution levels are normal.");
+    }
+  };
 
   useEffect(() => {
     // Fetch the data from JSON
@@ -160,6 +274,20 @@ function Dashboard() {
       tempData,
       humidData,
     });
+
+    const avgPM25 = (
+      pm25Data.reduce((a, b) => a + b, 0) / pm25Data.length
+    ).toFixed(2);
+    const avgPM10 = (
+      pm10Data.reduce((a, b) => a + b, 0) / pm10Data.length
+    ).toFixed(2);
+    const avgCO2 = (
+      co2Data.reduce((a, b) => a + b, 0) / co2Data.length
+    ).toFixed(2);
+
+    const averageAQI = Math.max(avgPM25, avgPM10, avgCO2);
+    const advice = getHealthAdvice(averageAQI, avgPM25, avgPM10, avgCO2);
+    setHealthAdvice(advice);
   };
 
   const [chartsData, setChartsData] = useState({
@@ -224,8 +352,6 @@ function Dashboard() {
   const maxAQI = 500; // Maximum AQI value
   const gaugeValue = latestAQI / maxAQI; // Scale AQI value to range 0-1
 
-
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -261,6 +387,21 @@ function Dashboard() {
     }
   };
 
+  const getHealthAdvice = (aqi, pm25, pm10, co2) => {
+    if (aqi <= 50) {
+      return "Air quality is good. You can go outside.";
+    } else if (aqi <= 100) {
+      return "Air quality is moderate. Consider limiting outdoor activities.";
+    } else if (aqi <= 150) {
+      return "Air quality is unhealthy for sensitive groups. Stay indoors if you have respiratory issues.";
+    } else if (aqi <= 200) {
+      return "Air quality is unhealthy. Limit outdoor exposure.";
+    } else if (aqi <= 300) {
+      return "Air quality is very unhealthy. Stay indoors and wear a mask if you need to go outside.";
+    } else {
+      return "Air quality is hazardous. Stay indoors and avoid outdoor activities.";
+    }
+  };
 
   return (
     <div className="dashboard">
@@ -316,7 +457,7 @@ function Dashboard() {
           </li>
           <li>
             <a href="#alerts">
-              <FontAwesomeIcon icon={faBell} /> ALerts
+              <FontAwesomeIcon icon={faBell} /> Managing ALerts
             </a>
           </li>
           <li>
@@ -538,7 +679,7 @@ function Dashboard() {
           </section>
         </section>
 
-        <section className="Recommendations-system" id="Recommendation">
+        <section className="Recommendations-system" id="recommendation">
           <h2>Recommendations System </h2>
           <div className="Prediction" id="Prediction">
             <h1>Air Quality Index (AQI) Prediction</h1>
@@ -578,20 +719,59 @@ function Dashboard() {
 
         <section className="custom-alerts" id="alerts">
           <h2>Custom Alerts</h2>
-          <div className="alert-buttons">
-            <button>Alerts</button>
-            <button>Notifications</button>
-            <button>Updates</button>
+
+          {/* Alert Form */}
+          <div className="add-alert-form">
+            <form onSubmit={handleAddAlert}>
+              <input
+                type="text"
+                value={alertName}
+                onChange={(e) => setAlertName(e.target.value)}
+                placeholder="Enter Alert Name"
+                required
+              />
+              <select
+                value={alertFrequency}
+                onChange={(e) => setAlertFrequency(e.target.value)}
+              >
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+              <input
+                type="datetime-local"
+                value={alertTime}
+                onChange={(e) => setAlertTime(e.target.value)}
+                required
+              />
+              <button type="submit">Add Alert</button>
+            </form>
           </div>
+
+          {/* Display List of Alerts */}
+          <div className="alert-list">
+            {alerts.map((alert) => (
+              <div key={alert.id} className="alert-item">
+                <div>
+                  <strong>{alert.name}</strong> - {alert.frequency} -{" "}
+                  {new Date(alert.time).toLocaleString()}
+                </div>
+                <button onClick={() => handleRemoveAlert(alert.id)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* Pollution Level Alert */}
+          {pollutionAlert && <div className="alert-item">{pollutionAlert}</div>}
         </section>
 
         <section className="health-impact" id="health-impact">
           <h2>Health Impact Forecasting</h2>
           <div className="forecast-grid">
-            <div>Air Quality</div>
-            <div>Climate Data</div>
-            <div>Traffic Rush Hours</div>
-            <div>Smart Homes</div>
+            <div>
+              <strong>Advices:</strong> {healthAdvice}
+            </div>
           </div>
         </section>
       </main>
