@@ -87,9 +87,7 @@ const LandingPage = () => {
     <div className="landing-page">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="navbar-logo">
-          AtmosMonitor
-        </div>
+        <div className="navbar-logo">AtmosMonitor</div>
         <div className="navbar-links">
           <a
             href="#home"
@@ -146,7 +144,7 @@ const LandingPage = () => {
           </button>
         </div>
       </nav>
-      {/* Hero Section */}
+
       <section className="hero">
         {/* Hero Content */}
         <div className="hero-content">
@@ -166,6 +164,7 @@ const LandingPage = () => {
           </video>
         </div>
       </section>
+
       {/* Features Section */}
       <section className="features" id="features">
         <h2>Our Services</h2>
@@ -269,8 +268,12 @@ const LandingPage = () => {
       <section className="about-section" id="about-section">
         <h1>About Us</h1>
         <p>
-          We are a passionate team focused on providing real-time air quality
-          monitoring and solutions for a healthier future.
+          AtmosMonitor is an innovative, state-of-the-art platform designed to
+          revolutionize the way we monitor, analyze, and respond to air quality.
+          With air pollution becoming an increasingly pressing global issue,
+          AtmosMonitor aims to empower individuals, communities, and
+          organizations with tools and insights for a healthier and more
+          sustainable future.
         </p>
         <p>
           Resize the browser window to see that this page is responsive by the
@@ -280,6 +283,24 @@ const LandingPage = () => {
         <h2 style={{ textAlign: "center" }}>Our Team</h2>
 
         <div className="team-cards">
+          <div className="team-card">
+            <img src="" alt="Jane" style={{ width: "100%" }} />
+            <div className="team-card-container">
+              <h2>Dr. Mhammad Fayyaz</h2>
+              <p className="title">Supervisors</p>
+              <p>
+                Passionate about sustainability and innovation in environmental
+                technologies.
+              </p>
+              <p>jane@example.com</p>
+              <p>
+                <button className="button" onClick={() => navigate("/contact")}>
+                  Contact
+                </button>
+              </p>
+            </div>
+          </div>
+
           <div className="team-card">
             <img src="" alt="Jane" style={{ width: "100%" }} />
             <div className="team-card-container">
