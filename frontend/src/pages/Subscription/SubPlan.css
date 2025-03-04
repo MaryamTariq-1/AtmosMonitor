@@ -1,0 +1,53 @@
+.subscription-header {
+  text-align: center;
+  font-size: 2rem;
+  margin: 20px;
+}
+
+.subscription-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.plan-card {
+  background: #f0f0f0;
+  padding: 20px;
+  width: 250px;
+  margin: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.plan-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.plan-card p {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.plan-card h4 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.plan-card button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.plan-card button:hover {
+  background-color: #0056b3;
+}

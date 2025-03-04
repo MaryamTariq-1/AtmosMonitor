@@ -8,6 +8,9 @@ app = Flask(__name__)
 CORS(app)  # Allow CORS for all routes by default
 CORS(app, resources={r"/predict": {"origins": "http://127.0.0.1:5000"}}) # Setting explicit path
 
+# Allow CORS for React (localhost:3000) in your development environment
+CORS(app, resources={r"/predict": {"origins": "http://localhost:3000"}})
+
 # Load the pre-trained model
 model = xgb.Booster()
 model.load_model("xgboost_model.json")

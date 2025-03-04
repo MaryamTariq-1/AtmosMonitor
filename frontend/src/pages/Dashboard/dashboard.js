@@ -97,6 +97,27 @@ class HeatMap extends React.Component {
   }
 }
 
+
+const DynamicProgressBar = ({ progressPercentage, label }) => {
+  return (
+    <div className="progress-bar-container">
+      <div className="progress-bar-label">
+        <span>{label}</span>
+      </div>
+      <div className="progress-bar-background">
+        <div
+          className="progress-bar-fill"
+          style={{ width: `${progressPercentage}%` }}
+        ></div>
+      </div>
+      <div className="progress-bar-text">
+        <span>{progressPercentage}% of the risk level reached!</span>
+      </div>
+    </div>
+  );
+};
+
+
 function Dashboard() {
   const navigate = useNavigate();
 
@@ -112,6 +133,28 @@ function Dashboard() {
   const [alertName, setAlertName] = useState(""); // Alert name input
   const [alertFrequency, setAlertFrequency] = useState("Daily"); // Frequency of alert
   const [alertTime, setAlertTime] = useState(""); // Custom time for alert
+
+
+  
+   const [pollutionData, setPollutionData] = useState({
+     pm25: 80,
+     pm10: 150,
+     co2: 400,
+   }); // Simulated pollution data
+
+   // Calculate the highest pollution level percentage
+   const calculatePollutionPercentage = () => {
+     const highestPollutant = Math.max(
+       pollutionData.pm25,
+       pollutionData.pm10,
+       pollutionData.co2
+     );
+     const maxPollutionLevel = 500; // Maximum possible value
+     return (highestPollutant / maxPollutionLevel) * 100;
+   };
+
+   const pollutionPercentage = calculatePollutionPercentage();
+
 
   // Handle adding an alert
   // Handle adding an alert
@@ -156,21 +199,20 @@ function Dashboard() {
   };
 
   // Set up periodic notifications (just for demonstration purposes)
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const currentTime = new Date().toISOString();
-      alerts.forEach((alert) => {
-        // Check if current time matches the alert time
-        if (alert.time === currentTime) {
-          console.log(`Alert triggered: ${alert.name}`);
-          // You can replace this log with an actual notification logic
-        }
-      });
-    }, 1000); // Check every second for simplicity
-    return () => clearInterval(intervalId); // Clean up interval on unmount
-  }, [alerts]);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     const currentTime = new Date().toISOString();
+  //     alerts.forEach((alert) => {
+  //       // Check if current time matches the alert time
+  //       if (alert.time === currentTime) {
+  //         console.log(`Alert triggered: ${alert.name}`);
+  //         // You can replace this log with an actual notification logic
+  //       }
+  //     });
+  //   }, 1000); // Check every second for simplicity
+  //   return () => clearInterval(intervalId); // Clean up interval on unmount
+  // }, [alerts]);
 
-  const [pollutionData, setPollutionData] = useState(null); // Store pollution data
   const [pollutionAlert, setPollutionAlert] = useState(""); // Pollution level alert message
   const [alertThresholds, setAlertThresholds] = useState({
     pm25: 100, // Threshold for PM2.5
@@ -373,6 +415,9 @@ function Dashboard() {
         const data = await response.json();
         if (data.predicted_aqi) {
           setPredictedAqi(data.predicted_aqi.toFixed(2));
+          const aqi = parseFloat(predictedAqi);
+          const advice = getHealthAdvice(aqi);
+          setHealthAdvice(advice);
         } else {
           setPredictedAqi("Error fetching data");
         }
@@ -387,19 +432,46 @@ function Dashboard() {
     }
   };
 
-  const getHealthAdvice = (aqi, pm25, pm10, co2) => {
+ 
+  const getHealthAdvice = (aqi) => {
     if (aqi <= 50) {
-      return "Air quality is good. You can go outside.";
+      return {
+        advice: "Air quality is good. You can go outside.",
+        explanation:
+          "Air quality is in the safe range. No precautions are necessary.",
+        icon: "✅",
+      };
     } else if (aqi <= 100) {
-      return "Air quality is moderate. Consider limiting outdoor activities.";
+      return {
+        advice:
+          "Air quality is moderate. Consider limiting outdoor activities.",
+        explanation:
+          "The air quality is acceptable for most people. Sensitive groups (children, elderly, and people with respiratory issues) should limit prolonged outdoor activities.",
+        icon: "⚠️",
+      };
     } else if (aqi <= 150) {
-      return "Air quality is unhealthy for sensitive groups. Stay indoors if you have respiratory issues.";
+      return {
+        advice:
+          "Air quality is unhealthy for sensitive groups. Stay indoors if you have respiratory issues.",
+        explanation:
+          "Sensitive groups should avoid prolonged outdoor exertion. If you have asthma or respiratory issues, it's better to stay inside.",
+        icon: "🚨",
+      };
     } else if (aqi <= 200) {
-      return "Air quality is unhealthy. Limit outdoor exposure.";
-    } else if (aqi <= 300) {
-      return "Air quality is very unhealthy. Stay indoors and wear a mask if you need to go outside.";
+      return {
+        advice: "Air quality is unhealthy. Limit outdoor exposure.",
+        explanation:
+          "The general population may experience health effects. Everyone should limit outdoor activities, and sensitive groups should stay indoors.",
+        icon: "🚷",
+      };
     } else {
-      return "Air quality is hazardous. Stay indoors and avoid outdoor activities.";
+      return {
+        advice:
+          "Air quality is hazardous. Stay indoors and avoid outdoor activities.",
+        explanation:
+          "Health warnings of emergency conditions. Everyone should avoid outdoor activities, and sensitive groups should remain indoors.",
+        icon: "❌",
+      };
     }
   };
 
@@ -451,15 +523,16 @@ function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#recommendation">
-              <FontAwesomeIcon icon={faDesktop} /> Recommendations System
-            </a>
-          </li>
-          <li>
             <a href="#alerts">
               <FontAwesomeIcon icon={faBell} /> Managing ALerts
             </a>
           </li>
+          <li>
+            <a href="#recommendation">
+              <FontAwesomeIcon icon={faDesktop} /> Recommendations System
+            </a>
+          </li>
+
           <li>
             <a href="#health-impact">
               <FontAwesomeIcon icon={faHeartPulse} /> Health Impact
@@ -679,44 +752,6 @@ function Dashboard() {
           </section>
         </section>
 
-        <section className="Recommendations-system" id="recommendation">
-          <h2>Recommendations System </h2>
-          <div className="Prediction" id="Prediction">
-            <h1>Air Quality Index (AQI) Prediction</h1>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="longitude">Longitude:</label>
-              <input
-                type="number"
-                step="any"
-                id="longitude"
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-                placeholder="Enter Longitude"
-                required
-              />
-
-              <label htmlFor="latitude">Latitude:</label>
-              <input
-                type="number"
-                step="any"
-                id="latitude"
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-                placeholder="Enter Latitude"
-                required
-              />
-
-              <button type="submit">Get AQI</button>
-            </form>
-
-            <div id="result">
-              <h3>
-                Predicted AQI: <span>{predictedAqi}</span>
-              </h3>
-            </div>
-          </div>
-        </section>
-
         <section className="custom-alerts" id="alerts">
           <h2>Custom Alerts</h2>
 
@@ -754,7 +789,7 @@ function Dashboard() {
               <div key={alert.id} className="alert-item">
                 <div>
                   <strong>{alert.name}</strong> - {alert.frequency} -{" "}
-                  {new Date(alert.time).toLocaleString()}
+                  {/*  {new Date(alert.time).toLocaleString()}*/}
                 </div>
                 <button onClick={() => handleRemoveAlert(alert.id)}>
                   Remove
@@ -766,13 +801,63 @@ function Dashboard() {
           {pollutionAlert && <div className="alert-item">{pollutionAlert}</div>}
         </section>
 
-        <section className="health-impact" id="health-impact">
-          <h2>Health Impact Forecasting</h2>
-          <div className="forecast-grid">
-            <div>
-              <strong>Advices:</strong> {healthAdvice}
+        <section className="Recommendations-system" id="recommendation">
+          <h2>Recommendations System </h2>
+          <div className="Prediction" id="Prediction">
+            <h1>Air Quality Index (AQI) Prediction</h1>
+            <form onSubmit={handleSubmit}>
+              <label htmlFor="longitude">Longitude:</label>
+              <input
+                type="number"
+                step="any"
+                id="longitude"
+                value={longitude}
+                onChange={(e) => setLongitude(e.target.value)}
+                placeholder="Enter Longitude"
+                required
+              />
+
+              <label htmlFor="latitude">Latitude:</label>
+              <input
+                type="number"
+                step="any"
+                id="latitude"
+                value={latitude}
+                onChange={(e) => setLatitude(e.target.value)}
+                placeholder="Enter Latitude"
+                required
+              />
+
+              <button type="submit">Get AQI</button>
+            </form>
+
+            <div id="result">
+              <h3>
+                Predicted AQI: <span>{predictedAqi}</span>
+              </h3>
             </div>
           </div>
+          {healthAdvice && (
+            <div className="health-advice-cards">
+              <div className="advice-card">
+                <div className="card-front">
+                  <span className="icon">{healthAdvice.icon}</span>
+                  <h3>{healthAdvice.advice}</h3>
+                </div>
+                <div className="card-back">
+                  <h3>Why this advice?</h3>
+                  <ul>
+                    <li>{healthAdvice.explanation}</li>
+                    <li>
+                      Prolonged exposure may cause health issues in sensitive
+                      groups.
+                    </li>
+                    <li>Stay informed about air quality levels regularly.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          )}
         </section>
       </main>
 
