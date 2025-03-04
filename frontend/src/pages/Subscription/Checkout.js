@@ -1,34 +1,92 @@
-// import React, { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+// import React, { useState, useEffect } from "react";
+// import { useNavigate, useLocation } from "react-router-dom";
+// import {
+//   Elements,
+//   useStripe,
+//   useElements,
+//   CardElement,
+// } from "@stripe/react-stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 // import "./Checkout.css";
+
+// // Initialize Stripe with your public key
+// const stripePromise = loadStripe(
+//   "pk_test_51NdsQCEBmpPY3F1SVvoq27xazI7MPxe38i9q9otPfxTR61SRhYaUZHvDjxnvWl8VuriA1QFiQVkqKGitEzYcR2Ha00yiiOOlzY"
+// );
 
 // const Checkout = () => {
 //   const navigate = useNavigate();
+//   const stripe = useStripe();
+//   const elements = useElements();
 
-//   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-//   const [paymentDetails, setPaymentDetails] = useState({
-//     cardNumber: "",
-//     expiryDate: "",
-//     cvv: "",
-//   });
+//   // Receive the selected plan data from the location state
+//   const location = useLocation();
+//   const { setSelectedPlan } = location.state || {}; // Plan details passed from SubPlan component
+
+//   const [selectedPaymentMethod, setSelectedPaymentMethod] =
+//     useState("Credit Card");
+//   const [cardholderName, setCardholderName] = useState("");
+//   const [email, setEmail] = useState("");
+
+//   useEffect(() => {
+//     if (!setSelectedPlan) {
+//       navigate("/subplan"); // Redirect to plans if no plan selected
+//     }
+//   }, [setSelectedPlan, navigate]);
 
 //   const handlePaymentMethodChange = (e) => {
 //     setSelectedPaymentMethod(e.target.value);
 //   };
 
-//   const handlePaymentDetailsChange = (e) => {
-//     const { name, value } = e.target;
-//     setPaymentDetails((prevDetails) => ({
-//       ...prevDetails,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = (e) => {
+//   const handleSubmit = async (e) => {
 //     e.preventDefault();
-//     // Payment logic goes here, for now we will just navigate to a success page
-//     alert("Payment successful!");
-//     navigate("/payment-success");
+
+//     if (!stripe || !elements) {
+//       return;
+//     }
+
+//     // For a credit card payment
+//     if (selectedPaymentMethod === "Credit Card") {
+//       const cardElement = elements.getElement(CardElement);
+//       const { token, error } = await stripe.createToken(cardElement);
+
+//       if (error) {
+//         console.error("Payment error:", error);
+//         alert("Payment failed: " + error.message);
+//       } else {
+//         console.log("Received Stripe token:", token);
+//         try {
+//           const response = await fetch(
+//             "http://localhost:3001/api/payment-intent",
+//             {
+//               method: "POST",
+//               headers: {
+//                 "Content-Type": "application/json",
+//               },
+//               body: JSON.stringify({
+//                 token: token.id,
+//                 cardholderName,
+//                 email,
+//                 setSelectedPlan, // Send selected plan to backend
+//               }),
+//             }
+//           );
+
+//           const result = await response.json();
+
+//           if (response.ok) {
+//             alert("Payment successful!");
+//             navigate("/checkout");
+//           } else {
+//             console.error("Payment error:", result.error);
+//             alert("Payment failed: " + result.error);
+//           }
+//         } catch (err) {
+//           console.error("Error processing payment:", err);
+//           alert("Payment failed.");
+//         }
+//       }
+//     }
 //   };
 
 //   return (
@@ -45,77 +103,59 @@
 //             />
 //             Credit Card
 //           </label>
-//           <label>
-//             <input
-//               type="radio"
-//               value="PayPal"
-//               checked={selectedPaymentMethod === "PayPal"}
-//               onChange={handlePaymentMethodChange}
-//             />
-//             PayPal
-//           </label>
-//           <label>
-//             <input
-//               type="radio"
-//               value="Google Pay"
-//               checked={selectedPaymentMethod === "Google Pay"}
-//               onChange={handlePaymentMethodChange}
-//             />
-//             Google Pay
-//           </label>
 //         </div>
 
 //         {selectedPaymentMethod === "Credit Card" && (
 //           <div className="credit-card-details">
 //             <div className="input-group">
-//               <label htmlFor="cardNumber">Card Number:</label>
+//               <label>Cardholder Name:</label>
 //               <input
 //                 type="text"
-//                 name="cardNumber"
-//                 value={paymentDetails.cardNumber}
-//                 onChange={handlePaymentDetailsChange}
+//                 value={cardholderName}
+//                 onChange={(e) => setCardholderName(e.target.value)}
 //                 required
-//                 placeholder="Enter your card number"
+//                 placeholder="Enter cardholder's name"
 //               />
 //             </div>
+
 //             <div className="input-group">
-//               <label htmlFor="expiryDate">Expiry Date:</label>
+//               <label>Email:</label>
 //               <input
-//                 type="text"
-//                 name="expiryDate"
-//                 value={paymentDetails.expiryDate}
-//                 onChange={handlePaymentDetailsChange}
+//                 type="email"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
 //                 required
-//                 placeholder="MM/YY"
+//                 placeholder="Enter your email"
 //               />
 //             </div>
+
 //             <div className="input-group">
-//               <label htmlFor="cvv">CVV:</label>
-//               <input
-//                 type="text"
-//                 name="cvv"
-//                 value={paymentDetails.cvv}
-//                 onChange={handlePaymentDetailsChange}
-//                 required
-//                 placeholder="CVV"
-//               />
+//               <label>Card Details:</label>
+//               <CardElement />
 //             </div>
 //           </div>
 //         )}
 
 //         <div className="submit-button">
-//           <button type="submit">Pay Now</button>
+//           <button type="submit" disabled={!stripe}>
+//             Pay Now
+//           </button>
 //         </div>
 //       </form>
 //     </div>
 //   );
 // };
 
-// export default Checkout;
+// const CheckoutWrapper = () => (
+//   <Elements stripe={stripePromise}>
+//     <Checkout />
+//   </Elements>
+// );
 
+// export default CheckoutWrapper;
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Elements,
   useStripe,
@@ -125,7 +165,7 @@ import {
 import { loadStripe } from "@stripe/stripe-js";
 import "./Checkout.css";
 
-// Make sure to replace this with your own public key from Stripe
+// Initialize Stripe with your public key
 const stripePromise = loadStripe(
   "pk_test_51NdsQCEBmpPY3F1SVvoq27xazI7MPxe38i9q9otPfxTR61SRhYaUZHvDjxnvWl8VuriA1QFiQVkqKGitEzYcR2Ha00yiiOOlzY"
 );
@@ -135,23 +175,23 @@ const Checkout = () => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("");
-  const [paymentDetails, setPaymentDetails] = useState({
-    cardNumber: "",
-    expiryDate: "",
-    cvv: "",
-  });
+  // Retrieve the selected plan data from location.state
+  const location = useLocation();
+  const { selectedPlan } = location.state || {}; // If location.state doesn't exist, fallback to an empty object
+
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState("Credit Card");
+  const [cardholderName, setCardholderName] = useState("");
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (!selectedPlan) {
+      navigate("/subscription-plans"); // Redirect to plans if no plan selected
+    }
+  }, [selectedPlan, navigate]);
 
   const handlePaymentMethodChange = (e) => {
     setSelectedPaymentMethod(e.target.value);
-  };
-
-  const handlePaymentDetailsChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
   };
 
   const handleSubmit = async (e) => {
@@ -161,36 +201,51 @@ const Checkout = () => {
       return;
     }
 
-    // For a credit card payment
-    if (selectedPaymentMethod === "Credit Card") {
-      const cardElement = elements.getElement(CardElement);
-      const { token, error } = await stripe.createToken(cardElement);
+    const cardElement = elements.getElement(CardElement);
+    const { token, error } = await stripe.createToken(cardElement);
 
-      if (error) {
-        console.error("Payment error:", error);
-        alert("Payment failed: " + error.message);
-      } else {
-        // Send the token to your server to handle the payment
-        console.log("Received Stripe token:", token);
-        // Example API call:
-        const response = await fetch("/api/payment-intent", {
-          method: "POST",
-          body: JSON.stringify({ token: token.id }),
-        });
+    if (error) {
+      console.error("Payment error:", error);
+      alert("Payment failed: " + error.message);
+    } else {
+      try {
+        const response = await fetch(
+          "http://localhost:3001/api/payment-intent",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              token: token.id,
+              cardholderName,
+              email,
+              selectedPlan, // Send selected plan data to backend
+            }),
+          }
+        );
+
         const result = await response.json();
 
-        alert("Payment successful!");
-        navigate("/payment-success");
+        if (response.ok) {
+          alert("Payment successful!");
+          navigate("/");
+        } else {
+          console.error("Payment error:", result.error);
+          alert("Payment failed: " + result.error);
+        }
+      } catch (err) {
+        console.error("Error processing payment:", err);
+        alert("Payment failed.");
       }
-    } else {
-      // Handle other payment methods like PayPal, Google Pay, etc.
-      alert("Other payment methods are not integrated yet.");
     }
   };
 
   return (
     <div className="checkout-container">
       <h2>Checkout</h2>
+      <h3>{selectedPlan?.name}</h3>
+      <p>{selectedPlan?.description}</p>
       <form onSubmit={handleSubmit} className="checkout-form">
         <div className="payment-method">
           <label>
@@ -202,28 +257,32 @@ const Checkout = () => {
             />
             Credit Card
           </label>
-          <label>
-            <input
-              type="radio"
-              value="PayPal"
-              checked={selectedPaymentMethod === "PayPal"}
-              onChange={handlePaymentMethodChange}
-            />
-            PayPal
-          </label>
-          <label>
-            <input
-              type="radio"
-              value="Google Pay"
-              checked={selectedPaymentMethod === "Google Pay"}
-              onChange={handlePaymentMethodChange}
-            />
-            Google Pay
-          </label>
         </div>
 
         {selectedPaymentMethod === "Credit Card" && (
           <div className="credit-card-details">
+            <div className="input-group">
+              <label>Cardholder Name:</label>
+              <input
+                type="text"
+                value={cardholderName}
+                onChange={(e) => setCardholderName(e.target.value)}
+                required
+                placeholder="Enter cardholder's name"
+              />
+            </div>
+
+            <div className="input-group">
+              <label>Email:</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+              />
+            </div>
+
             <div className="input-group">
               <label>Card Details:</label>
               <CardElement />
