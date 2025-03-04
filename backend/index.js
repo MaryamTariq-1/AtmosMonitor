@@ -33,6 +33,18 @@ mongoose.connect(MONGO_URI)
 // Routes
 app.use("/api/auth", authRoutes);
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
+// Enable CORS for local development or configure as needed
+app.use(cors());
+
+// Stripe-related routes
+app.use('/api/payment', paymentRoutes);
+
+// Global error handling middleware
+app.use(errorMiddleware);
+
 // Server start
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

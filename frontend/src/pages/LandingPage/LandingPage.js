@@ -243,7 +243,7 @@ const LandingPage = () => {
           <div className="subscription-card">
             <h3>7-Day Free Trial</h3>
             <p>Try out all the features free for a week.</p>
-            <button onClick={() => navigate("/subscription?plan=trial")}>
+            <button onClick={() => navigate("/subplan?selectedPlan=trail")}>
               Start Free Trial
             </button>
           </div>
