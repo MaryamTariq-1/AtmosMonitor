@@ -3,7 +3,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.1",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "axios": "^1.7.9",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "concurrently": "^9.0.1",
     "dotenv": "^16.4.7",
     "leaflet": "^1.9.4",

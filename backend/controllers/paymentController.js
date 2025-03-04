@@ -1,25 +1,53 @@
-const stripe = require("stripe")("sk_test_..."); // Your Stripe secret key
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
-// Handle the creation of a payment intent
 const createPaymentIntent = async (req, res) => {
   try {
-    const { token } = req.body; // Get the token from the request
+    const { token, cardholderName, email, selectedPlan } = req.body; // Extract cardholder name, email, and plan details from the request body
 
-    // Create a PaymentIntent with the token received
+    let amount = 0;
+    let description = "";
+
+          if (!selectedPlan) {
+            return res.status(400).json({ error: "No selected plan provided" });
+          }
+    // Set amount and description based on the selected plan
+    if (selectedPlan.id === 1) {
+      amount = 0; // Free trial
+      description = "7-Day Free Trial - Enjoy premium features for 7 days.";
+    } else if (selectedPlan.id === 2) {
+      amount = 100000; // $10 for Monthly Plan // 10K PKR for 1 month 
+      description =
+        "Monthly Plan - Get access to premium features for one month.";
+    } else if (selectedPlan.id === 3) {
+      amount = 6000000; // $100 for Yearly Plan // 60K PKR for 1 year
+      description =
+        "Yearly Plan - Get access to premium features for one year.";
+    }
+
+    // Create a PaymentIntent with the received token and customer details
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: 1000, // Amount in cents
-      currency: "usd",
-      payment_method: token,
-      confirm: true,
+      amount: amount, // Amount in cents (1000 = 10 USD)
+      currency: "pkr",
+      payment_method_data: {
+        type: "card",
+        card: {
+          token: token,
+        },
+        billing_details: {
+          name: cardholderName, // Set cardholder's name
+        },
+      },
+      confirm: true, // Automatically confirm the payment
+      receipt_email: email, // Send a receipt email to the customer
+      description: description, // Description based on the plan
+      return_url: "http://localhost:3000/Checkout", // Provide a return URL for redirects
     });
 
-    res.json({ success: true, paymentIntent }); // Send back the PaymentIntent
-  } catch (error) {
-    console.error("Error creating PaymentIntent:", error);
-    res.status(500).json({ error: error.message });
+    res.json({ success: true, paymentIntent });
+  } catch (err) {
+    console.error("Payment error: ", err);
+    res.status(500).json({ error: err.message });
   }
 };
 
-module.exports = {
-  createPaymentIntent,
-};
+module.exports = { createPaymentIntent };

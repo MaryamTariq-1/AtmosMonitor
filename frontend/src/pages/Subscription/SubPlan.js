@@ -1,41 +1,48 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "./SubPlan.css";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './SubPlan.css';
 
 const SubPlan = () => {
   const navigate = useNavigate();
-
+  
   const [selectedPlan, setSelectedPlan] = useState(null);
 
   const plans = [
     {
       id: 1,
-      name: "7-Day Free Trial",
-      description: "Enjoy the premium features for 7 days, completely free!",
-      price: "$0.00",
-      duration: "7 days",
+      name: '7-Day Free Trial',
+      description: 'Enjoy the premium features for 7 days, completely free!',
+      price: '$0.00',
+      duration: '7 days',
     },
     {
       id: 2,
-      name: "Monthly Plan",
-      description: "Get access to premium features for one month.",
-      price: "$10.00",
-      duration: "1 month",
+      name: 'Monthly Plan',
+      description: 'Get access to premium features for one month.',
+      price: '$10.00',
+      duration: '1 month',
     },
     {
       id: 3,
-      name: "Yearly Plan",
-      description: "Get access to premium features for one full year.",
-      price: "$100.00",
-      duration: "1 year",
-    },
+      name: 'Yearly Plan',
+      description: 'Get access to premium features for one full year.',
+      price: '$100.00',
+      duration: '1 year',
+    }
   ];
 
-  const handleBuySubscription = (planId) => {
-    setSelectedPlan(planId);
-    // Navigate to the checkout page where payment method is selected
-    navigate("/checkout");
-  };
+//   const handleBuySubscription = (planId) => {
+//     setSelectedPlan(planId);
+//     // Navigate to the checkout page where payment method is selected
+//     navigate('/checkout');
+//   };
+
+    
+    const handleBuySubscription = (planId) => {
+      const plan = plans.find((p) => p.id === planId); // Find the selected plan based on ID
+      setSelectedPlan(plan); // Store the selected plan in the state
+      navigate("/checkout", { state: { selectedPlan: plan } }); // Pass the selected plan data to Checkout page using state
+    };
 
   return (
     <>
