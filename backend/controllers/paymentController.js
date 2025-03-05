@@ -19,7 +19,7 @@ const createPaymentIntent = async (req, res) => {
       description =
         "Monthly Plan - Get access to premium features for one month.";
     } else if (selectedPlan.id === 3) {
-      amount = 6000000; // $100 for Yearly Plan // 60K PKR for 1 year
+      amount = 6000000; // $100 for Yearly Plan // 60K PKR for 1 year // For samples purposes
       description =
         "Yearly Plan - Get access to premium features for one year.";
     }
