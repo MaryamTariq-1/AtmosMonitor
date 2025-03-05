@@ -2,12 +2,17 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
-import aqmImage from "./aqm.jfif";
-import riskForecastImage from "./RiskForecast.jfif";
-import alertImage from "./Alert.jfif";
-import predictionImage from "./predicton.jfif";
-import smartwatchesImage from "./smartwatches.jfif";
-import dataVisualImage from "./datavisual.jfif";
+import aqmImage from "../../assets/images/aqm.jfif";
+import riskForecastImage from "../../assets/images/RiskForecast.jfif";
+import alertImage from "../../assets/images/Alert.jfif";
+import predictionImage from "../../assets/images/predicton.jfif";
+import smartwatchesImage from "../../assets/images/smartwatches.jfif";
+import dataVisualImage from "../../assets/images/datavisual.jfif";
+import DrFayyaz from "../../assets/images/Dr Fayyaz.jpg";
+import Razeen from "../../assets/images/Razeen.jpg";
+import Rayyan from "../../assets/images/rayyan.png";
+import Maryam from "../../assets/images/maryam.jfif";
+
 const LandingPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -131,8 +136,12 @@ const LandingPage = () => {
           >
             Contact
           </a>
+
           <a href="#dashboard" onClick={() => navigate("/dashboard")}>
             Dashboard
+          </a>
+          <a href="#subplan" onClick={() => navigate("/subplan")}>
+            Subscription Plan
           </a>
         </div>
         <div className="navbar-buttons">
@@ -156,10 +165,7 @@ const LandingPage = () => {
             Explore More
           </button>
           <video autoPlay loop muted playsInline className="background-video">
-            <source
-              src="/cinematic-world-earth-loop-animation-2023-11-27-05-25-15-utc.mp4"
-              type="video/mp4"
-            />
+            <source src="/Videos/earthloop.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -236,33 +242,6 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
-      {/* Subscription Section */}
-      <section className="subscription-section">
-        <h2>Choose Your Subscription Plan</h2>
-        <div className="subscription-cards">
-          <div className="subscription-card">
-            <h3>7-Day Free Trial</h3>
-            <p>Try out all the features free for a week.</p>
-            <button onClick={() => navigate("/subplan?selectedPlan=trail")}>
-              Start Free Trial
-            </button>
-          </div>
-          <div className="subscription-card">
-            <h3>Monthly Plan</h3>
-            <p>Perfect for short-term needs. Cancel anytime.</p>
-            <button onClick={() => navigate("/subscription?plan=monthly")}>
-              Subscribe Monthly
-            </button>
-          </div>
-          <div className="subscription-card">
-            <h3>Yearly Plan</h3>
-            <p>Best value for long-term users. Save more!</p>
-            <button onClick={() => navigate("/subscription?plan=yearly")}>
-              Subscribe Yearly
-            </button>
-          </div>
-        </div>
-      </section>
 
       {/* About Section */}
       <section className="about-section" id="about-section">
@@ -284,7 +263,7 @@ const LandingPage = () => {
 
         <div className="team-cards">
           <div className="team-card">
-            <img src="" alt="Jane" style={{ width: "100%" }} />
+            <img src={DrFayyaz} alt="DrFayyaz" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Dr. Mhammad Fayyaz</h2>
               <p className="title">Supervisors</p>
@@ -292,7 +271,7 @@ const LandingPage = () => {
                 Passionate about sustainability and innovation in environmental
                 technologies.
               </p>
-              <p>jane@example.com</p>
+              <p>m.fayyaz@nu.edu.pk</p>
               <p>
                 <button className="button" onClick={() => navigate("/contact")}>
                   Contact
@@ -302,15 +281,15 @@ const LandingPage = () => {
           </div>
 
           <div className="team-card">
-            <img src="" alt="Jane" style={{ width: "100%" }} />
+            <img src={Razeen} alt="razeen" style={{ width: "100%" }} />
             <div className="team-card-container">
-              <h2>Jane Doe</h2>
-              <p className="title">CEO & Founder</p>
+              <h2>Razeen Shahid</h2>
+              <p className="title">CEO</p>
               <p>
                 Passionate about sustainability and innovation in environmental
                 technologies.
               </p>
-              <p>jane@example.com</p>
+              <p>f219224@cfd.nu.edu.pk</p>
               <p>
                 <button className="button" onClick={() => navigate("/contact")}>
                   Contact
@@ -320,12 +299,12 @@ const LandingPage = () => {
           </div>
 
           <div className="team-card">
-            <img src="" alt="Mike" style={{ width: "100%" }} />
+            <img src={Rayyan} alt="Rayyan" style={{ width: "100%" }} />
             <div className="team-card-container">
-              <h2>Mike Ross</h2>
+              <h2>Ahmad Rayyan</h2>
               <p className="title">Art Director</p>
               <p>Leading the design and user experience of our products.</p>
-              <p>mike@example.com</p>
+              <p>f219266@cfd.nu.edu.pk</p>
               <p>
                 <button className="button" onClick={() => navigate("/contact")}>
                   Contact
@@ -335,15 +314,15 @@ const LandingPage = () => {
           </div>
 
           <div className="team-card">
-            <img src="" alt="John" style={{ width: "100%" }} />
+            <img src={Maryam} alt="Maryam" style={{ width: "100%" }} />
             <div className="team-card-container">
-              <h2>John Doe</h2>
+              <h2>Maryam Tariq</h2>
               <p className="title">Product Designer</p>
               <p>
                 Designing user-friendly solutions to meet the needs of our
                 users.
               </p>
-              <p>john@example.com</p>
+              <p>f219137@cfd.nu.edu.pk</p>
               <p>
                 <button className="button" onClick={() => navigate("/contact")}>
                   Contact
@@ -421,9 +400,37 @@ const LandingPage = () => {
           </div>
           <div className="footer-links">
             <h3>Quick Links</h3>
-            <a href="#home">Home</a>
-            <a href="#features">Features</a>
-            <a href="#contact">Contact</a>
+            <a
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
+              Home
+            </a>
+            <a
+              href="#features"
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default anchor behavior
+                document
+                  .getElementById("features") // Target the "about-section" element
+                  .scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the section
+              }}
+            >
+              Services
+            </a>
+            <a
+              href="#contact-section"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("contact-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+            >
+              Contact
+            </a>
           </div>
           <div className="footer-social">
             <h3>Follow Us</h3>
