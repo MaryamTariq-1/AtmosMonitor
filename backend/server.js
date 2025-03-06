@@ -1,3 +1,4 @@
+
 require("dotenv").config(); // Load environment variables from .env file
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -21,7 +22,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Load environment variables
-const PORT = process.env.PORT || 3001; // Use PORT from .env or default to 3001
+const PORT = process.env.PORT || 3002; // Use PORT from .env or default to 3001
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/AtmosMonitor"; // Fallback to default URI if not set
 
 // MongoDB Connection
