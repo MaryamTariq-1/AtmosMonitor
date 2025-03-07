@@ -1,13 +1,10 @@
-
 require("dotenv").config(); // Load environment variables from .env file
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
 const express = require("express");
 const cors = require("cors");
 const paymentRoutes = require("./routes/paymentRoute");
-
 const mongoose = require("mongoose");
-const authRoutes = require("./library/auth");
+const authRoutes = require("./library/auth"); // NOTE: Change this to our updated auth routes file
 const app = express();
 
 const corsOptions = {
@@ -16,14 +13,13 @@ const corsOptions = {
   allowedHeaders: "Content-Type,Authorization",
 };
 
-
 // Middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 
 // Load environment variables
-const PORT = process.env.PORT || 3002; // Use PORT from .env or default to 3001
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/AtmosMonitor"; // Fallback to default URI if not set
+const PORT = process.env.PORT || 3002;
+const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/AtmosMonitor";
 
 // MongoDB Connection
 mongoose.connect(MONGO_URI)
@@ -34,8 +30,11 @@ mongoose.connect(MONGO_URI)
     console.error("MongoDB connection error:", error);
   });
 
-// Routes
-app.use("/api/auth", authRoutes);
+// Mount authentication routes
+// Update the require path to our auth routes file.
+// For Option A above, change the require as follows:
+const authApiRoutes = require("./routes/user");
+app.use("/api/auth", authApiRoutes);
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -44,10 +43,7 @@ app.use(express.json());
 app.use(cors());
 
 // Stripe-related routes
-//app.use('/api/payment', paymentRoutes);
-
-// Payment route setup
-app.use('/api/payment-intent', paymentRoutes);  // This maps to the routes/payment.js file
+app.use('/api/payment-intent', paymentRoutes);  // Maps to routes/paymentRoute.js
 
 // Error handling middleware should be last
 const errorMiddleware = require('./middleware/errorMiddleware');
@@ -57,7 +53,3 @@ app.use(errorMiddleware);
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
- // Add this after your middleware
-
