@@ -1,16 +1,9 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-// Generate JWT Token (Reusable function)
+// ✅ Generate JWT Token
 const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: "1h", // short-lived token
-  });
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: "7d" });
 };
 
-// Verify JWT Token (for middleware usage)
-const verifyToken = (token) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
-};
-
-module.exports = { generateToken, verifyToken };
+module.exports = { generateToken };

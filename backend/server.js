@@ -2,38 +2,46 @@ require("dotenv").config(); // Load .env variables securely at the top
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+// backend/server.js
+const forgotPasswordRoute = require('./routes/user'); // Make sure it's the correct path
 
 // Routes import
 const authRoutes = require("./routes/user");
 const paymentRoutes = require("./routes/paymentRoute");
 
-// Initialize Express App
 const app = express();
 
-// Environment Variables
-const PORT = process.env.PORT || 5000;
-const MONGO_URI = process.env.DATABASE_URL || "mongodb://127.0.0.1:27017/AtmosMonitor";
-
-// Middleware setup
+// ✅ Middleware setup
 app.use(cors({
-  origin: "*", // Update with frontend URL in production
+  origin: "*",
 }));
-app.use(express.json());
+app.use(express.json()); // ✅ Required to parse JSON body from requests
+
+// Debugging - Log incoming requests
+app.use((req, res, next) => {
+  console.log(`[${req.method}] ${req.url} - Body:`, req.body);
+  next();
+});
 
 // MongoDB Connection
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection failed:", err));
+mongoose.connect(process.env.DATABASE_URL)
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection failed:", err));
 
 // Mount Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/payment-intent", paymentRoutes);
 
-// Error handling middleware (at the end!)
+// Error handling middleware
 const errorMiddleware = require("./middleware/errorMiddleware");
 app.use(errorMiddleware);
 
 // Start Server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
+
+
+app.use('/api', forgotPasswordRoute);
+
