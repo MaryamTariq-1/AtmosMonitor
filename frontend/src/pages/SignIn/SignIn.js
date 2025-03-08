@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
-import { login } from '../../api';  // Import login function from api.js
-import './SignIn.css';
-//
-const SignIn = () => {
-  const navigate = useNavigate();
+// frontend/src/pages/SignIn/SignIn.js
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { login } from "../../api"; // Import signin function from api.js
+import "./SignIn.css";
 
+const SignIn = () => {
+  const navigate = useNavigate(); // Initialize navigate function
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // For error handling
@@ -13,13 +13,16 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const data = await login(email, password);
-      alert(data.message); // Show success message from backend
-      localStorage.setItem("token", data.token); // Save JWT token in localStorage
-      navigate("/");  // Redirect to the homepage or dashboard
+      const data = await login(email, password); // Call the API to log in
+      alert(data.message); // Show success message
+      navigate("/dashboard"); // Redirect to Dashboard after successful login
     } catch (error) {
-      setError(error); // Display error if login fails
+      setError(error); // Display error if sign-in fails
     }
+  };
+
+  const handleForgotPassword = () => {
+    navigate("/forgot-password"); // Navigate to forgot-password page
   };
 
   return (
@@ -42,7 +45,7 @@ const SignIn = () => {
         </nav>
       </header>
       <div className="signin-container">
-        <h2>WELCOME BACK!</h2>
+        <h2>LOGIN TO YOUR ACCOUNT</h2>
         <form onSubmit={handleSubmit}>
           <input
             type="email"
@@ -56,9 +59,17 @@ const SignIn = () => {
             required
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Log In</button>
+          <button type="submit">Sign In</button>
         </form>
-        {error && <p style={{ color: "red" }}>{error}</p>}  {/* Show error message if any */}
+        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
+        
+        {/* Forgot Password link */}
+        <div className="forgot-password">
+          <button className="forgot-password-link" onClick={handleForgotPassword}>
+            Forgot Password?
+          </button>
+        </div>
+
         <p>
           Don't have an account?{" "}
           <a href="/signup" className="signup-link">

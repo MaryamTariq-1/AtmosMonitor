@@ -2,62 +2,59 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const validator = require("validator");
 
-// Define user schema with enhanced validation
-const UserSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Name is required"],
-    trim: true,
-  },
-  email: {
-    type: String,
-    required: [true, "Email is required"],
-    unique: true,
-    lowercase: true,
-    trim: true,
-    validate: {
-      validator: validator.isEmail,
-      message: "Please provide a valid email address",
+const UserSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Name is required"],
+      trim: true,
     },
-  },
-  password: {
-    type: String,
-    required: [true, "Password is required"],
-    minlength: [8, "Password must be at least 8 characters"],
-    validate: {
-      validator: function (value) {
-        return (
-          /[a-z]/.test(value) && // lowercase letters
-          /[A-Z]/.test(value) && // uppercase letters
-          /\d/.test(value) && // digits
-          /[!@#$%^&*(),.?":{}|<>]/.test(value) // special characters
-        );
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      validate: [validator.isEmail, "Invalid email format"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters"],
+      validate: {
+        validator: function (value) {
+          return (
+            /[a-z]/.test(value) &&
+            /[A-Z]/.test(value) &&
+            /\d/.test(value) &&
+            /[!@#$%^&*(),.?":{}|<>]/.test(value)
+          );
+        },
+        message: "Password must contain at least one uppercase, lowercase, digit, and special character",
       },
-      message:
-        "Password must contain uppercase, lowercase, digit, and special character",
     },
   },
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-// Password hashing middleware (efficient handling)
+// ✅ Hash Password Before Saving
 UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
+  if (!this.isModified("password")) return next();
 
   try {
-    const salt = await bcrypt.genSalt(12); // recommended complexity is 12 rounds
+    const salt = await bcrypt.genSalt(12);
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 });
 
-// Password verification method (reusable in controllers)
+// ✅ Compare Password for Authentication
 UserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+  return bcrypt.compare(enteredPassword, this.password);
 };
 
+// ✅ Export User Model
 const UserModel = mongoose.model("User", UserSchema);
 module.exports = UserModel;

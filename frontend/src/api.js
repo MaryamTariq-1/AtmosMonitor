@@ -27,3 +27,13 @@ export const signup = async (name, email, password) => {
     throw error.response ? error.response.data : "An error occurred during sign-up";
   }
 };
+
+// API call for forgot password
+export const resetPassword = async (email) => {
+  try {
+    const response = await api.post("/forgot-password", { email });
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : "An error occurred while requesting password reset";
+  }
+};
