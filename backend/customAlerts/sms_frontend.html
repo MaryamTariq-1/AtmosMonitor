@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send SMS Alert</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        form { max-width: 300px; margin: auto; }
+        input, button { width: 100%; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    <h2>📢 Send Air Quality Alert</h2>
+    <form id="smsForm">
+        <input type="text" id="phoneNumber" placeholder="Enter Phone Number" required>
+        <input type="text" id="message" placeholder="Enter Message" required>
+        <button type="button" onclick="sendSMS()">Send SMS</button>
+    </form>
+
+    <script>
+        async function sendSMS() {
+            const phoneNumber = document.getElementById("phoneNumber").value;
+            const message = document.getElementById("message").value;
+
+            if (!phoneNumber || !message) {
+                alert("❌ Please fill in both fields.");
+                return;
+            }
+
+            try {
+                const response = await fetch("http://127.0.0.1:5000/send-sms", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ phoneNumber, message }),
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    alert("✅ SMS Sent Successfully!");
+                } else {
+                    alert("❌ Failed to send SMS: " + data.error);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("❌ Network error. Check if Flask is running.");
+            }
+        }
+    </script>
+
+</body>
+</html>
