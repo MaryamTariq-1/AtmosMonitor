@@ -14,39 +14,35 @@
 
     <h2>📢 Send Air Quality Alert</h2>
     <form id="smsForm">
-        <input type="text" id="phoneNumber" placeholder="Enter Phone Number" required>
+        <input type="text" id="phoneNumber" placeholder="Enter Phone Number (e.g., +923001234567)" required>
         <input type="text" id="message" placeholder="Enter Message" required>
         <button type="button" onclick="sendSMS()">Send SMS</button>
     </form>
 
+    <p id="responseMessage"></p>
+
     <script>
-        async function sendSMS() {
+        function sendSMS() {
             const phoneNumber = document.getElementById("phoneNumber").value;
             const message = document.getElementById("message").value;
 
-            if (!phoneNumber || !message) {
-                alert("❌ Please fill in both fields.");
-                return;
-            }
-
-            try {
-                const response = await fetch("http://127.0.0.1:5000/send-sms", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ phoneNumber, message }),
-                });
-
-                const data = await response.json();
-
+            fetch("http://127.0.0.1:5000/send-sms", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ phoneNumber, message }),
+            })
+            .then(response => response.json())
+            .then(data => {
                 if (data.success) {
-                    alert("✅ SMS Sent Successfully!");
+                    document.getElementById("responseMessage").innerText = "✅ SMS Sent Successfully!";
                 } else {
-                    alert("❌ Failed to send SMS: " + data.error);
+                    document.getElementById("responseMessage").innerText = "❌ Failed to send SMS: " + data.error;
                 }
-            } catch (error) {
+            })
+            .catch(error => {
                 console.error("Error:", error);
-                alert("❌ Network error. Check if Flask is running.");
-            }
+                document.getElementById("responseMessage").innerText = "❌ Could not connect to server.";
+            });
         }
     </script>
 
