@@ -1,14 +1,31 @@
 .checkout-container {
-  padding: 20px;
-  max-width: 600px;
+  padding: 40px;
+  max-width: 700px;
   margin: 0 auto;
-  background: #f9f9f9;
-  border-radius: 10px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.checkout-header {
   text-align: center;
+  font-size: 2.2rem;
   margin-bottom: 20px;
+  color: #333;
+}
+
+.selected-plan-name {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.plan-description {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+  margin-bottom: 30px;
 }
 
 .checkout-form {
@@ -21,41 +38,74 @@ h2 {
 }
 
 .payment-method label {
-  display: block;
+  font-size: 1.1rem;
+  color: #555;
   margin-bottom: 10px;
 }
 
 .credit-card-details .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .credit-card-details .input-group label {
-  display: block;
-  margin-bottom: 5px;
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 8px;
 }
 
 .credit-card-details .input-group input {
   width: 100%;
-  padding: 8px;
-  font-size: 14px;
+  padding: 12px;
+  font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.credit-card-details .input-group input:focus {
+  border-color: #007bff;
 }
 
 .submit-button {
   text-align: center;
+  margin-top: 20px;
 }
 
 .submit-button button {
-  padding: 12px 25px;
+  padding: 15px 30px;
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 25px;
   font-size: 1.2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .submit-button button:hover {
   background-color: #0056b3;
+}
+
+.submit-button button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .checkout-header {
+    font-size: 2rem;
+  }
+
+  .selected-plan-name {
+    font-size: 1.6rem;
+  }
+
+  .plan-description {
+    font-size: 1rem;
+  }
 }
