@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()  # Load environment variables from .env file
 
 app = Flask(__name__)
-
+CORS(app)  # Enable CORS for frontend communication
 
 # Twilio credentials (store in .env for security)
 TWILIO_SID = os.getenv("TWILIO_SID")
