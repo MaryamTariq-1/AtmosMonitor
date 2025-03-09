@@ -3,15 +3,14 @@ import pandas as pd
 import numpy as np
 import joblib
 from flask_cors import CORS
-import os # For path correction
+import os
 
 app = Flask(__name__)
 CORS(app)
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # Adjusting Paths
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "traffic_random_forest.pkl")
-DATASET_PATH = os.path.join(BASE_DIR, "traffic_pollution_faisalabad_large_2023.csv")
-
+DATASET_PATH = os.path.join(BASE_DIR, "traffic_processed_data.csv")  # Load preprocessed dataset
 
 # Load model & dataset
 try:
@@ -19,9 +18,9 @@ try:
     model = model_data["model"]
     feature_columns = model_data["features"]
     df = pd.read_csv(DATASET_PATH)
-    print("Model loaded successfully.")
+    print("Model and dataset loaded successfully.")
 except FileNotFoundError:
-    print("Error: Model file not found. Train and save the model first!")
+    print("Error: Model or dataset file not found. Train the model first!")
     model, df, feature_columns = None, None, None
 
 @app.route("/")
