@@ -3,12 +3,15 @@ import pandas as pd
 import numpy as np
 import joblib
 from flask_cors import CORS
+import os # For path correction
 
 app = Flask(__name__)
 CORS(app)
 
-MODEL_PATH = "model/traffic_random_forest.pkl"
-DATASET_PATH = "data/traffic_traffic_pollution_faisalabad_large_2023.csv"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__)) # Adjusting Paths
+MODEL_PATH = os.path.join(BASE_DIR, "traffic_random_forest.pkl")
+DATASET_PATH = os.path.join(BASE_DIR, "traffic_pollution_faisalabad_large_2023.csv")
+
 
 # Load model & dataset
 try:
