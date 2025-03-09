@@ -190,6 +190,20 @@ const emailRegex =
           >
             About
           </a>
+          {/*   <a href="#subplan" onClick={() => navigate("/subplan")}>
+            Subscription Plan
+          </a>*/}
+          <a
+            href="#subscription-header"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("subscription-header")
+                .scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            Subscription Plan
+          </a>
           <a
             href="#contact-section"
             onClick={(e) => {
@@ -205,9 +219,6 @@ const emailRegex =
           <a href="#dashboard" onClick={() => navigate("/dashboard")}>
             Dashboard
           </a>
-          {/*   <a href="#subplan" onClick={() => navigate("/subplan")}>
-            Subscription Plan
-          </a>*/}
         </div>
         <div className="navbar-buttons">
           <button className="signin-btn" onClick={() => navigate("/signin")}>
@@ -418,7 +429,9 @@ const emailRegex =
         </div>
       </section>
 
-      <h2 className="subscription-header">Choose Your Subscription Plan</h2>
+      <h2 className="subscription-header" id="subscription-header">
+        Choose Your Subscription Plan
+      </h2>
       <div className="subscription-container">
         {plans.map((plan) => (
           <div key={plan.id} className="plan-card">
