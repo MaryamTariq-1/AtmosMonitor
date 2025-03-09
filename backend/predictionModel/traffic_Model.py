@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
+import joblib # Importing joblib Library to create pickle and model files
 
 DATASET_PATH = "traffic_pollution_faisalabad_large_2023.csv"
 MODEL_PATH = "traffic_random_forest.pkl"
