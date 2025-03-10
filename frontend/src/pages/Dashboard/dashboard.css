@@ -765,3 +765,40 @@ ul li {
   margin: 5px 0;
   font-size: 1rem;
 }
+
+
+
+
+
+
+
+
+
+
+/*Styling More Details for each chart */
+
+
+/* Container for the Info Button */
+.info-button-container {
+  display: flex;
+  justify-content: flex-end;  /* Aligns the button to the far right */
+  margin-top: 20px;
+}
+
+/* Info Button Styling */
+.info-button {
+  background-color: #000000;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.info-button:hover {
+  background-color: #545252;
+}
+
