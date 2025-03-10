@@ -15,7 +15,7 @@ const SignIn = () => {
     try {
       const data = await login(email, password); // Call the API to log in
       alert(data.message); // Show success message
-      navigate("/dashboard"); // Redirect to Dashboard after successful login
+      navigate("/"); // Redirect to Dashboard after successful login
     } catch (error) {
       setError(error); // Display error if sign-in fails
     }
@@ -59,17 +59,21 @@ const SignIn = () => {
             required
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Sign In</button>
+          <button type="submit" onClick={handleSubmit}>
+            Sign In
+          </button>
         </form>
-        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
-        
+        {error && <p style={{ color: "red" }}>{error}</p>}{" "}
+        {/* Show error message if any */}
         {/* Forgot Password link */}
         <div className="forgot-password">
-          <button className="forgot-password-link" onClick={handleForgotPassword}>
+          <button
+            className="forgot-password-link"
+            onClick={handleForgotPassword}
+          >
             Forgot Password?
           </button>
         </div>
-
         <p>
           Don't have an account?{" "}
           <a href="/signup" className="signup-link">
