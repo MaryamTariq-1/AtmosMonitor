@@ -331,8 +331,7 @@ const emailRegex =
           sustainable future.
         </p>
         <p>
-          Resize the browser window to see that this page is responsive by the
-          way.
+          
         </p>
 
         <h2 style={{ textAlign: "center" }}>Our Team</h2>
@@ -413,12 +412,12 @@ const emailRegex =
                 Designing user-friendly solutions to meet the needs of our
                 users.
               </p>
-              <p>f219137@cfd.nu.edu.pk</p>
+              <p>f219337@cfd.nu.edu.pk</p>
               <p>
                 <button
                   className="button"
                   onClick={() =>
-                    (window.location.href = "mailto:f219137@cfd.nu.edu.pk")
+                    (window.location.href = "mailto:f219337@cfd.nu.edu.pk")
                   }
                 >
                   Contact

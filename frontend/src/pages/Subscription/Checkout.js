@@ -18,19 +18,22 @@ const Checkout = () => {
   const navigate = useNavigate();
   const stripe = useStripe();
   const elements = useElements();
-
-  // Retrieve the selected plan data from location.state
   const location = useLocation();
-  const { selectedPlan } = location.state || {}; // If location.state doesn't exist, fallback to an empty object
+  const { selectedPlan } = location.state || {};
 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] =
-    useState("Credit Card");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("Credit Card");
   const [cardholderName, setCardholderName] = useState("");
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    if (!selectedPlan) {
-      navigate("/subscription-plans"); // Redirect to plans if no plan selected
+    // Redirect to sign-in page if not authenticated or not verified
+    const token = localStorage.getItem("token");
+    const otpVerified = localStorage.getItem("otpVerified");
+
+    if (!token || otpVerified !== "true") {
+      navigate("/signin");
+    } else if (!selectedPlan) {
+      navigate("/subscription-plans");
     }
   }, [selectedPlan, navigate]);
 
@@ -64,7 +67,7 @@ const Checkout = () => {
               token: token.id,
               cardholderName,
               email,
-              selectedPlan, // Send selected plan data to backend
+              selectedPlan,
             }),
           }
         );
@@ -93,7 +96,12 @@ const Checkout = () => {
       <form onSubmit={handleSubmit} className="checkout-form">
         <div className="payment-method">
           <label>
-
+            <input
+              type="radio"
+              value="Credit Card"
+              checked={selectedPaymentMethod === "Credit Card"}
+              onChange={handlePaymentMethodChange}
+            />
             Credit Card
           </label>
         </div>

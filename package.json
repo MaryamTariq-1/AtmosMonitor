@@ -14,7 +14,8 @@
     "react-router-dom": "^6.27.0",
     "react-scripts": "^5.0.1",
     "recharts": "^2.14.1",
-    "web-vitals": "^4.2.4"
+    "web-vitals": "^4.2.4",
+    "webpack-dev-server": "^5.2.0"
   },
   "name": "atmosmonitor",
   "version": "1.0.0",
@@ -31,6 +32,7 @@
   "license": "ISC",
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "react-app-rewired": "^2.2.1",
     "source-map-loader": "^5.0.0"
   }
 }

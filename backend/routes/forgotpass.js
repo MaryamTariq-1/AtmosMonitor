@@ -1,49 +1,83 @@
-// backend/routes/forgotpass.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/Users');
+const { generateOtp, verifyOtp } = require('../library/auth'); // Correct Import
 const nodemailer = require('nodemailer');
-const crypto = require('crypto');
+require("dotenv").config();
+const OTP_EXPIRY_TIME = 3 * 60 * 1000; // 3 minutes
 
-// Forgot Password Route
-router.post('/forgot-password', async (req, res) => {
-  const { email } = req.body;
-
+// Forgot Password Route (Generate OTP and send to email)
+router.post('/forgot-password', async (req, res, next) => {
   try {
-    const user = await User.findOne({ email });
+    const { email } = req.body;
 
-    if (!user) {
-      return res.status(404).send({ message: 'User not found' });
+    if (!email) {
+      return res.status(400).json({ error: "Email is required." });
     }
 
-    // Generate a reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    user.resetToken = resetToken;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    // Generate OTP
+    const otp = generateOtp();
+    user.otp = otp;
+    user.otpExpiryTime = Date.now() + OTP_EXPIRY_TIME;
     await user.save();
 
-    // Send password reset email
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'your-email@gmail.com',
-        pass: 'your-email-password',
-      },
-    });
+    // Send OTP via email
+    await sendOtpToEmail(email, otp);
 
-    const resetLink = `http://localhost:3000/reset-password?token=${resetToken}`;
-    const mailOptions = {
-      from: 'your-email@gmail.com',
-      to: email,
-      subject: 'Password Reset Request',
-      text: `Click on the link to reset your password: ${resetLink}`,
-    };
-
-    await transporter.sendMail(mailOptions);
-
-    res.status(200).send({ message: 'Password reset email sent!' });
+    res.status(200).json({ message: "OTP sent to your email for password reset." });
   } catch (error) {
-    res.status(500).send({ message: 'Something went wrong, please try again later.' });
+    next(error);
   }
 });
 
+// Verify OTP Route
+router.post('/verify-otp', async (req, res, next) => {
+  try {
+    const { email, otpEntered } = req.body;
+
+    if (!email || !otpEntered) {
+      return res.status(400).json({ error: "Email and OTP are required." });
+    }
+
+    const isOtpValid = await verifyOtp(email, otpEntered);
+    if (!isOtpValid) {
+      return res.status(400).json({ error: "Invalid or expired OTP." });
+    }
+
+    res.status(200).json({ message: "OTP verified. You can now reset your password." });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Send OTP via Email
+async function sendOtpToEmail(email, otp) {
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.EMAIL_USER, // Secure Credentials
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: email,
+    subject: 'Your OTP for Password Reset',
+    text: `Your OTP code is: ${otp}`,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error('Error sending OTP:', error);
+  }
+}
+
 module.exports = router;
+
