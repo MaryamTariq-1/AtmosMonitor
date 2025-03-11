@@ -869,3 +869,76 @@ ul li {
   background-color: #545252;
 }
 
+
+
+
+
+
+.health-advice-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.advice-card {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  background-color: #fff;
+}
+
+.advice-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-front {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.card-front .icon {
+  font-size: 24px;
+  margin-right: 12px;
+}
+
+.card-front h3 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.card-back {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-back h3 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.card-back ul {
+  padding-left: 16px;
+  margin: 8px 0;
+}
+
+.card-back .actions {
+  margin-top: 16px;
+}
+
+.card-back .action-btn {
+  background-color: #f0c14b;
+  border: 1px solid #a88734;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.card-back .action-btn:hover {
+  background-color: #ddb347;
+}

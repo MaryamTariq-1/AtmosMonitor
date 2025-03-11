@@ -12,9 +12,6 @@ import {
   faPieChart,
   faChartBar,
   faTachometerAlt,
-  faExclamationCircle,
-  faCheckCircle,
-  faExclamationTriangle,
   faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import "./dashboard.css";
@@ -138,6 +135,15 @@ function Dashboard() {
   const [datetime, setDatetime] = useState("");
   const [result, setResult] = useState("");
   const [resultClass, setResultClass] = useState("");
+
+  const handleDropdownChange = (e, type) => {
+    const newLocation = e.target.value;
+    if (type === "location") {
+      setCurrentLocation(newLocation);
+    } else if (type === "destination") {
+      setDestination(newLocation);
+    }
+  };
 
    const predictTraffic = () => {
      setResult("Predicting...");
@@ -1056,7 +1062,18 @@ function Dashboard() {
               onChange={(e) => setCurrentLocation(e.target.value)}
               placeholder="Enter current location"
               className="traffic-input-field"
+              list="location-list"
             />
+            <datalist id="location-list">
+              {locations
+                .filter((location) =>
+                  location.toLowerCase().includes(currentLocation.toLowerCase())
+                )
+                .map((location, index) => (
+                  <option key={index} value={location} />
+                ))}
+            </datalist>
+
             <label>Destination:</label>
             <input
               type="text"
@@ -1064,7 +1081,18 @@ function Dashboard() {
               onChange={(e) => setDestination(e.target.value)}
               placeholder="Enter destination"
               className="traffic-input-field"
+              list="destination-list"
             />
+            <datalist id="destination-list">
+              {locations
+                .filter((location) =>
+                  location.toLowerCase().includes(destination.toLowerCase())
+                )
+                .map((location, index) => (
+                  <option key={index} value={location} />
+                ))}
+            </datalist>
+
             <label>Date & Time:</label>
             <input
               type="datetime-local"
@@ -1079,7 +1107,7 @@ function Dashboard() {
               {result}
             </div>
           </div>
-
+          
           {healthAdvice && (
             <div className="health-advice-cards">
               <div className="advice-card">

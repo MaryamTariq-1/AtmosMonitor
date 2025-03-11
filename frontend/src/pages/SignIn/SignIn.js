@@ -74,7 +74,7 @@ const SignIn = () => {
         
         {/* Forgot Password link */}
         <div className="forgot-password">
-          <button className="forgot-password-link" onClick={handleForgotPassword}>
+          <button className="forgot-password-link" >
             Forgot Password?
           </button>
         </div>
