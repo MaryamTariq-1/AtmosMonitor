@@ -1076,6 +1076,7 @@ function Dashboard() {
 
           <div className="traffic-predictor-container">
             <h1>Traffic Congestion Predictor</h1>
+            <form className="form-container" >
             <label className="form-label">Current Location:</label>
             <input
               className="form-input"
@@ -1123,10 +1124,12 @@ function Dashboard() {
             />
             <button className="form-button" onClick={predictTraffic}>
               Predict
-            </button>
+              </button>
+              </form>
             <div id="result" className={`traffic-result-box ${resultClass}`}>
               {result}
             </div>
+            
           </div>
 
           <div className="health-impact" id="health-impact">
@@ -1136,7 +1139,6 @@ function Dashboard() {
                 <span className="icon">🚴</span>
                 <div className="advice-text">
                   <h3>Sensitive groups should reduce outdoor exercise</h3>
-                  <button className="action-button">Get a monitor</button>
                 </div>
               </div>
             </div>
@@ -1146,7 +1148,6 @@ function Dashboard() {
                 <span className="icon">🪟</span>
                 <div className="advice-text">
                   <h3>Close your windows to avoid dirty outdoor air</h3>
-                  <button className="action-button">Get a mask</button>
                 </div>
               </div>
             </div>
@@ -1156,7 +1157,6 @@ function Dashboard() {
                 <span className="icon">😷</span>
                 <div className="advice-text">
                   <h3>Sensitive groups should wear a mask outdoors</h3>
-                  <button className="action-button">Get an air purifier</button>
                 </div>
               </div>
             </div>
@@ -1166,7 +1166,6 @@ function Dashboard() {
                 <span className="icon">💨</span>
                 <div className="advice-text">
                   <h3>Sensitive groups should run an air purifier</h3>
-                  <button className="action-button">Get an air purifier</button>
                 </div>
               </div>
             </div>
@@ -1177,72 +1176,77 @@ function Dashboard() {
           {/* Alert Form */}
           <div className="traffic-alerts-form">
             <h2>🚦 Traffic Alert Scheduler</h2>
-            <input
-              className="form-input"
-              type="text"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="Enter Phone Number"
-            />
+            <form className="form-container" >
+              <label>Enter Phone Number:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Enter Phone Number"
+              />
 
-            <label className="form-label">Current Location:</label>
-            <input
-              className="form-input"
-              type="text"
-              value={currentLocation}
-              onChange={(e) => setCurrentLocation(e.target.value)}
-              placeholder="Enter current location"
-              list="location-list"
-            />
-            <datalist id="location-list">
-              {locations
-                .filter((location) =>
-                  location.toLowerCase().includes(currentLocation.toLowerCase())
-                )
-                .map((location, index) => (
-                  <option key={index} value={location} />
-                ))}
-            </datalist>
+              <label className="form-label">Current Location:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={currentLocation}
+                onChange={(e) => setCurrentLocation(e.target.value)}
+                placeholder="Enter current location"
+                list="location-list"
+              />
+              <datalist id="location-list">
+                {locations
+                  .filter((location) =>
+                    location
+                      .toLowerCase()
+                      .includes(currentLocation.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
 
-            <label className="form-label">Destination:</label>
-            <input
-              className="form-input"
-              type="text"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              placeholder="Enter destination"
-              list="destination-list"
-            />
-            <datalist id="destination-list">
-              {locations
-                .filter((location) =>
-                  location.toLowerCase().includes(destination.toLowerCase())
-                )
-                .map((location, index) => (
-                  <option key={index} value={location} />
-                ))}
-            </datalist>
+              <label className="form-label">Destination:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Enter destination"
+                list="destination-list"
+              />
+              <datalist id="destination-list">
+                {locations
+                  .filter((location) =>
+                    location.toLowerCase().includes(destination.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
 
-            <label className="form-label">Departure Time:</label>
-            <input
-              className="form-input"
-              type="datetime-local"
-              value={departureTime}
-              onChange={(e) => setDepartureTime(e.target.value)}
-            />
+              <label className="form-label">Departure Time:</label>
+              <input
+                className="form-input"
+                type="datetime-local"
+                value={departureTime}
+                onChange={(e) => setDepartureTime(e.target.value)}
+              />
 
-            <label className="form-label">Alert Time:</label>
-            <input
-              className="form-input"
-              type="datetime-local"
-              value={alertTime}
-              onChange={(e) => setAlertTime(e.target.value)}
-            />
+              <label className="form-label">Alert Time:</label>
+              <input
+                className="form-input"
+                type="datetime-local"
+                value={alertTime}
+                onChange={(e) => setAlertTime(e.target.value)}
+              />
 
-            <button className="form-button" onClick={scheduleAlert}>
-              Schedule Alert
-            </button>
-            <p>{responseMessage}</p>
+              <button className="form-button" onClick={scheduleAlert}>
+                Schedule Alert
+              </button>
+              </form>
+              <p>{responseMessage}</p>
           </div>
           {/* Pollu
           {/* Pollution Level Alert */}
