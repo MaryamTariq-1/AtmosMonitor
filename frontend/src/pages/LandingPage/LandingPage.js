@@ -47,7 +47,9 @@ const LandingPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.edu\.pk)$/;
+const emailRegex =
+  /^[^\s@]+@(gmail\.com|cfd\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
+
 
 
 

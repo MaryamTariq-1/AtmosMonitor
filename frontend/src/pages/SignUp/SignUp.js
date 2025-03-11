@@ -15,38 +15,45 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false); // Loading State
   const [formErrors, setFormErrors] = useState({}); // Errors for form validation
 
-  const emailRegex =/^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|example\.com|hotmail\.com|mail\.com|[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$/;
-
   // Form validation
-  const validateForm = () => {
-    const newErrors = {};
+ const validateForm = () => {
+   const newErrors = {};
+   const emailRegex =
+     /^[^\s@]+@(gmail\.com|cfd\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
 
-    // Name validation
-    if (!name.trim()) {
-      newErrors.name = "Name is required.";
-    } else if (!/^[a-zA-Z\s]*$/.test(name.trim())) {
-      newErrors.name = "Name can only contain letters and spaces.";
-    } else if (name.trim().length < 3) {
-      newErrors.name = "Name must be at least 3 characters long.";
-    }
+   // Password regex: at least one uppercase letter, one lowercase letter, one number, and one special character
+   const passwordRegex =
+     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?]).{8,}$/;
 
-    // Email validation
-    if (!email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!emailRegex.test(email.trim())) {
-      newErrors.email = "Enter a valid email address.";
-    }
+   // Name validation
+   if (!name.trim()) {
+     newErrors.name = "Name is required.";
+   } else if (!/^[a-zA-Z\s]*$/.test(name.trim())) {
+     newErrors.name = "Name can only contain letters and spaces.";
+   } else if (name.trim().length < 3) {
+     newErrors.name = "Name must be at least 3 characters long.";
+   }
 
-    // Password validation (can be expanded)
-    if (!password.trim()) {
-      newErrors.password = "Password is required.";
-    }
+   // Email validation
+   if (!email.trim()) {
+     newErrors.email = "Email is required.";
+   } else if (!emailRegex.test(email.trim())) {
+     newErrors.email = "Enter a valid email address.";
+   }
 
-    setFormErrors(newErrors);
+   // Password validation
+   if (!password.trim()) {
+     newErrors.password = "Password is required.";
+   } else if (!passwordRegex.test(password.trim())) {
+     newErrors.password =
+       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+   }
 
-    // Return true if no errors exist
-    return Object.keys(newErrors).length === 0;
-  };
+   setFormErrors(newErrors);
+
+   // Return true if no errors exist
+   return Object.keys(newErrors).length === 0;
+ };
 
   // Handle user sign-up and send OTP
   const handleSignUp = async (e) => {
