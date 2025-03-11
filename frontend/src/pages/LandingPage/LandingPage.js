@@ -99,7 +99,7 @@ const emailRegex =
         id: 1,
         name: "7-Day Free Trial",
         description: "Enjoy the premium features for 7 days, completely free!",
-        price: "0.00",
+        price: "0",
         duration: "7 days",
         features: {
           "Login and Sign-Up": true,
@@ -157,11 +157,14 @@ const emailRegex =
     <div className="landing-page">
       {/* Navbar */}
       <nav className="navbar">
-          <div className="navbar-logo" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <img 
-            src={logo} 
-            alt="AtmosMonitor Logo" 
-            style={{ height: "40px", width: "auto" }} 
+        <div
+          className="navbar-logo"
+          style={{ display: "flex", alignItems: "center", gap: "10px" }}
+        >
+          <img
+            src={logo}
+            alt="AtmosMonitor Logo"
+            style={{ height: "40px", width: "auto" }}
           />
           <span>AtmosMonitor</span>
         </div>
@@ -282,9 +285,6 @@ const emailRegex =
         </div>
       </section>
 
-
-
-
       {/* Features Section */}
       <section className="features" id="features">
         <h1>Our Services</h1>
@@ -368,9 +368,7 @@ const emailRegex =
           organizations with tools and insights for a healthier and more
           sustainable future.
         </p>
-        <p>
-          
-        </p>
+        <p></p>
 
         <h2 style={{ textAlign: "center" }}>Our Team</h2>
 
@@ -378,10 +376,10 @@ const emailRegex =
           <div className="team-card">
             <img src={DrFayyaz} alt="DrFayyaz" style={{ width: "100%" }} />
             <div className="team-card-container">
-              <h2>Dr.Mhammad Fayyaz</h2>
-              <p className="title">Supervisors</p>
+              <h2>Dr. Muhammad Fayyaz</h2>
+              <p className="title">Supervisor</p>
               <p>
-              Associate Professor and Head of the Computer Science Department at FAST – National University of Computer and Emerging Sciences (NUCES), CFD Campus
+                Associate Professor and HOD of Computer Science at FAST–NUCES
               </p>
               <p>
                 <button
@@ -400,13 +398,9 @@ const emailRegex =
             <img src={Razeen} alt="razeen" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Razeen Shahid</h2>
-              <p className="title">MERN Developer (Team Lead) </p>
-              <p>
-                Student at FAST-NUCES
-              </p>
-              <p>
-                ML Engineer
-              </p>
+              <p className="title">Founder</p>
+              <p>Student at FAST-NUCES</p>
+              <p>ML Engineer</p>
               <p>
                 <button
                   className="button"
@@ -424,11 +418,9 @@ const emailRegex =
             <img src={Rayyan} alt="Rayyan" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Ahmad Rayyan</h2>
-              <p className="title">MERN  Developer</p>
-              <p>
-                Student at FAST-NUCES
-              </p>
-              <p>Data Scientist</p>
+              <p className="title">Founder</p>
+              <p>Student at FAST-NUCES</p>
+              <p>Frontend Developer</p>
               <p>
                 <button
                   className="button"
@@ -446,13 +438,9 @@ const emailRegex =
             <img src={Maryam} alt="Maryam" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Maryam Tariq</h2>
-              <p className="title">MERN Developer</p>
-              <p>
-                Student at FAST-NUCES
-              </p>
-              <p>
-                Database Handler
-              </p>
+              <p className="title">Founder</p>
+              <p>Student at FAST-NUCES</p>
+              <p>Backend Developer</p>
               <p>
                 <button
                   className="button"
@@ -479,7 +467,7 @@ const emailRegex =
             </div>
             <p className="plan-description">{plan.description}</p>
             <div className="plan-price">
-              <h4>{plan.price}</h4>
+              <h4>Rs.{plan.price}</h4>
               <span className="plan-duration">{plan.duration}</span>
             </div>
 
@@ -559,142 +547,175 @@ const emailRegex =
       </section>
       {/* Footer Section */}
       <footer
-            className="footer"
-            style={{
-              backgroundColor: "#000",
-              color: "white",
-              padding: "3rem 2rem",
-              fontFamily: "Arial, sans-serif",
-            }}
+        className="footer"
+        style={{
+          backgroundColor: "#000",
+          color: "white",
+          padding: "3rem 2rem",
+          fontFamily: "Arial, sans-serif",
+        }}
+      >
+        <div
+          className="footer-content"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "2rem",
+          }}
+        >
+          {/* Contact Section */}
+          <div
+            className="footer-contact"
+            style={{ flex: 1, minWidth: "250px" }}
           >
-            <div
-              className="footer-content"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                gap: "2rem",
-              }}
-            >
-              {/* Contact Section */}
-              <div className="footer-contact" style={{ flex: 1, minWidth: "250px" }}>
-                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Contact Us</h3>
-                <div className="contact-info">
-                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
-                    Or reach us at:
-                  </p>
-                  <p>
-                    Email:{" "}
-                    <a
-                      href="mailto:atmosmonitor@gmail.com"
-                      style={{ color: "#1d865e", textDecoration: "none" }}
-                    >
-                      atmosmonitor@gmail.com
-                    </a>
-                  </p>
-                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
-                    Phone: +92 3326593213
-                  </p>
-                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
-                    Address: Faisalabad, Pakistan.
-                  </p>
-                </div>
-              </div>
-
-              {/* Quick Links Section */}
-              <div className="footer-links" style={{ flex: 1, minWidth: "250px" }}>
-                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Quick Links</h3>
+            <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+              Contact Us
+            </h3>
+            <div className="contact-info">
+              <p
+                style={{
+                  fontSize: "1rem",
+                  color: "#ccc",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Or reach us at:
+              </p>
+              <p>
+                Email:{" "}
                 <a
-                  href="#home"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                  }}
-                  style={{
-                    display: "block",
-                    color: "#ccc",
-                    fontSize: "1rem",
-                    marginBottom: "0.5rem",
-                    textDecoration: "none",
-                  }}
+                  href="mailto:atmosmonitor@gmail.com"
+                  style={{ color: "#1d865e", textDecoration: "none" }}
                 >
-                  Home
+                  atmosmonitor@gmail.com
                 </a>
-                <a
-                  href="#features"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById("features")
-                      .scrollIntoView({ behavior: "smooth" });
-                  }}
-                  style={{
-                    display: "block",
-                    color: "#ccc",
-                    fontSize: "1rem",
-                    marginBottom: "0.5rem",
-                    textDecoration: "none",
-                  }}
-                >
-                  Services
-                </a>
-                <a
-                  href="#contact-section"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementById("contact-section")
-                      .scrollIntoView({ behavior: "smooth" });
-                  }}
-                  style={{
-                    display: "block",
-                    color: "#ccc",
-                    fontSize: "1rem",
-                    marginBottom: "0.5rem",
-                    textDecoration: "none",
-                  }}
-                >
-                  Contact
-                </a>
-              </div>
-
-              {/* Social Media Section */}
-              <div className="footer-social" style={{ flex: 1, minWidth: "250px" }}>
-                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Follow Us</h3>
-                <div className="social-icons">
-                  <a
-                    href="#linkedIN"
-                    aria-label="LinkedIn"
-                    style={{ color: "#ccc", marginRight: "1rem", textDecoration: "none" }}
-                  >
-                    LinkedIn
-                  </a>
-                  <a
-                    href="#Twitter"
-                    aria-label="Twitter"
-                    style={{ color: "#ccc", marginRight: "1rem", textDecoration: "none" }}
-                  >
-                    Twitter
-                  </a>
-                </div>
-              </div>
+              </p>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  color: "#ccc",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Phone: +92 3326593213
+              </p>
+              <p
+                style={{
+                  fontSize: "1rem",
+                  color: "#ccc",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Address: Faisalabad, Pakistan.
+              </p>
             </div>
+          </div>
 
-            {/* Footer Bottom */}
-            <div
-              className="footer-bottom"
+          {/* Quick Links Section */}
+          <div className="footer-links" style={{ flex: 1, minWidth: "250px" }}>
+            <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+              Quick Links
+            </h3>
+            <a
+              href="#home"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
               style={{
-                textAlign: "center",
-                marginTop: "2rem",
+                display: "block",
+                color: "#ccc",
                 fontSize: "1rem",
-                color: "#bbb",
+                marginBottom: "0.5rem",
+                textDecoration: "none",
               }}
             >
-              <p>&copy; 2024 AtmosMonitor. All rights reserved.</p>
+              Home
+            </a>
+            <a
+              href="#features"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("features")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{
+                display: "block",
+                color: "#ccc",
+                fontSize: "1rem",
+                marginBottom: "0.5rem",
+                textDecoration: "none",
+              }}
+            >
+              Services
+            </a>
+            <a
+              href="#contact-section"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("contact-section")
+                  .scrollIntoView({ behavior: "smooth" });
+              }}
+              style={{
+                display: "block",
+                color: "#ccc",
+                fontSize: "1rem",
+                marginBottom: "0.5rem",
+                textDecoration: "none",
+              }}
+            >
+              Contact
+            </a>
+          </div>
+
+          {/* Social Media Section */}
+          <div className="footer-social" style={{ flex: 1, minWidth: "250px" }}>
+            <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>
+              Follow Us
+            </h3>
+            <div className="social-icons">
+              <a
+                href="#linkedIN"
+                aria-label="LinkedIn"
+                style={{
+                  color: "#ccc",
+                  marginRight: "1rem",
+                  textDecoration: "none",
+                }}
+              >
+                LinkedIn
+              </a>
+              <a
+                href="#Twitter"
+                aria-label="Twitter"
+                style={{
+                  color: "#ccc",
+                  marginRight: "1rem",
+                  textDecoration: "none",
+                }}
+              >
+                Twitter
+              </a>
             </div>
-          </footer>
+          </div>
+        </div>
 
-
+        {/* Footer Bottom */}
+        <div
+          className="footer-bottom"
+          style={{
+            textAlign: "center",
+            marginTop: "2rem",
+            fontSize: "1rem",
+            color: "#bbb",
+          }}
+        >
+          <p>&copy; 2024 AtmosMonitor. All rights reserved.</p>
+        </div>
+      </footer>
     </div>
   );
 };
