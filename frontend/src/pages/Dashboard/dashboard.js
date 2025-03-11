@@ -99,24 +99,6 @@ class HeatMap extends React.Component {
 }
 
 
-const DynamicProgressBar = ({ progressPercentage, label }) => {
-  return (
-    <div className="progress-bar-container">
-      <div className="progress-bar-label">
-        <span>{label}</span>
-      </div>
-      <div className="progress-bar-background">
-        <div
-          className="progress-bar-fill"
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      <div className="progress-bar-text">
-        <span>{progressPercentage}% of the risk level reached!</span>
-      </div>
-    </div>
-  );
-};
 
 
 function Dashboard() {
@@ -136,14 +118,14 @@ function Dashboard() {
   const [result, setResult] = useState("");
   const [resultClass, setResultClass] = useState("");
 
-  const handleDropdownChange = (e, type) => {
-    const newLocation = e.target.value;
-    if (type === "location") {
-      setCurrentLocation(newLocation);
-    } else if (type === "destination") {
-      setDestination(newLocation);
-    }
-  };
+  // const handleDropdownChange = (e, type) => {
+  //   const newLocation = e.target.value;
+  //   if (type === "location") {
+  //     setCurrentLocation(newLocation);
+  //   } else if (type === "destination") {
+  //     setDestination(newLocation);
+  //   }
+  // };
 
    const predictTraffic = () => {
      setResult("Predicting...");
@@ -321,20 +303,20 @@ function Dashboard() {
       humidData,
     });
 
-    const avgPM25 = (
-      pm25Data.reduce((a, b) => a + b, 0) / pm25Data.length
-    ).toFixed(2);
-    const avgPM10 = (
-      pm10Data.reduce((a, b) => a + b, 0) / pm10Data.length
-    ).toFixed(2);
-    const avgCO2 = (
-      co2Data.reduce((a, b) => a + b, 0) / co2Data.length
-    ).toFixed(2);
+    // const avgPM25 = (
+    //   pm25Data.reduce((a, b) => a + b, 0) / pm25Data.length
+    // ).toFixed(2);
+    // const avgPM10 = (
+    //   pm10Data.reduce((a, b) => a + b, 0) / pm10Data.length
+    // ).toFixed(2);
+    // const avgCO2 = (
+    //   co2Data.reduce((a, b) => a + b, 0) / co2Data.length
+    // ).toFixed(2);
 
-    const averageAQI = Math.max(avgPM25, avgPM10, avgCO2);
-    const advice = getHealthAdvice(averageAQI, avgPM25, avgPM10, avgCO2);
-    setHealthAdvice(advice);
-  };
+    //  const averageAQI = Math.max(avgPM25, avgPM10, avgCO2);
+    //  const advice = getHealthAdvice(averageAQI, avgPM25, avgPM10, avgCO2);
+     // setHealthAdvice(advice);
+   };
 
   const [chartsData, setChartsData] = useState({
     timeRange: [],
@@ -409,7 +391,7 @@ function Dashboard() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:5000/predict?longitude=${longitude}&latitude=${latitude}`,
+        `http://127.0.0.1:5004/predict?longitude=${longitude}&latitude=${latitude}`,
         {
           method: "GET",
           mode: "cors", // Include CORS headers
@@ -469,7 +451,7 @@ function Dashboard() {
           "The general population may experience health effects. Everyone should limit outdoor activities, and sensitive groups should stay indoors.",
         icon: "🚷",
       };
-    } else {
+    } else if (aqi <= 300) {
       return {
         advice:
           "Air quality is hazardous. Stay indoors and avoid outdoor activities.",
@@ -1107,28 +1089,49 @@ function Dashboard() {
               {result}
             </div>
           </div>
-          
-          {healthAdvice && (
-            <div className="health-advice-cards">
-              <div className="advice-card">
-                <div className="card-front">
-                  <span className="icon">{healthAdvice.icon}</span>
-                  <h3>{healthAdvice.advice}</h3>
-                </div>
-                <div className="card-back">
-                  <h3>Why this advice?</h3>
-                  <ul>
-                    <li>{healthAdvice.explanation}</li>
-                    <li>
-                      Prolonged exposure may cause health issues in sensitive
-                      groups.
-                    </li>
-                    <li>Stay informed about air quality levels regularly.</li>
-                  </ul>
+
+          <div class="health-impact">
+            <h2>Precautions You Must Follow</h2>
+            <div class="health-advice-card">
+              <div class="card-content">
+                <span class="icon">🚴</span>
+                <div class="advice-text">
+                  <h3>Sensitive groups should reduce outdoor exercise</h3>
+                  <button class="action-button">Get a monitor</button>
                 </div>
               </div>
             </div>
-          )}
+
+            <div class="health-advice-card">
+              <div class="card-content">
+                <span class="icon">🪟</span>
+                <div class="advice-text">
+                  <h3>Close your windows to avoid dirty outdoor air</h3>
+                  <button class="action-button">Get a mask</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="health-advice-card">
+              <div class="card-content">
+                <span class="icon">😷</span>
+                <div class="advice-text">
+                  <h3>Sensitive groups should wear a mask outdoors</h3>
+                  <button class="action-button">Get an air purifier</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="health-advice-card">
+              <div class="card-content">
+                <span class="icon">💨</span>
+                <div class="advice-text">
+                  <h3>Sensitive groups should run an air purifier</h3>
+                  <button class="action-button">Get an air purifier</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
 
         <section className="custom-alerts" id="alerts">

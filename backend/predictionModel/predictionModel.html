@@ -94,7 +94,7 @@
             const latitude = document.getElementById('latitude').value;
 
             if (longitude && latitude) {
-                fetch(`http://127.0.0.1:5000/predict?longitude=${longitude}&latitude=${latitude}`, {
+                fetch(`http://127.0.0.1:5004/predict?longitude=${longitude}&latitude=${latitude}`, {
                     method: 'GET',
                     mode: 'cors'  // Include CORS headers
                 })

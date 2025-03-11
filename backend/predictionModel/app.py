@@ -40,6 +40,6 @@ def predict():
     return jsonify({"predicted_aqi": float(prediction[0])})
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(port=5004, debug=True)
 
 

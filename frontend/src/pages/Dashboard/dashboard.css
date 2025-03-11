@@ -872,73 +872,91 @@ ul li {
 
 
 
-
-
-.health-advice-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.advice-card {
+/* Overall health impact container */
+.health-impact {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
   width: 100%;
-  max-width: 300px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: transform 0.3s ease;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.health-impact h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Health advice cards */
+.health-advice-card {
   background-color: #fff;
-}
-
-.advice-card:hover {
-  transform: translateY(-5px);
-}
-
-.card-front {
   padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
 }
 
-.card-front .icon {
-  font-size: 24px;
-  margin-right: 12px;
-}
-
-.card-front h3 {
-  font-size: 18px;
-  margin: 0;
-}
-
-.card-back {
-  padding: 16px;
+/* Card content (icon and text) */
+.card-content {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }
 
-.card-back h3 {
-  margin-top: 0;
-  font-size: 20px;
+/* Icon styling */
+.icon {
+  font-size: 32px;
+  color: #f0c14b;  /* Yellow color similar to the photo */
 }
 
-.card-back ul {
-  padding-left: 16px;
-  margin: 8px 0;
+/* Text inside the card */
+.advice-text h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  font-weight: normal;
+  line-height: 1.4;
 }
 
-.card-back .actions {
-  margin-top: 16px;
-}
-
-.card-back .action-btn {
-  background-color: #f0c14b;
-  border: 1px solid #a88734;
-  padding: 8px 16px;
+/* Action button styling */
+.action-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
   border-radius: 4px;
+  font-size: 14px;
   cursor: pointer;
   margin-top: 8px;
+  transition: background-color 0.3s ease;
 }
 
-.card-back .action-btn:hover {
-  background-color: #ddb347;
+/* Action button hover effect */
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .health-impact {
+    padding: 15px;
+  }
+
+  .health-advice-card {
+    padding: 12px;
+  }
+
+  .icon {
+    font-size: 28px;
+  }
+
+  .advice-text h3 {
+    font-size: 14px;
+  }
 }
