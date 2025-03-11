@@ -129,8 +129,7 @@ async function sendOtpToEmail(email, otp) {
   }
 }
 
-// Verify OTP
-async function verifyOtp(user, otpEntered) {
+exports.verifyOtp = async function (user, otpEntered) {
   try {
     if (!user.otp || !user.otpExpiryTime || Date.now() > user.otpExpiryTime) {
       return false;
@@ -140,4 +139,4 @@ async function verifyOtp(user, otpEntered) {
     console.error("OTP verification error:", error);
     return false;
   }
-}
+};

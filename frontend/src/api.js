@@ -1,7 +1,5 @@
 import axiosInstance from "./utils/axios";
 
-
-
 // API call for sign-in (login)
 export const login = async (email, password) => {
   try {
@@ -26,7 +24,7 @@ export const signup = async (name, email, password) => {
 export const sendOtpForPasswordReset = async (email) => {
   try {
     const response = await axiosInstance.post("/auth/forgot-password", { email });
-    return response.data;
+    return response.data;  // Success message for OTP request
   } catch (error) {
     throw error.response ? error.response.data : "An error occurred while sending OTP";
   }
@@ -51,7 +49,7 @@ export const verifyOtpAndResetPassword = async (email, otp, newPassword) => {
 export const verifyOtp = async (email, otp) => {
   try {
     const response = await axiosInstance.post("/auth/verify-otp", { email, otpEntered: otp });
-    return response.data;
+    return response.data; // Success message after OTP verification
   } catch (error) {
     throw error.response ? error.response.data : "An error occurred while verifying OTP";
   }
