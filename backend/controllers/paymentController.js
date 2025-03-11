@@ -13,15 +13,15 @@ const createPaymentIntent = async (req, res) => {
     // Set amount and description based on the selected plan
     if (selectedPlan.id === 1) {
       amount = 0; // Free trial
-      description = "7-Day Free Trial - Enjoy premium features for 7 days.";
+      description = "AtmosMonitor 7-Day Free Trial - Enjoy premium features for 7 days.";
     } else if (selectedPlan.id === 2) {
-      amount = 100000; // $10 for Monthly Plan // 10K PKR for 1 month 
+      amount = 500000; // 5,000 PKR 
       description =
-        "Monthly Plan - Get access to premium features for one month.";
+        "AtmosMonitor Monthly Plan - Get access to premium features for one month.";
     } else if (selectedPlan.id === 3) {
-      amount = 6000000; // $100 for Yearly Plan // 60K PKR for 1 year // For samples purposes
+      amount = 5000000; // 50,000 PKR
       description =
-        "Yearly Plan - Get access to premium features for one year.";
+        "AtmosMonitor Yearly Plan - Get access to premium features for one year.";
     }
 
     // Create a PaymentIntent with the received token and customer details

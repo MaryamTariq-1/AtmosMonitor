@@ -31,7 +31,7 @@ const Checkout = () => {
     const otpVerified = localStorage.getItem("otpVerified");
 
     if (!token || otpVerified !== "true") {
-      navigate("/signin");
+      //navigate("/signin");
     } else if (!selectedPlan) {
       navigate("/subscription-plans");
     }

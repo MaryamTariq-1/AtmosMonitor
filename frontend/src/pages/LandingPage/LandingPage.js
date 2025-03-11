@@ -99,7 +99,7 @@ const emailRegex =
         id: 1,
         name: "7-Day Free Trial",
         description: "Enjoy the premium features for 7 days, completely free!",
-        price: "₨ 0.00",
+        price: "0.00",
         duration: "7 days",
         features: {
           "Login and Sign-Up": true,
@@ -115,7 +115,7 @@ const emailRegex =
         id: 2,
         name: "Monthly Plan",
         description: "Get access to premium features for one month.",
-        price: "₨ 25,000",
+        price: "5,000",
         duration: "1 month",
         features: {
           "Login and Sign-Up": true,
@@ -131,7 +131,7 @@ const emailRegex =
         id: 3,
         name: "Yearly Plan",
         description: "Get access to premium features for one full year.",
-        price: "₨ 275,000",
+        price: "50,000",
         duration: "1 year",
         features: {
           "Login and Sign-Up": true,
