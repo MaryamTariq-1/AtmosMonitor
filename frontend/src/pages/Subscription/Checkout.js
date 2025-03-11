@@ -21,7 +21,8 @@ const Checkout = () => {
   const location = useLocation();
   const { selectedPlan } = location.state || {};
 
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState("Credit Card");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState("Credit Card");
   const [cardholderName, setCardholderName] = useState("");
   const [email, setEmail] = useState("");
 
@@ -31,7 +32,7 @@ const Checkout = () => {
     const otpVerified = localStorage.getItem("otpVerified");
 
     if (!token || otpVerified !== "true") {
-      navigate("/signin");
+      // navigate("/signin");
     } else if (!selectedPlan) {
       navigate("/subscription-plans");
     }
@@ -74,7 +75,6 @@ const Checkout = () => {
 
         // Check if the response is OK (status code 200)
         if (!response.ok) {
-          // If not OK, log the status and response text
           console.error(`Error: ${response.status} ${response.statusText}`);
           const errorText = await response.text();
           console.error("Error body:", errorText);
@@ -101,8 +101,39 @@ const Checkout = () => {
   return (
     <div className="checkout-container">
       <h2 className="checkout-header">Checkout</h2>
+
+      {/* Plan name */}
       <h3 className="selected-plan-name">{selectedPlan?.name}</h3>
+
+      {/* Plan description */}
       <p className="plan-description">{selectedPlan?.description}</p>
+
+      {/* Plan price */}
+      {selectedPlan?.price && (
+        <p className="plan-price">Amount to be charged: {selectedPlan.price}</p>
+      )}
+
+      {/* Plan duration */}
+      {selectedPlan?.duration && (
+        <p className="plan-duration">Duration: {selectedPlan.duration}</p>
+      )}
+
+      {/* Features list */}
+      {selectedPlan?.features && (
+        <div className="plan-features">
+          <h4>Features:</h4>
+          <ul>
+            {Object.entries(selectedPlan.features).map(
+              ([feature, isAvailable], index) => (
+                <li key={index}>
+                  {feature}: {isAvailable ? "Available" : "Not Available"}
+                </li>
+              )
+            )}
+          </ul>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="checkout-form">
         <div className="payment-method">
           <label>

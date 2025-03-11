@@ -66,53 +66,37 @@ const SignIn = () => {
       </header>
       <div className="signin-container">
         <h2>LOGIN TO YOUR ACCOUNT</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Sign In</button>
+        </form>
+        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
+        
+        {/* Forgot Password link */}
+        <div className="forgot-password">
+          <button className="forgot-password-link" >
+            Forgot Password?
+          </button>
+        </div>
 
-        {/* Conditional rendering for OTP verification */}
-        {!otpSent ? (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)} // Update email state
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)} // Update password state
-            />
-            <button type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"} {/* Dynamic button text based on loading state */}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleOtpVerification}>
-            <input
-              type="text"
-              value={otp}
-              placeholder="Enter OTP"
-              required
-              onChange={(e) => setOtp(e.target.value)} // Update OTP state
-            />
-            <button type="submit" disabled={loading}>
-              {loading ? "Verifying OTP..." : "Verify OTP"} {/* Dynamic button text based on loading state */}
-            </button>
-          </form>
-        )}
-
-        {/* Display error message */}
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        {/* Forgot password link */}
         <p>
-          Forgot your password?{" "}
-          <a href="/forgot-password" className="forgot-password-link">
-            Reset it here
+          Don't have an account?{" "}
+          <a href="/signup" className="signup-link">
+            Sign Up
           </a>
         </p>
+
       </div>
     </div>
   );
