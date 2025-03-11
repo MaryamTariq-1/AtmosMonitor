@@ -330,9 +330,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  color: #333;
-}
 
 form {
   display: flex;
@@ -365,7 +362,7 @@ button {
 }
 
 button:hover {
-  background-color: #000000;
+  background-color: #40454a;
 }
 
 #result {
@@ -375,6 +372,76 @@ button:hover {
   color: #333;
 }
 
+
+
+.traffic-predictor-container {
+   width: 100%;
+  max-width: 600px;
+  margin:  20px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+label {
+  font-weight: bold;
+}
+
+.traffic-input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.traffic-predict-button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #000000;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.traffic-predict-button:hover {
+  background-color: #40454a;
+}
+
+.traffic-result-box {
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.predicting {
+  background-color: #f0ad4e;
+  color: black;
+}
+
+.high-congestion {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.low-congestion {
+  background-color: #28a745;
+  color: white;
+}
+
+.error {
+  background-color: #ffc107;
+  color: black;
+}
 
 
 
@@ -802,3 +869,94 @@ ul li {
   background-color: #545252;
 }
 
+
+
+
+/* Overall health impact container */
+.health-impact {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading */
+.health-impact h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Health advice cards */
+.health-advice-card {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+}
+
+/* Card content (icon and text) */
+.card-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Icon styling */
+.icon {
+  font-size: 32px;
+  color: #f0c14b;  /* Yellow color similar to the photo */
+}
+
+/* Text inside the card */
+.advice-text h3 {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+  font-weight: normal;
+  line-height: 1.4;
+}
+
+/* Action button styling */
+.action-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s ease;
+}
+
+/* Action button hover effect */
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .health-impact {
+    padding: 15px;
+  }
+
+  .health-advice-card {
+    padding: 12px;
+  }
+
+  .icon {
+    font-size: 28px;
+  }
+
+  .advice-text h3 {
+    font-size: 14px;
+  }
+}

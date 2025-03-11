@@ -51,10 +51,10 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/contact" element={<Contact />} />
-
             <Route
               path="/dashboard"
-              element={<ProtectedRoute element={<Dashboard />} />}
+              element={<Dashboard />}
+              //  element={<ProtectedRoute element={<Dashboard />} />}
             />
             <Route
               path="/checkout"

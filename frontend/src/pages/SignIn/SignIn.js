@@ -59,6 +59,7 @@ const SignIn = () => {
       </header>
       <div className="signin-container">
         <h2>LOGIN TO YOUR ACCOUNT</h2>
+<<<<<<< HEAD
         {!otpSent ? (
           <form onSubmit={handleSubmit}>
             <input
@@ -92,6 +93,38 @@ const SignIn = () => {
           </form>
         )}
         {error && <p style={{ color: "red" }}>{error}</p>}
+=======
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Sign In</button>
+        </form>
+        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
+        
+        {/* Forgot Password link */}
+        <div className="forgot-password">
+          <button className="forgot-password-link" >
+            Forgot Password?
+          </button>
+        </div>
+
+        <p>
+          Don't have an account?{" "}
+          <a href="/signup" className="signup-link">
+            Sign Up
+          </a>
+        </p>
+>>>>>>> d061997956e77f1224d00741425a5d5739eec215
       </div>
     </div>
   );
