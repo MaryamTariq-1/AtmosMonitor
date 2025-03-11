@@ -13,6 +13,40 @@ const SignUp = () => {
   const [error, setError] = useState(""); // Error Handling
   const [otpError, setOtpError] = useState(""); // OTP Error Handling
   const [loading, setLoading] = useState(false); // Loading State
+  const [formErrors, setFormErrors] = useState({}); // Errors for form validation
+
+  const emailRegex =/^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|example\.com|hotmail\.com|mail\.com|[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$/;
+
+  // Form validation
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Name validation
+    if (!name.trim()) {
+      newErrors.name = "Name is required.";
+    } else if (!/^[a-zA-Z\s]*$/.test(name.trim())) {
+      newErrors.name = "Name can only contain letters and spaces.";
+    } else if (name.trim().length < 3) {
+      newErrors.name = "Name must be at least 3 characters long.";
+    }
+
+    // Email validation
+    if (!email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    // Password validation (can be expanded)
+    if (!password.trim()) {
+      newErrors.password = "Password is required.";
+    }
+
+    setFormErrors(newErrors);
+
+    // Return true if no errors exist
+    return Object.keys(newErrors).length === 0;
+  };
 
   // Handle user sign-up and send OTP
   const handleSignUp = async (e) => {
@@ -20,13 +54,23 @@ const SignUp = () => {
     setLoading(true);
     setError("");
 
+    // Perform validation before submitting
+    if (!validateForm()) {
+      setLoading(false);
+      return; // Don't submit if form is invalid
+    }
+
     try {
       const data = await signup(name, email, password);
       setOtpSent(true);
       setError("");
       alert(data.message); // Show success message
     } catch (error) {
-      setError(error.response ? error.response.data.error : "Sign-up failed. Please try again.");
+      setError(
+        error.response
+          ? error.response.data.error
+          : "Sign-up failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -43,7 +87,9 @@ const SignUp = () => {
       alert(data.message); // Show success message
       navigate("/signin"); // Redirect to Sign-In
     } catch (error) {
-      setOtpError(error.response ? error.response.data.error : "Invalid or expired OTP.");
+      setOtpError(
+        error.response ? error.response.data.error : "Invalid or expired OTP."
+      );
     } finally {
       setLoading(false);
     }
@@ -80,6 +126,10 @@ const SignUp = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
+            {formErrors.name && (
+              <p style={{ color: "red" }}>{formErrors.name}</p>
+            )}{" "}
+            {/* Show name errors */}
             <input
               type="email"
               placeholder="Email"
@@ -87,6 +137,10 @@ const SignUp = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
+            {formErrors.email && (
+              <p style={{ color: "red" }}>{formErrors.email}</p>
+            )}{" "}
+            {/* Show email errors */}
             <input
               type="password"
               placeholder="Password"
@@ -94,6 +148,10 @@ const SignUp = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            {formErrors.password && (
+              <p style={{ color: "red" }}>{formErrors.password}</p>
+            )}{" "}
+            {/* Show password errors */}
             <button type="submit" disabled={loading}>
               {loading ? "Signing Up..." : "Sign Up"}
             </button>

@@ -47,8 +47,10 @@ const LandingPage = () => {
 
   const validateForm = () => {
     const newErrors = {};
-const emailRegex =
-  /^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|example\.com|hotmail\.com|mail\.com|[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$/;
+const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.edu\.pk)$/;
+
+
+
 
     // Name validation: required, letters/spaces only, min 3 characters
     if (!formData.name.trim()) {
