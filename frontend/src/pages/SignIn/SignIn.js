@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../api"; // Make sure this API call is updated to work with the new signin logic
+import { login, verifyOtp } from "../../api"; // Added import for verifyOtp from api.js
 import "./SignIn.css";
 
 const SignIn = () => {
@@ -79,13 +79,13 @@ const SignIn = () => {
             required
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button type="submit">Sign In</button>
+          <button type="submit">{loading ? "Signing In..." : "Sign In"}</button>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
         
         {/* Forgot Password link */}
         <div className="forgot-password">
-          <button className="forgot-password-link" >
+          <button className="forgot-password-link" onClick={() => navigate("/forgot-password")}>
             Forgot Password?
           </button>
         </div>
@@ -96,7 +96,6 @@ const SignIn = () => {
             Sign Up
           </a>
         </p>
-
       </div>
     </div>
   );
