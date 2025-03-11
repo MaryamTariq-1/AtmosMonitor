@@ -127,6 +127,37 @@ function Dashboard() {
   //   }
   // };
 
+   const [phoneNumber, setPhoneNumber] = useState("");
+   const [departureTime, setDepartureTime] = useState("");
+   const [alertTime, setAlertTime] = useState("");
+   const [responseMessage, setResponseMessage] = useState("");
+
+   const scheduleAlert = () => {
+     fetch("http://127.0.0.1:5006/schedule-alert", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({
+         phoneNumber,
+         current_location: currentLocation,
+         destination,
+         departure_time: departureTime,
+         alert_time: alertTime,
+       }),
+     })
+       .then((response) => response.json())
+       .then((data) => {
+         setResponseMessage(
+           data.success
+             ? "✅ Alert Scheduled Successfully!"
+             : "❌ Failed to schedule alert: " + data.error
+         );
+       })
+       .catch((error) => {
+         setResponseMessage("❌ Could not connect to server.");
+       });
+   };
+
+
    const predictTraffic = () => {
      setResult("Predicting...");
      setResultClass("result");
@@ -511,11 +542,6 @@ function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#alerts">
-              <FontAwesomeIcon icon={faBell} /> Managing ALerts
-            </a>
-          </li>
-          <li>
             <a href="#recommendation">
               <FontAwesomeIcon icon={faDesktop} /> Recommendations System
             </a>
@@ -524,6 +550,11 @@ function Dashboard() {
           <li>
             <a href="#health-impact">
               <FontAwesomeIcon icon={faHeartPulse} /> Health Impact
+            </a>
+          </li>
+          <li>
+            <a href="#custom-alerts">
+              <FontAwesomeIcon icon={faBell} /> Custom ALerts
             </a>
           </li>
         </ul>
@@ -1000,11 +1031,14 @@ function Dashboard() {
 
         <section className="Recommendations-system" id="recommendation">
           <h2>Recommendations System </h2>
-          <div className="Prediction" id="Prediction">
+          <div className="prediction-system" id="Prediction">
             <h1>Air Quality Index (AQI) Prediction</h1>
-            <form onSubmit={handleSubmit}>
-              <label htmlFor="longitude">Longitude:</label>
+            <form className="form-container" onSubmit={handleSubmit}>
+              <label className="form-label" htmlFor="longitude">
+                Longitude:
+              </label>
               <input
+                className="form-input"
                 type="number"
                 step="any"
                 id="longitude"
@@ -1014,8 +1048,11 @@ function Dashboard() {
                 required
               />
 
-              <label htmlFor="latitude">Latitude:</label>
+              <label className="form-label" htmlFor="latitude">
+                Latitude:
+              </label>
               <input
+                className="form-input"
                 type="number"
                 step="any"
                 id="latitude"
@@ -1025,7 +1062,9 @@ function Dashboard() {
                 required
               />
 
-              <button type="submit">Get AQI</button>
+              <button className="form-button" type="submit">
+                Get AQI
+              </button>
             </form>
 
             <div id="result">
@@ -1037,13 +1076,14 @@ function Dashboard() {
 
           <div className="traffic-predictor-container">
             <h1>Traffic Congestion Predictor</h1>
-            <label>Current Location:</label>
+            <form className="form-container" >
+            <label className="form-label">Current Location:</label>
             <input
+              className="form-input"
               type="text"
               value={currentLocation}
               onChange={(e) => setCurrentLocation(e.target.value)}
               placeholder="Enter current location"
-              className="traffic-input-field"
               list="location-list"
             />
             <datalist id="location-list">
@@ -1056,13 +1096,13 @@ function Dashboard() {
                 ))}
             </datalist>
 
-            <label>Destination:</label>
+            <label className="form-label">Destination:</label>
             <input
+              className="form-input"
               type="text"
               value={destination}
               onChange={(e) => setDestination(e.target.value)}
               placeholder="Enter destination"
-              className="traffic-input-field"
               list="destination-list"
             />
             <datalist id="destination-list">
@@ -1075,73 +1115,140 @@ function Dashboard() {
                 ))}
             </datalist>
 
-            <label>Date & Time:</label>
+            <label className="form-label">Date & Time:</label>
             <input
+              className="form-input"
               type="datetime-local"
               value={datetime}
               onChange={(e) => setDatetime(e.target.value)}
-              className="traffic-input-field"
             />
-            <button onClick={predictTraffic} className="traffic-predict-button">
+            <button className="form-button" onClick={predictTraffic}>
               Predict
-            </button>
+              </button>
+              </form>
             <div id="result" className={`traffic-result-box ${resultClass}`}>
               {result}
             </div>
+            
           </div>
 
-          <div class="health-impact">
-            <h2>Precautions You Must Follow</h2>
-            <div class="health-advice-card">
-              <div class="card-content">
-                <span class="icon">🚴</span>
-                <div class="advice-text">
+          <div className="health-impact" id="health-impact">
+            <h2>Health Precautions You Must Follow</h2>
+            <div className="health-advice-card">
+              <div className="card-content">
+                <span className="icon">🚴</span>
+                <div className="advice-text">
                   <h3>Sensitive groups should reduce outdoor exercise</h3>
-                  <button class="action-button">Get a monitor</button>
                 </div>
               </div>
             </div>
 
-            <div class="health-advice-card">
-              <div class="card-content">
-                <span class="icon">🪟</span>
-                <div class="advice-text">
+            <div className="health-advice-card">
+              <div className="card-content">
+                <span className="icon">🪟</span>
+                <div className="advice-text">
                   <h3>Close your windows to avoid dirty outdoor air</h3>
-                  <button class="action-button">Get a mask</button>
                 </div>
               </div>
             </div>
 
-            <div class="health-advice-card">
-              <div class="card-content">
-                <span class="icon">😷</span>
-                <div class="advice-text">
+            <div className="health-advice-card">
+              <div className="card-content">
+                <span className="icon">😷</span>
+                <div className="advice-text">
                   <h3>Sensitive groups should wear a mask outdoors</h3>
-                  <button class="action-button">Get an air purifier</button>
                 </div>
               </div>
             </div>
 
-            <div class="health-advice-card">
-              <div class="card-content">
-                <span class="icon">💨</span>
-                <div class="advice-text">
+            <div className="health-advice-card">
+              <div className="card-content">
+                <span className="icon">💨</span>
+                <div className="advice-text">
                   <h3>Sensitive groups should run an air purifier</h3>
-                  <button class="action-button">Get an air purifier</button>
                 </div>
               </div>
             </div>
           </div>
-        </section>
 
-        <section className="custom-alerts" id="alerts">
-          <h2>Custom Alerts</h2>
+          <h2 id="custom-alerts">Custom Alerts</h2>
 
           {/* Alert Form */}
-          <div className="add-alert-form"></div>
+          <div className="traffic-alerts-form">
+            <h2>🚦 Traffic Alert Scheduler</h2>
+            <form className="form-container" >
+              <label>Enter Phone Number:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Enter Phone Number"
+              />
 
-          {/* Display List of Alerts */}
-          <div className="alert-list"></div>
+              <label className="form-label">Current Location:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={currentLocation}
+                onChange={(e) => setCurrentLocation(e.target.value)}
+                placeholder="Enter current location"
+                list="location-list"
+              />
+              <datalist id="location-list">
+                {locations
+                  .filter((location) =>
+                    location
+                      .toLowerCase()
+                      .includes(currentLocation.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
+
+              <label className="form-label">Destination:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Enter destination"
+                list="destination-list"
+              />
+              <datalist id="destination-list">
+                {locations
+                  .filter((location) =>
+                    location.toLowerCase().includes(destination.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
+
+              <label className="form-label">Departure Time:</label>
+              <input
+                className="form-input"
+                type="datetime-local"
+                value={departureTime}
+                onChange={(e) => setDepartureTime(e.target.value)}
+              />
+
+              <label className="form-label">Alert Time:</label>
+              <input
+                className="form-input"
+                type="datetime-local"
+                value={alertTime}
+                onChange={(e) => setAlertTime(e.target.value)}
+              />
+
+              <button className="form-button" onClick={scheduleAlert}>
+                Schedule Alert
+              </button>
+              </form>
+              <p>{responseMessage}</p>
+          </div>
+          {/* Pollu
           {/* Pollution Level Alert */}
         </section>
       </main>

@@ -59,12 +59,12 @@ function App() {
             <Route
               path="/checkout"
               element={<Checkout />}
-              // element={<ProtectedRoute element={<Checkout />} />}
+              //              element={<ProtectedRoute element={<Checkout />} />}
             />
             <Route
               path="/subplan"
               element={<SubPlan />}
-            //  element={<ProtectedRoute element={<SubPlan />} />}
+              //element={<ProtectedRoute element={<SubPlan />} />}
             />
 
             <Route path="/forgot-password" element={<ForgotPassword />} />

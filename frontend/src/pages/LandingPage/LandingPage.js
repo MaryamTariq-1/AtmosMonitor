@@ -378,13 +378,11 @@ const emailRegex =
           <div className="team-card">
             <img src={DrFayyaz} alt="DrFayyaz" style={{ width: "100%" }} />
             <div className="team-card-container">
-              <h2>Dr. Mhammad Fayyaz</h2>
+              <h2>Dr.Mhammad Fayyaz</h2>
               <p className="title">Supervisors</p>
               <p>
-                Passionate about sustainability and innovation in environmental
-                technologies.
+              Associate Professor and Head of the Computer Science Department at FAST – National University of Computer and Emerging Sciences (NUCES), CFD Campus
               </p>
-              <p>m.fayyaz@nu.edu.pk</p>
               <p>
                 <button
                   className="button"
@@ -402,12 +400,13 @@ const emailRegex =
             <img src={Razeen} alt="razeen" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Razeen Shahid</h2>
-              <p className="title">CEO</p>
+              <p className="title">MERN Developer (Team Lead) </p>
               <p>
-                Passionate about sustainability and innovation in environmental
-                technologies.
+                Student at FAST-NUCES
               </p>
-              <p>f219224@cfd.nu.edu.pk</p>
+              <p>
+                ML Engineer
+              </p>
               <p>
                 <button
                   className="button"
@@ -425,9 +424,11 @@ const emailRegex =
             <img src={Rayyan} alt="Rayyan" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Ahmad Rayyan</h2>
-              <p className="title">Art Director</p>
-              <p>Leading the design and user experience of our products.</p>
-              <p>f219266@cfd.nu.edu.pk</p>
+              <p className="title">MERN  Developer</p>
+              <p>
+                Student at FAST-NUCES
+              </p>
+              <p>Data Scientist</p>
               <p>
                 <button
                   className="button"
@@ -445,12 +446,13 @@ const emailRegex =
             <img src={Maryam} alt="Maryam" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Maryam Tariq</h2>
-              <p className="title">Product Designer</p>
+              <p className="title">MERN Developer</p>
               <p>
-                Designing user-friendly solutions to meet the needs of our
-                users.
+                Student at FAST-NUCES
               </p>
-              <p>f219337@cfd.nu.edu.pk</p>
+              <p>
+                Database Handler
+              </p>
               <p>
                 <button
                   className="button"
