@@ -381,7 +381,10 @@ const emailRegex =
               <h2>Dr.Mhammad Fayyaz</h2>
               <p className="title">Supervisors</p>
               <p>
-              Associate Professor and Head of the Computer Science Department at FAST – National University of Computer and Emerging Sciences (NUCES), CFD Campus
+              Associate Professor
+              </p>
+              <p>
+              CS Dept HOD at FAST NUCES
               </p>
               <p>
                 <button
@@ -400,7 +403,7 @@ const emailRegex =
             <img src={Razeen} alt="razeen" style={{ width: "100%" }} />
             <div className="team-card-container">
               <h2>Razeen Shahid</h2>
-              <p className="title">MERN Developer (Team Lead) </p>
+              <p className="title">MERN Developer </p>
               <p>
                 Student at FAST-NUCES
               </p>
