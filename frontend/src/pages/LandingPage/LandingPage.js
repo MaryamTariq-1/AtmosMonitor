@@ -12,7 +12,7 @@ import DrFayyaz from "../../assets/images/Dr Fayyaz.jpg";
 import Razeen from "../../assets/images/Razeen.jpg";
 import Rayyan from "../../assets/images/rayyan.png";
 import Maryam from "../../assets/images/maryam.jfif";
-
+import logo from "./logo.png";
 const LandingPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -157,7 +157,14 @@ const emailRegex =
     <div className="landing-page">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="navbar-logo">AtmosMonitor</div>
+          <div className="navbar-logo" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <img 
+            src={logo} 
+            alt="AtmosMonitor Logo" 
+            style={{ height: "40px", width: "auto" }} 
+          />
+          <span>AtmosMonitor</span>
+        </div>
         <div className="navbar-links">
           <a
             href="#home"
@@ -231,21 +238,52 @@ const emailRegex =
       </nav>
 
       <section className="hero">
-        {/* Hero Content */}
         <div className="hero-content">
-          {/* Video Background */}
+          <h1
+            style={{
+              textShadow: "2px 2px 4px black", // Creates a black outline effect
+              WebkitTextStroke: "1px black", // Adds a sharp black border
+              color: "white", // Ensures readability
+            }}
+          >
+            Welcome to AtmosMonitor
+          </h1>
 
-          <h1>Welcome to AtmosMonitor</h1>
-          <p>Your Gateway to Real-Time Environmental Insights</p>
+          <p
+            style={{
+              textShadow: "1px 1px 3px black", // Slight black shadow for readability
+              WebkitTextStroke: "0.5px black", // Thinner black border for text
+              color: "white",
+            }}
+          >
+            Your Gateway to Real-Time Environmental Insights
+          </p>
+
           <button onClick={() => navigate("/signup")} className="hero-button">
             Explore More
           </button>
-          <video autoPlay loop muted playsInline className="background-video">
-            <source src="/Videos/earthloop.mp4" type="video/mp4" />
+
+          {/* YouTube Video (Uncomment for Online Use) */}
+          <iframe
+            className="background-video"
+            width="100%"
+            height="100%"
+            src="https://www.youtube.com/embed/yX5WtyGyp2Y?autoplay=1&loop=1&mute=1&playlist=yX5WtyGyp2Y"
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+          ></iframe>
+
+          {/* Local Video (Uncomment for Offline Use)
+          <video className="background-video" width="100%" height="100%" autoPlay loop muted playsInline>
+            <source src="/earthloop.mp4" type="video/mp4" />
             Your browser does not support the video tag.
-          </video>
+          </video> 
+          */}
         </div>
       </section>
+
+
+
 
       {/* Features Section */}
       <section className="features" id="features">
@@ -518,73 +556,143 @@ const emailRegex =
         </div>
       </section>
       {/* Footer Section */}
+      <footer
+            className="footer"
+            style={{
+              backgroundColor: "#000",
+              color: "white",
+              padding: "3rem 2rem",
+              fontFamily: "Arial, sans-serif",
+            }}
+          >
+            <div
+              className="footer-content"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexWrap: "wrap",
+                gap: "2rem",
+              }}
+            >
+              {/* Contact Section */}
+              <div className="footer-contact" style={{ flex: 1, minWidth: "250px" }}>
+                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Contact Us</h3>
+                <div className="contact-info">
+                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
+                    Or reach us at:
+                  </p>
+                  <p>
+                    Email:{" "}
+                    <a
+                      href="mailto:atmosmonitor@gmail.com"
+                      style={{ color: "#1d865e", textDecoration: "none" }}
+                    >
+                      atmosmonitor@gmail.com
+                    </a>
+                  </p>
+                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
+                    Phone: +92 3326593213
+                  </p>
+                  <p style={{ fontSize: "1rem", color: "#ccc", marginBottom: "0.5rem" }}>
+                    Address: Faisalabad, Pakistan.
+                  </p>
+                </div>
+              </div>
 
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-contact">
-            <h3>Contact Us</h3>
-            <div className="contact-info">
-              <p>Or reach us at:</p>
-              <p>
-                Email:{" "}
-                <a href="mailto:support@atmosmonitor.com">
-                  support@atmosmonitor.com
+              {/* Quick Links Section */}
+              <div className="footer-links" style={{ flex: 1, minWidth: "250px" }}>
+                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Quick Links</h3>
+                <a
+                  href="#home"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }}
+                  style={{
+                    display: "block",
+                    color: "#ccc",
+                    fontSize: "1rem",
+                    marginBottom: "0.5rem",
+                    textDecoration: "none",
+                  }}
+                >
+                  Home
                 </a>
-              </p>
-              <p>Phone: +1 234 567 890</p>
-              <p>Address: 1234 Air Quality St, City, Country</p>
+                <a
+                  href="#features"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementById("features")
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{
+                    display: "block",
+                    color: "#ccc",
+                    fontSize: "1rem",
+                    marginBottom: "0.5rem",
+                    textDecoration: "none",
+                  }}
+                >
+                  Services
+                </a>
+                <a
+                  href="#contact-section"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementById("contact-section")
+                      .scrollIntoView({ behavior: "smooth" });
+                  }}
+                  style={{
+                    display: "block",
+                    color: "#ccc",
+                    fontSize: "1rem",
+                    marginBottom: "0.5rem",
+                    textDecoration: "none",
+                  }}
+                >
+                  Contact
+                </a>
+              </div>
+
+              {/* Social Media Section */}
+              <div className="footer-social" style={{ flex: 1, minWidth: "250px" }}>
+                <h3 style={{ fontSize: "1.5rem", marginBottom: "1rem" }}>Follow Us</h3>
+                <div className="social-icons">
+                  <a
+                    href="#linkedIN"
+                    aria-label="LinkedIn"
+                    style={{ color: "#ccc", marginRight: "1rem", textDecoration: "none" }}
+                  >
+                    LinkedIn
+                  </a>
+                  <a
+                    href="#Twitter"
+                    aria-label="Twitter"
+                    style={{ color: "#ccc", marginRight: "1rem", textDecoration: "none" }}
+                  >
+                    Twitter
+                  </a>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="footer-links">
-            <h3>Quick Links</h3>
-            <a
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
+
+            {/* Footer Bottom */}
+            <div
+              className="footer-bottom"
+              style={{
+                textAlign: "center",
+                marginTop: "2rem",
+                fontSize: "1rem",
+                color: "#bbb",
               }}
             >
-              Home
-            </a>
-            <a
-              href="#features"
-              onClick={(e) => {
-                e.preventDefault(); // Prevent default anchor behavior
-                document
-                  .getElementById("features") // Target the "about-section" element
-                  .scrollIntoView({ behavior: "smooth" }); // Smooth scroll to the section
-              }}
-            >
-              Services
-            </a>
-            <a
-              href="#contact-section"
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .getElementById("contact-section")
-                  .scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              Contact
-            </a>
-          </div>
-          <div className="footer-social">
-            <h3>Follow Us</h3>
-            <div className="social-icons">
-              <a href="#linkedIN" aria-label="LinkedIn">
-                LinkedIn
-              </a>
-              <a href="#Twitter" aria-label="Twitter">
-                Twitter
-              </a>
+              <p>&copy; 2024 AtmosMonitor. All rights reserved.</p>
             </div>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; 2024 AtmosMonitor. All rights reserved.</p>
-        </div>
-      </footer>
+          </footer>
+
+
     </div>
   );
 };
