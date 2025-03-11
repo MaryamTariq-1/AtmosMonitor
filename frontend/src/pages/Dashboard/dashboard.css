@@ -330,9 +330,6 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  color: #333;
-}
 
 form {
   display: flex;
@@ -365,7 +362,7 @@ button {
 }
 
 button:hover {
-  background-color: #000000;
+  background-color: #40454a;
 }
 
 #result {
@@ -375,6 +372,76 @@ button:hover {
   color: #333;
 }
 
+
+
+.traffic-predictor-container {
+   width: 100%;
+  max-width: 600px;
+  margin:  20px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+label {
+  font-weight: bold;
+}
+
+.traffic-input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+.traffic-predict-button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  background-color: #000000;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.traffic-predict-button:hover {
+  background-color: #40454a;
+}
+
+.traffic-result-box {
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.predicting {
+  background-color: #f0ad4e;
+  color: black;
+}
+
+.high-congestion {
+  background-color: #ff4d4d;
+  color: white;
+}
+
+.low-congestion {
+  background-color: #28a745;
+  color: white;
+}
+
+.error {
+  background-color: #ffc107;
+  color: black;
+}
 
 
 

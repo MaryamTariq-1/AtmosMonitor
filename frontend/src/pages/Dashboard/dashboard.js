@@ -133,10 +133,46 @@ function Dashboard() {
   const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
   const [healthAdvice, setHealthAdvice] = useState(""); // Store health advice based on AQI
 
-  const [alerts, setAlerts] = useState([]); // Store alerts
-  const [alertName, setAlertName] = useState(""); // Alert name input
-  const [alertFrequency, setAlertFrequency] = useState("Daily"); // Frequency of alert
-  const [alertTime, setAlertTime] = useState(""); // Custom time for alert
+  const [currentLocation, setCurrentLocation] = useState("");
+  const [destination, setDestination] = useState("");
+  const [datetime, setDatetime] = useState("");
+  const [result, setResult] = useState("");
+  const [resultClass, setResultClass] = useState("");
+
+   const predictTraffic = () => {
+     setResult("Predicting...");
+     setResultClass("result");
+
+     fetch("http://localhost:5005/predict", {
+       method: "POST",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify({
+         current_location: currentLocation,
+         destination,
+         datetime,
+       }),
+     })
+       .then((response) => response.json())
+       .then((data) => {
+         if (data.Error) {
+           setResult(data.Error);
+           setResultClass("result error");
+         } else if (data.Congestion === "High") {
+           setResult(
+             `🚦 High Congestion!\nSuggested Route: ${data.Suggested_Alternative_Route}`
+           );
+           setResultClass("result high-congestion");
+         } else {
+           setResult(`✅ Low Congestion\n${data.Suggested_Route}`);
+           setResultClass("result low-congestion");
+         }
+       })
+       .catch((error) => {
+         setResult(`Error: ${error}`);
+         setResultClass("result error");
+       });
+   };
+
 
   const [showInfopie, setShowInfopie] = useState(false);
 
@@ -184,6 +220,10 @@ function Dashboard() {
     };
   
 
+  
+
+
+  
    const [pollutionData, setPollutionData] = useState({
      pm25: 80,
      pm10: 150,
@@ -205,48 +245,6 @@ function Dashboard() {
 
   
 
-  // Handle adding an alert
-  // Handle adding an alert
-  const handleAddAlert = (e) => {
-    e.preventDefault();
-
-    // Make sure the alert name and time are valid
-    if (!alertName || !alertTime) return; // Don't add if name or time is empty
-
-    // Check if the alert already exists (based on name, for simplicity)
-    const alertExists = alerts.some(
-      (alert) => alert.name === alertName && alert.time === alertTime
-    );
-
-    if (alertExists) {
-      console.log("This alert already exists!");
-      return; // Prevent adding a duplicate alert
-    }
-
-    // Create a new alert
-    const newAlert = {
-      id: Date.now(), // Unique ID for each alert
-      name: alertName,
-      frequency: alertFrequency,
-      time: alertTime, // Store the custom time
-    };
-
-    // Add the new alert to the list
-    setAlerts((prevAlerts) => [...prevAlerts, newAlert]);
-
-    // Clear input fields after adding
-    setAlertName(""); // Clear name input
-    setAlertFrequency("Daily"); // Reset frequency selection
-    setAlertTime(""); // Reset time picker
-  };
-
-  // Handle removing an alert
-  const handleRemoveAlert = (alertId) => {
-    setAlerts((prevAlerts) =>
-      prevAlerts.filter((alert) => alert.id !== alertId)
-    );
-  };
-
   // Set up periodic notifications (just for demonstration purposes)
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
@@ -262,55 +260,6 @@ function Dashboard() {
   //   return () => clearInterval(intervalId); // Clean up interval on unmount
   // }, [alerts]);
 
-  const [pollutionAlert, setPollutionAlert] = useState(""); // Pollution level alert message
-  const [alertThresholds, setAlertThresholds] = useState({
-    pm25: 100, // Threshold for PM2.5
-    pm10: 150, // Threshold for PM10
-    co2: 500, // Threshold for CO2
-  });
-  useEffect(() => {
-    const fetchPollutionData = () => {
-      // Simulated pollution data (in real use, fetch data from an API)
-      const simulatedData = {
-        pm25: Math.random() * 200, // Simulated PM2.5 value
-        pm10: Math.random() * 200, // Simulated PM10 value
-        co2: Math.random() * 1000, // Simulated CO2 value
-      };
-      setPollutionData(simulatedData);
-      checkPollutionLevels(simulatedData); // Check pollution levels after fetching
-    };
-    fetchPollutionData();
-    const intervalId = setInterval(fetchPollutionData, 60000); // Fetch data every minute
-    return () => clearInterval(intervalId); // Clean up on unmount
-  }, []);
-
-  // Check pollution levels and trigger alerts
-  const checkPollutionLevels = (data) => {
-    let alertMessage = "";
-
-    if (data.pm25 > alertThresholds.pm25) {
-      alertMessage += `PM2.5 levels are high: ${data.pm25.toFixed(2)} µg/m³. `;
-    }
-
-    if (data.pm10 > alertThresholds.pm10) {
-      alertMessage += `PM10 levels are high: ${data.pm10.toFixed(2)} µg/m³. `;
-    }
-
-    if (data.co2 > alertThresholds.co2) {
-      alertMessage += `CO2 levels are high: ${data.co2.toFixed(2)} ppm. `;
-    }
-
-    if (alertMessage) {
-      setPollutionAlert(alertMessage);
-      // Optionally, add the alert to the alert list
-      setAlerts((prevAlerts) => [
-        ...prevAlerts,
-        { id: Date.now(), message: alertMessage },
-      ]);
-    } else {
-      setPollutionAlert("Pollution levels are normal.");
-    }
-  };
 
   useEffect(() => {
     // Fetch the data from JSON
@@ -1030,32 +979,29 @@ function Dashboard() {
           {/* Heat Map (Placeholder with ComposedChart) */}
           <section id="heat-map" className="chart-card">
             {/* Heat Map */}
-              <div className="info-button-container">
-                <button
-                  onClick={handleToggleInfoHeatMap}
-                  className="info-button"
-                >
-                  <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
-                </button>
-              </div>
+            <div className="info-button-container">
+              <button onClick={handleToggleInfoHeatMap} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
 
-              {showInfoHeatMap && (
-                <div className="info-card-heatmap">
-                  <p>
-                    The <b>Heat Map</b> visualizes data density over a
-                    geographical area. It uses color gradients to represent the
-                    concentration of data points, where warmer colors (like red)
-                    indicate higher concentrations, and cooler colors (like
-                    blue) indicate lower concentrations.
-                  </p>
-                  <p>
-                    Heat maps are useful for identifying areas with high or low
-                    activity, such as pollution hotspots or areas with increased
-                    traffic, helping to make data-driven decisions and track
-                    changes over time.
-                  </p>
-                </div>
-              )}
+            {showInfoHeatMap && (
+              <div className="info-card-heatmap">
+                <p>
+                  The <b>Heat Map</b> visualizes data density over a
+                  geographical area. It uses color gradients to represent the
+                  concentration of data points, where warmer colors (like red)
+                  indicate higher concentrations, and cooler colors (like blue)
+                  indicate lower concentrations.
+                </p>
+                <p>
+                  Heat maps are useful for identifying areas with high or low
+                  activity, such as pollution hotspots or areas with increased
+                  traffic, helping to make data-driven decisions and track
+                  changes over time.
+                </p>
+              </div>
+            )}
 
             <h3>Heat Map</h3>
             <div className="chart-container">
@@ -1100,6 +1046,40 @@ function Dashboard() {
               </h3>
             </div>
           </div>
+
+          <div className="traffic-predictor-container">
+            <h1>Traffic Congestion Predictor</h1>
+            <label>Current Location:</label>
+            <input
+              type="text"
+              value={currentLocation}
+              onChange={(e) => setCurrentLocation(e.target.value)}
+              placeholder="Enter current location"
+              className="traffic-input-field"
+            />
+            <label>Destination:</label>
+            <input
+              type="text"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              placeholder="Enter destination"
+              className="traffic-input-field"
+            />
+            <label>Date & Time:</label>
+            <input
+              type="datetime-local"
+              value={datetime}
+              onChange={(e) => setDatetime(e.target.value)}
+              className="traffic-input-field"
+            />
+            <button onClick={predictTraffic} className="traffic-predict-button">
+              Predict
+            </button>
+            <div id="result" className={`traffic-result-box ${resultClass}`}>
+              {result}
+            </div>
+          </div>
+
           {healthAdvice && (
             <div className="health-advice-cards">
               <div className="advice-card">
@@ -1127,49 +1107,11 @@ function Dashboard() {
           <h2>Custom Alerts</h2>
 
           {/* Alert Form */}
-          <div className="add-alert-form">
-            <form onSubmit={handleAddAlert}>
-              <input
-                type="text"
-                value={alertName}
-                onChange={(e) => setAlertName(e.target.value)}
-                placeholder="Enter Alert Name"
-                required
-              />
-              <select
-                value={alertFrequency}
-                onChange={(e) => setAlertFrequency(e.target.value)}
-              >
-                <option value="Daily">Daily</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Monthly">Monthly</option>
-              </select>
-              <input
-                type="datetime-local"
-                value={alertTime}
-                onChange={(e) => setAlertTime(e.target.value)}
-                required
-              />
-              <button type="submit">Add Alert</button>
-            </form>
-          </div>
+          <div className="add-alert-form"></div>
 
           {/* Display List of Alerts */}
-          <div className="alert-list">
-            {alerts.map((alert) => (
-              <div key={alert.id} className="alert-item">
-                <div>
-                  <strong>{alert.name}</strong> - {alert.frequency} -{" "}
-                  {/*  {new Date(alert.time).toLocaleString()}*/}
-                </div>
-                <button onClick={() => handleRemoveAlert(alert.id)}>
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
+          <div className="alert-list"></div>
           {/* Pollution Level Alert */}
-          {pollutionAlert && <div className="alert-item">{pollutionAlert}</div>}
         </section>
       </main>
 

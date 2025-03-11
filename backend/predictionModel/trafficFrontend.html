@@ -208,7 +208,7 @@
             resultDiv.innerHTML = "Predicting...";
             resultDiv.className = "result";
 
-            fetch("http://localhost:5000/predict", {
+            fetch("http://localhost:5005/predict", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ current_location, destination, datetime })
