@@ -12,6 +12,10 @@ import {
   faPieChart,
   faChartBar,
   faTachometerAlt,
+  faExclamationCircle,
+  faCheckCircle,
+  faExclamationTriangle,
+  faInfoCircle
 } from "@fortawesome/free-solid-svg-icons";
 import "./dashboard.css";
 import GaugeChart from "react-gauge-chart";
@@ -134,8 +138,52 @@ function Dashboard() {
   const [alertFrequency, setAlertFrequency] = useState("Daily"); // Frequency of alert
   const [alertTime, setAlertTime] = useState(""); // Custom time for alert
 
+  const [showInfopie, setShowInfopie] = useState(false);
 
+  const handleToggleInfopie = () => {
+    setShowInfopie(!showInfopie);
+  };
+
+  const [showInfoPM, setShowInfoPM] = useState(false);
+
+  const handleToggleInfoPM = () => {
+    setShowInfoPM(!showInfoPM);
+  };
   
+ const [showInfoCO2, setShowInfoCO2] = useState(false);
+
+ const handleToggleInfoCO2 = () => {
+   setShowInfoCO2(!showInfoCO2);
+ };
+   const [showInfoTempHum, setShowInfoTempHum] = useState(false);
+
+   const handleToggleInfoTempHum = () => {
+     setShowInfoTempHum(!showInfoTempHum);
+   };
+  
+     const [showInfoPollutant, setShowInfoPollutant] = useState(false);
+
+     const handleToggleInfoPollutant = () => {
+       setShowInfoPollutant(!showInfoPollutant);
+     };
+      const [showInfoPollutants, setShowInfoPollutants] = useState(false);
+
+      const handleToggleInfoPollutants = () => {
+        setShowInfoPollutants(!showInfoPollutants);
+      };
+  const [showInfoAQI, setShowInfoAQI] = useState(false);
+
+  const handleToggleInfoAQI = () => {
+    setShowInfoAQI(!showInfoAQI);
+  };
+
+    const [showInfoHeatMap, setShowInfoHeatMap] = useState(false);
+
+    const handleToggleInfoHeatMap = () => {
+      setShowInfoHeatMap(!showInfoHeatMap);
+    };
+  
+
    const [pollutionData, setPollutionData] = useState({
      pm25: 80,
      pm10: 150,
@@ -155,6 +203,7 @@ function Dashboard() {
 
    const pollutionPercentage = calculatePollutionPercentage();
 
+  
 
   // Handle adding an alert
   // Handle adding an alert
@@ -366,6 +415,7 @@ function Dashboard() {
     (co2Data.reduce((a, b) => a + b, 0) / co2Data.length).toFixed(2)
   );
 
+  
   const pieData = [
     { name: "PM2.5", value: avgPM25 },
     { name: "PM10", value: avgPM10 },
@@ -475,6 +525,7 @@ function Dashboard() {
     }
   };
 
+
   return (
     <div className="dashboard">
       {/* Sidebar */}
@@ -492,7 +543,7 @@ function Dashboard() {
             </a>
           </li>
           <li>
-            <a href="#visual-data">
+            <a href="#visual-data-section">
               <FontAwesomeIcon icon={faDesktop} /> Visual Data
             </a>
           </li>
@@ -573,6 +624,32 @@ function Dashboard() {
 
           {/* Pie Chart */}
           <section id="pie-chart" className="chart-card">
+            <div className="info-button-container">
+              <button onClick={handleToggleInfopie} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfopie && (
+              <div className="info-card-piechart">
+                <p>
+                  <b>PM2.5</b> (Particulate Matter &lt; 2.5µm) are fine
+                  particles smaller than 2.5 micrometers that can cause
+                  respiratory and cardiovascular problems when inhaled.
+                </p>
+                <p>
+                  <b>PM10</b> (Particulate Matter &lt; 10µm) are particles
+                  smaller than 10 micrometers, which can irritate the eyes and
+                  respiratory system, and are linked to lung diseases.
+                </p>
+                <p>
+                  <b>CO2</b> is carbon dioxide, a gas produced by breathing and
+                  combustion, where high levels can cause discomfort and health
+                  issues.
+                </p>
+              </div>
+            )}
+
             <h3>Average Pollutant Distribution</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={400}>
@@ -600,6 +677,39 @@ function Dashboard() {
 
           {/* Plotly PM2.5 and PM10 Chart */}
           <section id="pm25-pm10-chart" className="chart-card">
+            <div className="info-button-container">
+              <button onClick={handleToggleInfoPM} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoPM && (
+              <div className="info-card-pm">
+                <p>
+                  The <b>PM2.5</b> and <b>PM10</b> levels chart shows the
+                  concentration of particulate matter over time. It helps to
+                  compare the levels of PM2.5 and PM10 pollutants.
+                </p>
+                <p>
+                  <b>PM2.5</b> (Particulate Matter &lt; 2.5µm) are fine
+                  particles smaller than 2.5 micrometers that can cause
+                  respiratory and cardiovascular problems when inhaled.
+                </p>
+                <p>
+                  <b>PM10</b> (Particulate Matter &lt; 10µm) are particles
+                  smaller than 10 micrometers, which can irritate the eyes and
+                  respiratory system and are linked to lung diseases.
+                </p>
+                <p>
+                  High levels of both PM2.5 and PM10 can significantly impact
+                  health, leading to long-term respiratory problems and
+                  cardiovascular diseases. Low levels indicate better air
+                  quality, but some exposure to moderate levels might still
+                  cause health effects, especially for vulnerable groups.
+                </p>
+              </div>
+            )}
+
             <h3>PM2.5 and PM10 Levels</h3>
             <Plot
               data={[
@@ -629,6 +739,34 @@ function Dashboard() {
 
           {/* Plotly CO2 Levels Chart */}
           <section id="co2-chart" className="chart-card">
+            <div className="info-button-container">
+              <button onClick={handleToggleInfoCO2} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoCO2 && (
+              <div className="info-card-co2">
+                <p>
+                  The <b>CO2 Levels</b> chart shows the concentration of carbon
+                  dioxide in the air over time. It helps track fluctuations in
+                  CO2 levels and provides insights into air quality trends.
+                </p>
+                <p>
+                  <b>CO2</b> is carbon dioxide, a gas produced by breathing and
+                  combustion, where high levels can cause discomfort and health
+                  issues such as headaches, dizziness, and shortness of breath.
+                </p>
+                <p>
+                  <b>High levels</b> of CO2 (above 1,000 ppm) can indicate poor
+                  ventilation and may lead to discomfort or health problems.
+                </p>
+                <p>
+                  <b>Low levels</b> (around 400-500 ppm) are typical in
+                  well-ventilated spaces and do not pose any health risk.
+                </p>
+              </div>
+            )}
             <h3>CO2 Levels</h3>
             <Plot
               data={[
@@ -650,6 +788,50 @@ function Dashboard() {
 
           {/* Plotly Temperature & Humidity Chart */}
           <section id="temperature-humidity-chart" className="chart-card">
+            {/* Temperature & Humidity Chart */}
+            <div className="info-button-container">
+              <button onClick={handleToggleInfoTempHum} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoTempHum && (
+              <div className="info-card-temp-hum">
+                <p>
+                  The <b>Temperature & Humidity</b> chart shows the changes in
+                  temperature (°C) and humidity (%) over time. It helps to track
+                  weather patterns and fluctuations in both temperature and
+                  humidity levels.
+                </p>
+                <p>
+                  <b>Temperature</b>: High temperatures can cause discomfort and
+                  heat-related illnesses, while low temperatures can lead to
+                  cold-related health issues.
+                </p>
+                <p>
+                  <b>Humidity</b>: High humidity can make the air feel warmer
+                  and cause discomfort, while low humidity can lead to dry skin
+                  and respiratory problems.
+                </p>
+                <p>
+                  <b>High Temperature</b> levels (above 35°C) can be dangerous,
+                  leading to heat stroke or dehydration.
+                </p>
+                <p>
+                  <b>Low Temperature</b> levels (below 0°C) can cause
+                  hypothermia and frostbite if prolonged.
+                </p>
+                <p>
+                  <b>High Humidity</b> levels (above 80%) can cause discomfort
+                  and may aggravate respiratory conditions.
+                </p>
+                <p>
+                  <b>Low Humidity</b> levels (below 30%) can cause skin dryness
+                  and respiratory issues.
+                </p>
+              </div>
+            )}
+
             <h3>Temperature & Humidity</h3>
             <Plot
               data={[
@@ -684,6 +866,33 @@ function Dashboard() {
 
           {/* Bar Chart */}
           <section id="bar-chart" className="chart-card">
+            {/* Pollutant Levels on the Last Day Chart */}
+            <div className="info-button-container">
+              <button
+                onClick={handleToggleInfoPollutant}
+                className="info-button"
+              >
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoPollutant && (
+              <div className="info-card-pollutant">
+                <p>
+                  The <b>Pollutant Levels on the Last Day</b> chart displays the
+                  concentrations of <b>PM2.5</b>, <b>PM10</b>, and <b>CO2</b>{" "}
+                  pollutants measured on the most recent day. It provides a
+                  snapshot of air quality for that specific day.
+                </p>
+                <p>
+                  High levels of <b>PM2.5</b> and <b>PM10</b> can be harmful to
+                  health, while high <b>CO2</b> levels indicate poor ventilation
+                  and discomfort. Low levels of these pollutants are ideal for
+                  good air quality.
+                </p>
+              </div>
+            )}
+
             <h3>Pollutant Levels on the Last Day</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={400}>
@@ -701,6 +910,28 @@ function Dashboard() {
 
           {/* Stacked Bar Chart */}
           <section id="stacked-bar-chart" className="chart-card">
+            {/* Pollutants Over Time Chart */}
+
+            <div className="info-button-container">
+              <button
+                onClick={handleToggleInfoPollutants}
+                className="info-button"
+              >
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoPollutants && (
+              <div className="info-card-pollutants">
+                <p>
+                  The <b>Pollutants Over Time</b> chart shows the levels of{" "}
+                  <b>PM2.5</b>, <b>PM10</b>, and <b>CO2</b> tracked over time.
+                  It helps assess changes in air quality by monitoring pollutant
+                  concentrations.
+                </p>
+              </div>
+            )}
+
             <h3>Pollutants Over Time</h3>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={400}>
@@ -720,6 +951,59 @@ function Dashboard() {
 
           {/* Gauge Chart */}
           <section id="gauge-chart" className="chart-card">
+            {/* Air Quality Index Gauge Chart */}
+            <div className="info-button-container">
+              <button onClick={handleToggleInfoAQI} className="info-button">
+                <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+              </button>
+            </div>
+
+            {showInfoAQI && (
+              <div className="info-card-aqi">
+                <p>
+                  The <b>Air Quality Index (AQI)</b> chart shows the current
+                  level of air pollution. It provides a visual representation of
+                  air quality, where lower values indicate good air quality and
+                  higher values indicate hazardous air quality.
+                </p>
+                <p>
+                  AQI values are categorized into color-coded ranges by{" "}
+                  <b>WHO</b>:
+                  <ul>
+                    <li>
+                      <b>Good (0-50)</b>: Air quality is considered
+                      satisfactory, and air pollution poses little or no risk.
+                    </li>
+                    <li>
+                      <b>Moderate (51-100)</b>: Air quality is acceptable;
+                      however, some pollutants may pose a moderate risk for a
+                      very small number of individuals.
+                    </li>
+                    <li>
+                      <b>Unhealthy for Sensitive Groups (101-150)</b>: Members
+                      of sensitive groups, including children and people with
+                      respiratory or heart conditions, may begin to experience
+                      health effects.
+                    </li>
+                    <li>
+                      <b>Unhealthy (151-200)</b>: Everyone may begin to
+                      experience health effects, and members of sensitive groups
+                      may experience more serious health effects.
+                    </li>
+                    <li>
+                      <b>Very Unhealthy (201-300)</b>: Health alert; everyone
+                      may experience more serious health effects.
+                    </li>
+                    <li>
+                      <b>Hazardous (301-500)</b>: Health warnings of emergency
+                      conditions. The entire population is more likely to be
+                      affected.
+                    </li>
+                  </ul>
+                </p>
+              </div>
+            )}
+
             <h3>Air Quality Index (Latest)</h3>
             <div className="chart-container">
               <GaugeChart
@@ -745,60 +1029,39 @@ function Dashboard() {
 
           {/* Heat Map (Placeholder with ComposedChart) */}
           <section id="heat-map" className="chart-card">
+            {/* Heat Map */}
+              <div className="info-button-container">
+                <button
+                  onClick={handleToggleInfoHeatMap}
+                  className="info-button"
+                >
+                  <FontAwesomeIcon icon={faInfoCircle} className="info-icon" />
+                </button>
+              </div>
+
+              {showInfoHeatMap && (
+                <div className="info-card-heatmap">
+                  <p>
+                    The <b>Heat Map</b> visualizes data density over a
+                    geographical area. It uses color gradients to represent the
+                    concentration of data points, where warmer colors (like red)
+                    indicate higher concentrations, and cooler colors (like
+                    blue) indicate lower concentrations.
+                  </p>
+                  <p>
+                    Heat maps are useful for identifying areas with high or low
+                    activity, such as pollution hotspots or areas with increased
+                    traffic, helping to make data-driven decisions and track
+                    changes over time.
+                  </p>
+                </div>
+              )}
+
             <h3>Heat Map</h3>
             <div className="chart-container">
               <HeatMap />
             </div>
           </section>
-        </section>
-
-        <section className="custom-alerts" id="alerts">
-          <h2>Custom Alerts</h2>
-
-          {/* Alert Form */}
-          <div className="add-alert-form">
-            <form onSubmit={handleAddAlert}>
-              <input
-                type="text"
-                value={alertName}
-                onChange={(e) => setAlertName(e.target.value)}
-                placeholder="Enter Alert Name"
-                required
-              />
-              <select
-                value={alertFrequency}
-                onChange={(e) => setAlertFrequency(e.target.value)}
-              >
-                <option value="Daily">Daily</option>
-                <option value="Weekly">Weekly</option>
-                <option value="Monthly">Monthly</option>
-              </select>
-              <input
-                type="datetime-local"
-                value={alertTime}
-                onChange={(e) => setAlertTime(e.target.value)}
-                required
-              />
-              <button type="submit">Add Alert</button>
-            </form>
-          </div>
-
-          {/* Display List of Alerts */}
-          <div className="alert-list">
-            {alerts.map((alert) => (
-              <div key={alert.id} className="alert-item">
-                <div>
-                  <strong>{alert.name}</strong> - {alert.frequency} -{" "}
-                  {/*  {new Date(alert.time).toLocaleString()}*/}
-                </div>
-                <button onClick={() => handleRemoveAlert(alert.id)}>
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-          {/* Pollution Level Alert */}
-          {pollutionAlert && <div className="alert-item">{pollutionAlert}</div>}
         </section>
 
         <section className="Recommendations-system" id="recommendation">
@@ -858,6 +1121,55 @@ function Dashboard() {
               </div>
             </div>
           )}
+        </section>
+
+        <section className="custom-alerts" id="alerts">
+          <h2>Custom Alerts</h2>
+
+          {/* Alert Form */}
+          <div className="add-alert-form">
+            <form onSubmit={handleAddAlert}>
+              <input
+                type="text"
+                value={alertName}
+                onChange={(e) => setAlertName(e.target.value)}
+                placeholder="Enter Alert Name"
+                required
+              />
+              <select
+                value={alertFrequency}
+                onChange={(e) => setAlertFrequency(e.target.value)}
+              >
+                <option value="Daily">Daily</option>
+                <option value="Weekly">Weekly</option>
+                <option value="Monthly">Monthly</option>
+              </select>
+              <input
+                type="datetime-local"
+                value={alertTime}
+                onChange={(e) => setAlertTime(e.target.value)}
+                required
+              />
+              <button type="submit">Add Alert</button>
+            </form>
+          </div>
+
+          {/* Display List of Alerts */}
+          <div className="alert-list">
+            {alerts.map((alert) => (
+              <div key={alert.id} className="alert-item">
+                <div>
+                  <strong>{alert.name}</strong> - {alert.frequency} -{" "}
+                  {/*  {new Date(alert.time).toLocaleString()}*/}
+                </div>
+                <button onClick={() => handleRemoveAlert(alert.id)}>
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* Pollution Level Alert */}
+          {pollutionAlert && <div className="alert-item">{pollutionAlert}</div>}
         </section>
       </main>
 

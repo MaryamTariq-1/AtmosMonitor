@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -130,5 +130,120 @@
             });
         }
     </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Congestion Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 50%;
+            margin: auto;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .high-congestion {
+            background-color: #ff4d4d;
+            color: white;
+        }
+        .low-congestion {
+            background-color: #28a745;
+            color: white;
+        }
+        .error {
+            background-color: #ffc107;
+            color: black;
+        }
+    </style>
+    <script>
+        function predictTraffic() {
+            const current_location = document.getElementById("current_location").value;
+            const destination = document.getElementById("destination").value;
+            const datetime = document.getElementById("datetime").value;
+            const resultDiv = document.getElementById("result");
+
+            resultDiv.innerHTML = "Predicting...";
+            resultDiv.className = "result";
+
+            fetch("http://localhost:5000/predict", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ current_location, destination, datetime })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.Error) {
+                    resultDiv.innerText = data.Error;
+                    resultDiv.className = "result error";
+                } else if (data.Congestion === "High") {
+                    resultDiv.innerText = `🚦 High Congestion!\nSuggested Route: ${data.Suggested_Alternative_Route}`;
+                    resultDiv.className = "result high-congestion";
+                } else {
+                    resultDiv.innerText = `✅ Low Congestion\n${data.Suggested_Route}`;
+                    resultDiv.className = "result low-congestion";
+                }
+            })
+            .catch(error => {
+                resultDiv.innerText = "Error: " + error;
+                resultDiv.className = "result error";
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Traffic Congestion Predictor</h1>
+        <label>Current Location:</label>
+        <input type="text" id="current_location" placeholder="Enter current location">
+        <label>Destination:</label>
+        <input type="text" id="destination" placeholder="Enter destination">
+        <label>Date & Time:</label>
+        <input type="datetime-local" id="datetime">
+        <button onclick="predictTraffic()">Predict</button>
+        <div id="result" class="result"></div>
+    </div>
 </body>
 </html>

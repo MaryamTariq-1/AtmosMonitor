@@ -16,13 +16,9 @@ const SignIn = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await login(email, password);
-      if (data.message === "OTP verification required") {
-        setOtpSent(true);
-      } else {
-        localStorage.setItem("token", data.token); // Store JWT token
-        navigate("/dashboard");
-      }
+      const data = await login(email, password); // Call the API to log in
+      alert(data.message); // Show success message
+      navigate("/dashboard"); // Redirect to Dashboard after successful login
     } catch (error) {
       setError(error.response ? error.response.data.error : "Login failed. Please try again.");
     } finally {
@@ -59,39 +55,36 @@ const SignIn = () => {
       </header>
       <div className="signin-container">
         <h2>LOGIN TO YOUR ACCOUNT</h2>
-        {!otpSent ? (
-          <form onSubmit={handleSubmit}>
-            <input
-              type="email"
-              placeholder="Email"
-              required
-              onChange={(e) => setEmail(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              required
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit" disabled={loading}>
-              {loading ? "Signing in..." : "Sign In"}
-            </button>
-          </form>
-        ) : (
-          <form onSubmit={handleOtpVerification}>
-            <input
-              type="text"
-              value={otp}
-              placeholder="Enter OTP"
-              required
-              onChange={(e) => setOtp(e.target.value)}
-            />
-            <button type="submit" disabled={loading}>
-              {loading ? "Verifying OTP..." : "Verify OTP"}
-            </button>
-          </form>
-        )}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            type="email"
+            placeholder="Email"
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit">Sign In</button>
+        </form>
+        {error && <p style={{ color: "red" }}>{error}</p>} {/* Show error message if any */}
+        
+        {/* Forgot Password link */}
+        <div className="forgot-password">
+          <button className="forgot-password-link" onClick={handleForgotPassword}>
+            Forgot Password?
+          </button>
+        </div>
+
+        <p>
+          Don't have an account?{" "}
+          <a href="/signup" className="signup-link">
+            Sign Up
+          </a>
+        </p>
       </div>
     </div>
   );

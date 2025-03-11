@@ -72,7 +72,17 @@ const Checkout = () => {
           }
         );
 
+        // Check if the response is OK (status code 200)
+        if (!response.ok) {
+          // If not OK, log the status and response text
+          console.error(`Error: ${response.status} ${response.statusText}`);
+          const errorText = await response.text();
+          console.error("Error body:", errorText);
+          return; // Exit if response is not ok
+        }
+        // If the response is ok, read the JSON response
         const result = await response.json();
+        console.log("Payment result:", result);
 
         if (response.ok) {
           alert("Payment successful!");
