@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { sendOtpForPasswordReset, verifyOtpAndResetPassword } from "../../api";
+import { sendOtpForPasswordReset, resetPasswordWithOtp } from "../../api"; // Ensure these API functions are correctly set up
 import "./forgetpass.css";
 
 const ForgotPassword = () => {
@@ -13,35 +13,40 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // Handle OTP request to be sent
   const handleSendOtp = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await sendOtpForPasswordReset(email);
-      setMessage(data.message);
-      setOtpSent(true);
-      setError("");
+      const data = await sendOtpForPasswordReset(email); // Ensure backend is set up for this request
+      setMessage(data.message); // Success message from backend
+      setOtpSent(true); // Show OTP form
+      setError(""); // Clear previous errors
     } catch (error) {
       setError(error.response ? error.response.data.error : "Failed to send OTP. Please try again.");
-      setMessage("");
+      setMessage(""); // Clear any previous success messages
     } finally {
       setLoading(false);
     }
   };
 
+  // Handle password reset with OTP
   const handleResetPassword = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const data = await verifyOtpAndResetPassword(email, otp, newPassword);
-      setMessage(data.message);
-      setError("");
+      const data = await resetPasswordWithOtp(email, otp, newPassword); // Reset password using OTP
+      setMessage(data.message); // Show success message
+      setError(""); // Clear previous errors
+      setOtp(""); // Clear OTP input field for security
+      setNewPassword(""); // Clear new password input field
+
       setTimeout(() => {
-        navigate("/signin");
-      }, 2000); // Redirect to Sign-In page after successful reset
+        navigate("/signin"); // Redirect to Sign-In page after successful reset
+      }, 2000);
     } catch (error) {
       setError(error.response ? error.response.data.error : "Failed to reset password. Try again.");
-      setMessage("");
+      setMessage(""); // Clear any previous success messages
     } finally {
       setLoading(false);
     }
@@ -59,6 +64,7 @@ const ForgotPassword = () => {
       <div className="forgot-password-container">
         <h2>Forgot Password</h2>
 
+        {/* Form to send OTP */}
         {!otpSent ? (
           <form onSubmit={handleSendOtp}>
             <input
@@ -73,6 +79,7 @@ const ForgotPassword = () => {
             </button>
           </form>
         ) : (
+          // Form to reset password using OTP
           <form onSubmit={handleResetPassword}>
             <input
               type="text"

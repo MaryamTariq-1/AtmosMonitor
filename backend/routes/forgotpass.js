@@ -23,7 +23,7 @@ router.post('/forgot-password', async (req, res, next) => {
     // Generate OTP
     const otp = generateOtp();
     user.otp = otp;
-    user.otpExpiryTime = Date.now() + OTP_EXPIRY_TIME;
+    user.otpExpiryTime = Date.now() + OTP_EXPIRY_TIME; // Set expiry time for OTP
     await user.save();
 
     // Send OTP via email
@@ -44,10 +44,25 @@ router.post('/verify-otp', async (req, res, next) => {
       return res.status(400).json({ error: "Email and OTP are required." });
     }
 
-    const isOtpValid = await verifyOtp(email, otpEntered);
-    if (!isOtpValid) {
-      return res.status(400).json({ error: "Invalid or expired OTP." });
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
     }
+
+    // Check if OTP is expired
+    if (Date.now() > user.otpExpiryTime) {
+      return res.status(400).json({ error: "OTP has expired." });
+    }
+
+    // Verify OTP
+    if (user.otp !== otpEntered) {
+      return res.status(400).json({ error: "Invalid OTP." });
+    }
+
+    // OTP is valid, so clear OTP data for security
+    user.otp = null;
+    user.otpExpiryTime = null;
+    await user.save();
 
     res.status(200).json({ message: "OTP verified. You can now reset your password." });
   } catch (error) {
@@ -80,4 +95,3 @@ async function sendOtpToEmail(email, otp) {
 }
 
 module.exports = router;
-

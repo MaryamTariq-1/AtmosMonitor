@@ -39,7 +39,7 @@ exports.signup = async (req, res) => {
   }
 };
 
-// Signin Controller
+/* Signin Controller
 exports.signin = async (req, res) => {
   try {
     const { email, password, otp } = req.body;
@@ -73,6 +73,43 @@ exports.signin = async (req, res) => {
     const token = generateToken(user._id);
     res.status(200).json({ message: "Login successful.", token });
   } catch (error) {
+    res.status(500).json({ error: "Server Error", details: error.message });
+  }
+}; */
+// Signin Controller
+exports.signin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if email and password are provided
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required." });
+    }
+
+    const normalizedEmail = email.toLowerCase();
+    
+    // Check if user exists in the database
+    const user = await UserModel.findOne({ email: normalizedEmail });
+
+    if (!user) {
+      // If email is not found, send error response
+      return res.status(404).json({ error: "Invalid email." });
+    }
+
+    // Check if password matches the stored hashed password
+    const isPasswordValid = await user.matchPassword(password);
+    if (!isPasswordValid) {
+      // If password is incorrect, send error response
+      return res.status(401).json({ error: "Invalid password." });
+    }
+
+    // If the email and password are correct, generate a JWT token
+    const token = generateToken(user._id);
+
+    // Send success response with the token
+    res.status(200).json({ message: "Login successful.", token });
+  } catch (error) {
+    // Handle server errors
     res.status(500).json({ error: "Server Error", details: error.message });
   }
 };
