@@ -124,7 +124,7 @@ TWILIO_PHONE_NUMBER = os.getenv("TWILIO_PHONE_NUMBER")
 client = Client(TWILIO_SID, TWILIO_AUTH_TOKEN)
 
 # Traffic Prediction API URL
-TRAFFIC_API_URL = "http://127.0.0.1:5000/predict"  # Update if hosted elsewhere
+TRAFFIC_API_URL = "http://127.0.0.1:5005/predict"  # Update if hosted elsewhere
 
 # Home route to render `sms_frontend.html`
 @app.route("/")
@@ -205,4 +205,4 @@ def schedule_alert():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5001)  # Run on port 5001
+    app.run(debug=True, port=5006)  # Run on port 5001

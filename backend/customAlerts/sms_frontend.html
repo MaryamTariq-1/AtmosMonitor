@@ -170,7 +170,7 @@
             const departure_time = document.getElementById("departure_time").value;
             const alert_time = document.getElementById("alert_time").value;
 
-            fetch("http://127.0.0.1:5001/schedule-alert", {
+            fetch("http://127.0.0.1:5006/schedule-alert", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ phoneNumber, current_location, destination, departure_time, alert_time }),
