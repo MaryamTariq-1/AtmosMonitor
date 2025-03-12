@@ -6,12 +6,14 @@ const mongoose = require("mongoose");
 // Import Routes
 const authRoutes = require("./routes/user");
 const paymentRoutes = require("./routes/paymentRoute");
+const contactRoutes = require("./routes/contactRoute");
 
 const app = express();
 
 // Middleware setup
 app.use(cors({ origin: "*" }));
-app.use(express.json());
+app.use(express.json()); // Parse JSON
+app.use(express.urlencoded({ extended: true })); // Parse form data
 
 // Log incoming requests for debugging
 app.use((req, res, next) => {
@@ -19,14 +21,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// MongoDB Connection with proper error handling
+// ✅ FIXED MongoDB Connection with the correct .env variable
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.DATABASE_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("✅ Connected to MongoDB");
+    console.log("✅ Connected to MongoDB Atlas");
   } catch (err) {
     console.error("❌ MongoDB connection failed:", err);
     process.exit(1); // Exit process if connection fails
@@ -37,24 +39,14 @@ connectDB();
 // Mount Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/payment-intent", paymentRoutes);
-
-// Forgot Password Route (Moved to correct position)
-const forgotPasswordRoute = require("./routes/user");
-app.use("/api", forgotPasswordRoute);
+app.use("/api/contact", contactRoutes); // Fixed Contact Route Path
 
 // Error handling middleware
 const errorMiddleware = require("./middleware/errorMiddleware");
 app.use(errorMiddleware);
-
 
 // Start Server
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`🚀 Server is running on port ${PORT}`);
 });
-
-
-app.use('/api', forgotPasswordRoute);
-
-
-

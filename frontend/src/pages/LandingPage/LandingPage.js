@@ -1,5 +1,6 @@
 // src/pages/LandingPage/LandingPage.js
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
 import aqmImage from "../../assets/images/aqm.jfif";
@@ -15,14 +16,18 @@ import Maryam from "../../assets/images/maryam.jfif";
 import logo from "./logo.png";
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
+
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("");
 
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -45,50 +50,37 @@ const LandingPage = () => {
         }
   };
 
+  
   const validateForm = () => {
     const newErrors = {};
-const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.edu\.pk)$/;
+    const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|outlook\.com|hotmail\.com|yahoo\.com)$/;
 
+    if (!formData.name.trim()) newErrors.name = "Name is required.";
+    else if (!/^[a-zA-Z\s]*$/.test(formData.name.trim())) newErrors.name = "Name can only contain letters and spaces.";
+    else if (formData.name.trim().length < 3) newErrors.name = "Name must be at least 3 characters long.";
 
+    if (!formData.email.trim()) newErrors.email = "Email is required.";
+    else if (!emailRegex.test(formData.email.trim())) newErrors.email = "Enter a valid email address.";
 
-
-    // Name validation: required, letters/spaces only, min 3 characters
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required.";
-    } else if (!/^[a-zA-Z\s]*$/.test(formData.name.trim())) {
-      newErrors.name = "Name can only contain letters and spaces.";
-    } else if (formData.name.trim().length < 3) {
-      newErrors.name = "Name must be at least 3 characters long.";
-    }
-
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!emailRegex.test(formData.email.trim())) {
-      newErrors.email = "Enter a valid email address.";
-    }
-
-    // Message validation
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required.";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters long.";
-    }
+    if (!formData.message.trim()) newErrors.message = "Message is required.";
+    else if (formData.message.trim().length < 10) newErrors.message = "Message must be at least 10 characters long.";
 
     setErrors(newErrors);
-
-    // Return true if no errors exist
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Simulate sending data
-      setStatus("Your message has been sent successfully!");
-      setFormData({ name: "", email: "", message: "" }); // Reset form
-    } else {
-      setStatus(""); // Clear any previous status message if validation fails
+      try {
+        const response = await axios.post("http://localhost:3001/api/contact", formData);
+        setStatus(response.data.message);
+        setFormData({ name: "", email: "", message: "" });
+        setErrors({});
+        setTimeout(() => setStatus(""), 3000);
+      } catch (error) {
+        setStatus("Failed to send message. Please try again.");
+      }
     }
   };
 
@@ -504,44 +496,22 @@ const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.edu\.pk)$/;
       <section id="contact-section" className="contact-section">
         <div className="contact-form-container">
           <h1>Contact Us</h1>
-          <p>
-            Have questions or need support? Fill out the form below to get in
-            touch with us.
-          </p>
+          <p>Have questions or need support? Fill out the form below to get in touch with us.</p>
 
-          {status && <p className="status-message success">{status}</p>}
+          {status && <p className={`status-message ${status.includes("Failed") ? "error" : "success"}`}>{status}</p>}
 
           <form onSubmit={handleSubmit} className="contact-form">
             <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleInputChange}
-            />
+            <input type="text" id="name" name="name" value={formData.name} onChange={handleInputChange} />
             {errors.name && <p className="error-message">{errors.name}</p>}
 
             <label htmlFor="email">Email:</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-            />
+            <input type="email" id="email" name="email" value={formData.email} onChange={handleInputChange} />
             {errors.email && <p className="error-message">{errors.email}</p>}
 
             <label htmlFor="message">Message:</label>
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-            />
-            {errors.message && (
-              <p className="error-message">{errors.message}</p>
-            )}
+            <textarea id="message" name="message" value={formData.message} onChange={handleInputChange} />
+            {errors.message && <p className="error-message">{errors.message}</p>}
 
             <button type="submit">Send Message</button>
           </form>

@@ -15,8 +15,7 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false); // Loading State
   const [formErrors, setFormErrors] = useState({}); // Errors for form validation
 
-  const emailRegex =/^[^\s@]+@(gmail\.com|yahoo\.com|outlook\.com|example\.com|hotmail\.com|mail\.com|[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+)$/;
-
+  const emailRegex =/^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|outlook\.com|hotmail\.com|yahoo\.com)$/
   // Form validation
   const validateForm = () => {
     const newErrors = {};
