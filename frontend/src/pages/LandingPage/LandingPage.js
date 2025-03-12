@@ -48,7 +48,7 @@ const LandingPage = () => {
   const validateForm = () => {
     const newErrors = {};
 const emailRegex =
-  /^[^\s@]+@(gmail\.com|cfd\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
+  /^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
 
 
 
@@ -263,7 +263,7 @@ const emailRegex =
               color: "white",
             }}
           >
-            Your Gateway to Real-Time Environmental Insights
+            Your Gateway to Environmental Insights
           </p>
 
           <button onClick={() => navigate("/signup")} className="hero-button">
@@ -271,21 +271,21 @@ const emailRegex =
           </button>
 
           {/* YouTube Video (Uncomment for Online Use) */}
-          <iframe
+          {/* <iframe
             className="background-video"
             width="100%"
             height="100%"
             src="https://www.youtube.com/embed/yX5WtyGyp2Y?autoplay=1&loop=1&mute=1&playlist=yX5WtyGyp2Y"
             allow="autoplay; fullscreen; encrypted-media"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
 
-          {/* Local Video (Uncomment for Offline Use)
+          
           <video className="background-video" width="100%" height="100%" autoPlay loop muted playsInline>
             <source src="/earthloop.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video> 
-          */}
+         
         </div>
       </section>
 
@@ -312,7 +312,7 @@ const emailRegex =
               className="feature-image"
             />
             <h3>Monitoring Environment</h3>
-            <p>Stay updated with data on air quality and weather conditions.</p>
+            <p>Stay updated with data on air quality conditions.</p>
           </div>
           <div className="feature-card">
             <img
@@ -352,9 +352,9 @@ const emailRegex =
               alt="Smart Device Integration"
               className="feature-image"
             />
-            <h3>Integrating Smart Devices</h3>
+            <h3>Integrating Mobile Devices</h3>
             <p>
-              Optimize your home’s environment with seamless device
+              Optimize your environment with seamless device
               connectivity.
             </p>
           </div>

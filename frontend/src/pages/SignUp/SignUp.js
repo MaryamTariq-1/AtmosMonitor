@@ -19,7 +19,7 @@ const SignUp = () => {
  const validateForm = () => {
    const newErrors = {};
    const emailRegex =
-     /^[^\s@]+@(gmail\.com|cfd\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
+     /^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
 
    // Password regex: at least one uppercase letter, one lowercase letter, one number, and one special character
    const passwordRegex =
