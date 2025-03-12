@@ -53,17 +53,35 @@ const LandingPage = () => {
   
   const validateForm = () => {
     const newErrors = {};
-    const emailRegex = /^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|outlook\.com|hotmail\.com|yahoo\.com)$/;
+const emailRegex =
+  /^[^\s@]+@(gmail\.com|cfd\.nu\.edu\.pk|hotmail\.com|yahoo\.com|outlook\.com)$/;
 
-    if (!formData.name.trim()) newErrors.name = "Name is required.";
-    else if (!/^[a-zA-Z\s]*$/.test(formData.name.trim())) newErrors.name = "Name can only contain letters and spaces.";
-    else if (formData.name.trim().length < 3) newErrors.name = "Name must be at least 3 characters long.";
 
-    if (!formData.email.trim()) newErrors.email = "Email is required.";
-    else if (!emailRegex.test(formData.email.trim())) newErrors.email = "Enter a valid email address.";
 
-    if (!formData.message.trim()) newErrors.message = "Message is required.";
-    else if (formData.message.trim().length < 10) newErrors.message = "Message must be at least 10 characters long.";
+
+
+    // Name validation: required, letters/spaces only, min 3 characters
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required.";
+    } else if (!/^[a-zA-Z\s]*$/.test(formData.name.trim())) {
+      newErrors.name = "Name can only contain letters and spaces.";
+    } else if (formData.name.trim().length < 3) {
+      newErrors.name = "Name must be at least 3 characters long.";
+    }
+
+    // Email validation
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required.";
+    } else if (!emailRegex.test(formData.email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    // Message validation
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required.";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message = "Message must be at least 10 characters long.";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -253,7 +271,7 @@ const LandingPage = () => {
               color: "white",
             }}
           >
-            Your Gateway to Real-Time Environmental Insights
+            Your Gateway to Environmental Insights
           </p>
 
           <button onClick={() => navigate("/signup")} className="hero-button">
@@ -261,21 +279,21 @@ const LandingPage = () => {
           </button>
 
           {/* YouTube Video (Uncomment for Online Use) */}
-          <iframe
+          {/* <iframe
             className="background-video"
             width="100%"
             height="100%"
             src="https://www.youtube.com/embed/yX5WtyGyp2Y?autoplay=1&loop=1&mute=1&playlist=yX5WtyGyp2Y"
             allow="autoplay; fullscreen; encrypted-media"
             allowFullScreen
-          ></iframe>
+          ></iframe> */}
 
-          {/* Local Video (Uncomment for Offline Use)
+          
           <video className="background-video" width="100%" height="100%" autoPlay loop muted playsInline>
             <source src="/earthloop.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video> 
-          */}
+         
         </div>
       </section>
 
@@ -302,7 +320,7 @@ const LandingPage = () => {
               className="feature-image"
             />
             <h3>Monitoring Environment</h3>
-            <p>Stay updated with data on air quality and weather conditions.</p>
+            <p>Stay updated with data on air quality conditions.</p>
           </div>
           <div className="feature-card">
             <img
@@ -342,9 +360,9 @@ const LandingPage = () => {
               alt="Smart Device Integration"
               className="feature-image"
             />
-            <h3>Integrating Smart Devices</h3>
+            <h3>Integrating Mobile Devices</h3>
             <p>
-              Optimize your home’s environment with seamless device
+              Optimize your environment with seamless device
               connectivity.
             </p>
           </div>

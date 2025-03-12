@@ -111,6 +111,9 @@ function Dashboard() {
   const [locations, setLocations] = useState([]); // To store locations
   const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
   const [healthAdvice, setHealthAdvice] = useState(""); // Store health advice based on AQI
+  const [latestAQI, setLatestAQI] = useState("");
+  const [gaugeValue, setGaugeValue] = useState("");
+  const maxAQI = 500; // Maximum AQI value
 
   const [currentLocation, setCurrentLocation] = useState("");
   const [destination, setDestination] = useState("");
@@ -127,71 +130,69 @@ function Dashboard() {
   //   }
   // };
 
-   const [phoneNumber, setPhoneNumber] = useState("");
-   const [departureTime, setDepartureTime] = useState("");
-   const [alertTime, setAlertTime] = useState("");
-   const [responseMessage, setResponseMessage] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [departureTime, setDepartureTime] = useState("");
+  const [alertTime, setAlertTime] = useState("");
+  const [responseMessage, setResponseMessage] = useState("");
 
-   const scheduleAlert = () => {
-     fetch("http://127.0.0.1:5006/schedule-alert", {
-       method: "POST",
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({
-         phoneNumber,
-         current_location: currentLocation,
-         destination,
-         departure_time: departureTime,
-         alert_time: alertTime,
-       }),
-     })
-       .then((response) => response.json())
-       .then((data) => {
-         setResponseMessage(
-           data.success
-             ? "✅ Alert Scheduled Successfully!"
-             : "❌ Failed to schedule alert: " + data.error
-         );
-       })
-       .catch((error) => {
-         setResponseMessage("❌ Could not connect to server.");
-       });
-   };
+  const scheduleAlert = () => {
+    fetch("http://127.0.0.1:5006/schedule-alert", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        phoneNumber,
+        current_location: currentLocation,
+        destination,
+        departure_time: departureTime,
+        alert_time: alertTime,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setResponseMessage(
+          data.success
+            ? "✅ Alert Scheduled Successfully!"
+            : "❌ Failed to schedule alert: " + data.error
+        );
+      })
+      .catch((error) => {
+        setResponseMessage("❌ Could not connect to server.");
+      });
+  };
 
+  const predictTraffic = () => {
+    setResult("Predicting...");
+    setResultClass("result");
 
-   const predictTraffic = () => {
-     setResult("Predicting...");
-     setResultClass("result");
-
-     fetch("http://localhost:5005/predict", {
-       method: "POST",
-       headers: { "Content-Type": "application/json" },
-       body: JSON.stringify({
-         current_location: currentLocation,
-         destination,
-         datetime,
-       }),
-     })
-       .then((response) => response.json())
-       .then((data) => {
-         if (data.Error) {
-           setResult(data.Error);
-           setResultClass("result error");
-         } else if (data.Congestion === "High") {
-           setResult(
-             `🚦 High Congestion!\nSuggested Route: ${data.Suggested_Alternative_Route}`
-           );
-           setResultClass("result high-congestion");
-         } else {
-           setResult(`✅ Low Congestion\n${data.Suggested_Route}`);
-           setResultClass("result low-congestion");
-         }
-       })
-       .catch((error) => {
-         setResult(`Error: ${error}`);
-         setResultClass("result error");
-       });
-   };
-
+    fetch("http://localhost:5005/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        current_location: currentLocation,
+        destination,
+        datetime,
+      }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.Error) {
+          setResult(data.Error);
+          setResultClass("result error");
+        } else if (data.Congestion === "High") {
+          setResult(
+            `🚦 High Congestion!\nSuggested Route: ${data.Suggested_Alternative_Route}`
+          );
+          setResultClass("result high-congestion");
+        } else {
+          setResult(`✅ Low Congestion\n${data.Suggested_Route}`);
+          setResultClass("result low-congestion");
+        }
+      })
+      .catch((error) => {
+        setResult(`Error: ${error}`);
+        setResultClass("result error");
+      });
+  };
 
   const [showInfopie, setShowInfopie] = useState(false);
 
@@ -204,65 +205,58 @@ function Dashboard() {
   const handleToggleInfoPM = () => {
     setShowInfoPM(!showInfoPM);
   };
-  
- const [showInfoCO2, setShowInfoCO2] = useState(false);
 
- const handleToggleInfoCO2 = () => {
-   setShowInfoCO2(!showInfoCO2);
- };
-   const [showInfoTempHum, setShowInfoTempHum] = useState(false);
+  const [showInfoCO2, setShowInfoCO2] = useState(false);
 
-   const handleToggleInfoTempHum = () => {
-     setShowInfoTempHum(!showInfoTempHum);
-   };
-  
-     const [showInfoPollutant, setShowInfoPollutant] = useState(false);
+  const handleToggleInfoCO2 = () => {
+    setShowInfoCO2(!showInfoCO2);
+  };
+  const [showInfoTempHum, setShowInfoTempHum] = useState(false);
 
-     const handleToggleInfoPollutant = () => {
-       setShowInfoPollutant(!showInfoPollutant);
-     };
-      const [showInfoPollutants, setShowInfoPollutants] = useState(false);
+  const handleToggleInfoTempHum = () => {
+    setShowInfoTempHum(!showInfoTempHum);
+  };
 
-      const handleToggleInfoPollutants = () => {
-        setShowInfoPollutants(!showInfoPollutants);
-      };
+  const [showInfoPollutant, setShowInfoPollutant] = useState(false);
+
+  const handleToggleInfoPollutant = () => {
+    setShowInfoPollutant(!showInfoPollutant);
+  };
+  const [showInfoPollutants, setShowInfoPollutants] = useState(false);
+
+  const handleToggleInfoPollutants = () => {
+    setShowInfoPollutants(!showInfoPollutants);
+  };
   const [showInfoAQI, setShowInfoAQI] = useState(false);
 
   const handleToggleInfoAQI = () => {
     setShowInfoAQI(!showInfoAQI);
   };
 
-    const [showInfoHeatMap, setShowInfoHeatMap] = useState(false);
+  const [showInfoHeatMap, setShowInfoHeatMap] = useState(false);
 
-    const handleToggleInfoHeatMap = () => {
-      setShowInfoHeatMap(!showInfoHeatMap);
-    };
-  
+  const handleToggleInfoHeatMap = () => {
+    setShowInfoHeatMap(!showInfoHeatMap);
+  };
 
-  
+  const [pollutionData, setPollutionData] = useState({
+    pm25: 80,
+    pm10: 150,
+    co2: 400,
+  }); // Simulated pollution data
 
+  // Calculate the highest pollution level percentage
+  const calculatePollutionPercentage = () => {
+    const highestPollutant = Math.max(
+      pollutionData.pm25,
+      pollutionData.pm10,
+      pollutionData.co2
+    );
+    const maxPollutionLevel = 500; // Maximum possible value
+    return (highestPollutant / maxPollutionLevel) * 100;
+  };
 
-  
-   const [pollutionData, setPollutionData] = useState({
-     pm25: 80,
-     pm10: 150,
-     co2: 400,
-   }); // Simulated pollution data
-
-   // Calculate the highest pollution level percentage
-   const calculatePollutionPercentage = () => {
-     const highestPollutant = Math.max(
-       pollutionData.pm25,
-       pollutionData.pm10,
-       pollutionData.co2
-     );
-     const maxPollutionLevel = 500; // Maximum possible value
-     return (highestPollutant / maxPollutionLevel) * 100;
-   };
-
-   const pollutionPercentage = calculatePollutionPercentage();
-
-  
+  const pollutionPercentage = calculatePollutionPercentage();
 
   // Set up periodic notifications (just for demonstration purposes)
   // useEffect(() => {
@@ -278,7 +272,6 @@ function Dashboard() {
   //   }, 1000); // Check every second for simplicity
   //   return () => clearInterval(intervalId); // Clean up interval on unmount
   // }, [alerts]);
-
 
   useEffect(() => {
     // Fetch the data from JSON
@@ -346,8 +339,8 @@ function Dashboard() {
 
     //  const averageAQI = Math.max(avgPM25, avgPM10, avgCO2);
     //  const advice = getHealthAdvice(averageAQI, avgPM25, avgPM10, avgCO2);
-     // setHealthAdvice(advice);
-   };
+    // setHealthAdvice(advice);
+  };
 
   const [chartsData, setChartsData] = useState({
     timeRange: [],
@@ -383,7 +376,6 @@ function Dashboard() {
     (co2Data.reduce((a, b) => a + b, 0) / co2Data.length).toFixed(2)
   );
 
-  
   const pieData = [
     { name: "PM2.5", value: avgPM25 },
     { name: "PM10", value: avgPM10 },
@@ -403,14 +395,6 @@ function Dashboard() {
     PM10: pm10Data[index],
     CO2: co2Data[index],
   }));
-
-  const latestAQI = Math.max(
-    pm25Data[lastDayIndex],
-    pm10Data[lastDayIndex],
-    co2Data[lastDayIndex]
-  );
-  const maxAQI = 500; // Maximum AQI value
-  const gaugeValue = latestAQI / maxAQI; // Scale AQI value to range 0-1
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -434,6 +418,8 @@ function Dashboard() {
         if (data.predicted_aqi) {
           setPredictedAqi(data.predicted_aqi.toFixed(2));
           const aqi = parseFloat(predictedAqi);
+          setLatestAQI(aqi);
+          setGaugeValue(latestAQI / maxAQI); // Scale AQI value to range 0-1
           const advice = getHealthAdvice(aqi);
           setHealthAdvice(advice);
         } else {
@@ -450,7 +436,6 @@ function Dashboard() {
     }
   };
 
- 
   const getHealthAdvice = (aqi) => {
     if (aqi <= 50) {
       return {
@@ -492,7 +477,6 @@ function Dashboard() {
       };
     }
   };
-
 
   return (
     <div className="dashboard">
@@ -1076,60 +1060,61 @@ function Dashboard() {
 
           <div className="traffic-predictor-container">
             <h1>Traffic Congestion Predictor</h1>
-            <form className="form-container" >
-            <label className="form-label">Current Location:</label>
-            <input
-              className="form-input"
-              type="text"
-              value={currentLocation}
-              onChange={(e) => setCurrentLocation(e.target.value)}
-              placeholder="Enter current location"
-              list="location-list"
-            />
-            <datalist id="location-list">
-              {locations
-                .filter((location) =>
-                  location.toLowerCase().includes(currentLocation.toLowerCase())
-                )
-                .map((location, index) => (
-                  <option key={index} value={location} />
-                ))}
-            </datalist>
+            <form className="form-container">
+              <label className="form-label">Current Location:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={currentLocation}
+                onChange={(e) => setCurrentLocation(e.target.value)}
+                placeholder="Enter current location"
+                list="location-list"
+              />
+              <datalist id="location-list">
+                {locations
+                  .filter((location) =>
+                    location
+                      .toLowerCase()
+                      .includes(currentLocation.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
 
-            <label className="form-label">Destination:</label>
-            <input
-              className="form-input"
-              type="text"
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              placeholder="Enter destination"
-              list="destination-list"
-            />
-            <datalist id="destination-list">
-              {locations
-                .filter((location) =>
-                  location.toLowerCase().includes(destination.toLowerCase())
-                )
-                .map((location, index) => (
-                  <option key={index} value={location} />
-                ))}
-            </datalist>
+              <label className="form-label">Destination:</label>
+              <input
+                className="form-input"
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                placeholder="Enter destination"
+                list="destination-list"
+              />
+              <datalist id="destination-list">
+                {locations
+                  .filter((location) =>
+                    location.toLowerCase().includes(destination.toLowerCase())
+                  )
+                  .map((location, index) => (
+                    <option key={index} value={location} />
+                  ))}
+              </datalist>
 
-            <label className="form-label">Date & Time:</label>
-            <input
-              className="form-input"
-              type="datetime-local"
-              value={datetime}
-              onChange={(e) => setDatetime(e.target.value)}
-            />
-            <button className="form-button" onClick={predictTraffic}>
-              Predict
+              <label className="form-label">Date & Time:</label>
+              <input
+                className="form-input"
+                type="datetime-local"
+                value={datetime}
+                onChange={(e) => setDatetime(e.target.value)}
+              />
+              <button className="form-button" onClick={predictTraffic}>
+                Predict
               </button>
-              </form>
+            </form>
             <div id="result" className={`traffic-result-box ${resultClass}`}>
               {result}
             </div>
-            
           </div>
 
           <div className="health-impact" id="health-impact">
@@ -1176,7 +1161,7 @@ function Dashboard() {
           {/* Alert Form */}
           <div className="traffic-alerts-form">
             <h2>🚦 Traffic Alert Scheduler</h2>
-            <form className="form-container" >
+            <form className="form-container">
               <label>Enter Phone Number:</label>
               <input
                 className="form-input"
@@ -1245,8 +1230,8 @@ function Dashboard() {
               <button className="form-button" onClick={scheduleAlert}>
                 Schedule Alert
               </button>
-              </form>
-              <p>{responseMessage}</p>
+            </form>
+            <p>{responseMessage}</p>
           </div>
           {/* Pollu
           {/* Pollution Level Alert */}
