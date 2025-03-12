@@ -111,9 +111,6 @@ function Dashboard() {
   const [locations, setLocations] = useState([]); // To store locations
   const [selectedLocation, setSelectedLocation] = useState(null); // To store selected location
   const [healthAdvice, setHealthAdvice] = useState(""); // Store health advice based on AQI
-  const [latestAQI, setLatestAQI] = useState("");
-  const [gaugeValue, setGaugeValue] = useState("");
-  const maxAQI = 500; // Maximum AQI value
 
   const [currentLocation, setCurrentLocation] = useState("");
   const [destination, setDestination] = useState("");
@@ -396,6 +393,15 @@ function Dashboard() {
     CO2: co2Data[index],
   }));
 
+  const latestAQI = 228.75;
+  // const latestAQI = Math.max(
+  //   pm25Data[lastDayIndex],
+  //   pm10Data[lastDayIndex],
+  //   co2Data[lastDayIndex]
+  // );
+
+  const maxAQI = 300; // Maximum AQI value
+  const gaugeValue = latestAQI / maxAQI; // Maximum AQI value
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -418,8 +424,6 @@ function Dashboard() {
         if (data.predicted_aqi) {
           setPredictedAqi(data.predicted_aqi.toFixed(2));
           const aqi = parseFloat(predictedAqi);
-          setLatestAQI(aqi);
-          setGaugeValue(latestAQI / maxAQI); // Scale AQI value to range 0-1
           const advice = getHealthAdvice(aqi);
           setHealthAdvice(advice);
         } else {
