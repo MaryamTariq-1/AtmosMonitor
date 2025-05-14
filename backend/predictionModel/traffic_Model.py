@@ -115,3 +115,95 @@
 
 # if __name__ == "__main__":
 #     preprocess_and_train_model()
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import SimpleRNN, Dense
+import joblib
+import os
+
+# File paths
+DATASET_PATH = "traffic_pollution_faisalabad_large_2023.csv"
+PROCESSED_DATASET_PATH = "traffic_processed_data_rnn.csv"
+MODEL_PATH = "rnn_high_congestion_model.h5"
+SCALER_PATH = "rnn_feature_scaler.pkl"
+FEATURES_PATH = "rnn_feature_columns.pkl"
+
+def preprocess_and_train_rnn_model():
+    try:
+        df = pd.read_csv(DATASET_PATH)
+    except FileNotFoundError:
+        print(f"Error: File {DATASET_PATH} not found.")
+        return
+
+    if "Timestamp" not in df.columns:
+        print("Error: Timestamp column not found.")
+        return
+
+    # --- Feature Engineering ---
+    df["Timestamp"] = pd.to_datetime(df["Timestamp"], errors="coerce")
+    df.dropna(subset=["Timestamp"], inplace=True)
+    df["Hour"] = df["Timestamp"].dt.hour
+    df["Day_of_Week"] = df["Timestamp"].dt.dayofweek
+    df["Date"] = df["Timestamp"].dt.date
+    df["Rush_Hour_Indicator"] = ((df["Hour"].between(7, 9)) | (df["Hour"].between(17, 19))).astype(int)
+
+    df = pd.get_dummies(df, columns=["Weather_Conditions"], drop_first=True)
+
+    if "Vehicle_Count" in df.columns and "Traffic_Flow_Speed" in df.columns:
+        df["High_Congestion"] = ((df["Vehicle_Count"] > df["Vehicle_Count"].median()) &
+                                 (df["Traffic_Flow_Speed"] < df["Traffic_Flow_Speed"].median())).astype(int)
+    else:
+        print("Missing required columns for congestion logic.")
+        return
+
+    # Drop irrelevant columns
+    df.drop(columns=["Latitude", "Longitude", "Location", "Suggested_Route_Adjustment", "Date", "Timestamp"], inplace=True, errors="ignore")
+
+    # Save processed data
+    df.to_csv(PROCESSED_DATASET_PATH, index=False)
+    print(f"Processed dataset saved to {os.path.abspath(PROCESSED_DATASET_PATH)}")
+
+    # --- Prepare Data for RNN ---
+    if "High_Congestion" not in df.columns:
+        print("Error: Target column missing.")
+        return
+
+    X = df.drop(columns=["High_Congestion"])
+    y = df["High_Congestion"]
+
+    # Save feature column names
+    feature_columns = X.columns.tolist()
+    joblib.dump(feature_columns, FEATURES_PATH)
+
+    # Scale features
+    scaler_X = MinMaxScaler()
+    X_scaled = scaler_X.fit_transform(X)
+    joblib.dump(scaler_X, SCALER_PATH)
+
+    # Reshape for RNN input
+    X_scaled = X_scaled.reshape((X_scaled.shape[0], 1, X_scaled.shape[1]))
+
+    # Train/test split
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+    # Build RNN model
+    model = Sequential([
+        SimpleRNN(64, activation='relu', input_shape=(X_train.shape[1], X_train.shape[2])),
+        Dense(64, activation='relu'),
+        Dense(1, activation='sigmoid')  # binary classification
+    ])
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+    # Train model
+    model.fit(X_train, y_train, epochs=20, batch_size=64, validation_data=(X_test, y_test), verbose=2)
+
+    # Save model
+    model.save(MODEL_PATH)
+    print(f"RNN model saved to {os.path.abspath(MODEL_PATH)}")
+
+if __name__ == "__main__":
+    preprocess_and_train_rnn_model()
+ 

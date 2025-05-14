@@ -33,14 +33,14 @@ const ProtectedRoute = ({ element }) => {
 
 function App() {
   // Check auth state when the app loads
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const otpVerified = localStorage.getItem("otpVerified");
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const otpVerified = localStorage.getItem("otpVerified");
 
-    if (token && otpVerified !== "true") {
-      window.location.href = "/otp-verification";
-    }
-  }, []);
+  //   if (token && otpVerified !== "true") {
+  //     window.location.href = "/otp-verification";
+  //   }
+  // }, []);
 
   return (
     <Router>

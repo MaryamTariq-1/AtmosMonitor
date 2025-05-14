@@ -25,7 +25,7 @@ const SignIn = () => {
       } else {
         // If login is successful without needing OTP
         localStorage.setItem("token", data.token); // Store JWT token
-        navigate("/dashboard"); // Redirect to dashboard
+        navigate("/"); // Redirect to dashboard
       }
     } catch (error) {
       // Handle error during login
